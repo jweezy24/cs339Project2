@@ -12,7 +12,7 @@ class deviceManager:
             if json_message['op'] == 'add':
                 print('object added.')
                 self.objects.append(json_message)
-                self.client_socket.sendto(message.encode(), ('67.163.37.156', 7999))
+                self.client_socket.sendto(message, ('localhost', 7999))
         except NameError:
             print('Incorrect Json format')
 
