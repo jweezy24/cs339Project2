@@ -5,7 +5,7 @@ class Bulb:
     # if switch is false the light is off, if the switch is true the light is on
     # Color will be a string value that will define the color
     # Outlet is the smart outlet the light is tied to
-    def __init__(self, name, color="default", dim=0, switch=False):
+    def __init__(self, name, color="default", dim=0, switch=True):
         self.color = color.lower()
         self.dim = dim
         self.switch = switch

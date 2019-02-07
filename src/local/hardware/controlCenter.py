@@ -210,3 +210,9 @@ class controller:
                 if i.type == 'group':
                     if i.getItemByName(name) != 'none':
                         i.removeItem(name)
+
+    def jsonifyOject(self, thing):
+        if thing.type == 'bulb':
+            jsonDict = { 'type': thing.type, 'color' : thing.color,
+            'state': thing.getState(), 'dim' : str(thing.dim) }
+            return jsonDict

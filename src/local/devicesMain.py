@@ -1,7 +1,8 @@
 import socket
 import sys
 import os
-from hardware import *
+sys.path.insert(0, './hardware')
+import controlCenter
 #this file will simulate plugging hardware into a socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.sendto('hello'.encode(), ('67.163.37.156', 7999))
@@ -9,13 +10,19 @@ sock.sendto('hello'.encode(), ('67.163.37.156', 7999))
 sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.sendto('hello'.encode(), ('localhost', 8000))
 
+local_server = ('localhost', 8000)
+
 
 def main():
+    localManager = controlCenter.controller()
     try:
         while True:
-            user = input('Enter a command (add move delete)')
-            if user == 'add':
-                pass
+            user = raw_input('Enter a command (add-light move delete)')
+            if user == 'add-light':
+                name = raw_input('What is the name of the light?')
+                localManager.add_light(name, 'red', True)
+                message = str(localManager.jsonifyOject(localManager.get_object_by_name(name)))
+                sock2.sendto(message, local_server)
 
     except KeyboardInterrupt:
         print('Exiting')
@@ -23,3 +30,4 @@ def main():
             sys.exit(0)
         except SystemExit:
             os._exit(0)
+main()
