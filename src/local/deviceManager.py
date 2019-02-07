@@ -1,7 +1,16 @@
 import socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.sendto('hello'.encode(), ('67.163.37.156', 7999))
 class deviceManager:
     def __init__(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.server_socket.bind(('', 8000))
+    def listen(self):
+        message, address = self.server_socket.recvfrom(1024)
+        print('recived ' + str(message) + ' from ' + str(address))
+
+
+def main():
+    devices = deviceManager()
+    while True:
+        devices.listen()
+main()
