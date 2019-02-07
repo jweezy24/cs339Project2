@@ -21,7 +21,7 @@ def main():
             if user == 'add-light':
                 name = raw_input('What is the name of the light?')
                 localManager.add_light(name, 'red', True)
-                message = str(localManager.jsonifyOject(localManager.get_object_by_name(name)))
+                message = str(localManager.jsonifyOject(localManager.get_object_by_name(name), 'add'))
                 sock2.sendto(message, local_server)
 
     except KeyboardInterrupt:
