@@ -12,6 +12,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "serverTranslate.h"
 
 #define BUFSIZE 1024
 
@@ -87,6 +88,10 @@ int main(int argc, char **argv) {
     bzero(buf, BUFSIZE);
     n = recvfrom(sockfd, buf, BUFSIZE, 0,
 		 (struct sockaddr *) &clientaddr, &clientlen);
+
+    // in theory should modify our recieved string before its echoed
+    translateMessage(buf);
+
     if (n < 0)
       error("ERROR in recvfrom");
 

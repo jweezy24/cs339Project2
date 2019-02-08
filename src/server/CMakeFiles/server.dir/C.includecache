@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jack/cs339Project2/src/server/serverMain.c
+stdio.h
+-
+unistd.h
+-
+stdlib.h
+-
+string.h
+-
+netdb.h
+-
+sys/types.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+arpa/inet.h
+-
+serverTranslate.h
+/home/jack/cs339Project2/src/server/serverTranslate.h
+
+/home/jack/cs339Project2/src/server/serverTranslate.c
+serverTranslate.h
+/home/jack/cs339Project2/src/server/serverTranslate.h
+stdio.h
+-
+string.h
+-
+
+/home/jack/cs339Project2/src/server/serverTranslate.h
+

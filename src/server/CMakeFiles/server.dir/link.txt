@@ -1,0 +1,1 @@
+/usr/bin/cc   -rdynamic CMakeFiles/server.dir/serverMain.c.o CMakeFiles/server.dir/serverTranslate.c.o  -o server -Wl,-Bstatic -lgtest -Wl,-Bdynamic -lpthread 
