@@ -29,6 +29,21 @@ void init_hardware(hardware* object){
 void update_object_dim(hardware* object, int dim){
   object->dim = dim;
 }
+
+void update_object_type(hardware* object, char* type){
+  object->type = malloc(sizeof(char)*strlen(type));
+  int count = 0;
+  int typeCount = 0;
+  while(type[count] != '\0'){
+    if (type[count] == '\'' || type[count] == ',' || type[count] == '}' || type[count] == '{'){
+      count+=1;
+    }else{
+      object->type[typeCount] = type[count];
+      type+=1;
+      typeCount+=1;
+    }
+  }
+}
 //parsing json to readable code for the server boys
 void parseJson(char* args){
   hardware thing;
@@ -42,7 +57,8 @@ void parseJson(char* args){
   int dim;
   sscanf( args, "{'ip': %s 'object': {'color': %s 'dim': %d, 'state': %s 'type': %s 'name': %s 'op': %s}",
          ipBuffer, colorBuffer, &dim, stateBuffer, typeBuffer, nameBuffer, opBuffer);
-  printf("%d\n", dim);
+  printf("%s\n", typeBuffer);
   update_object_dim(&thing, dim);
-  printf("%d\n", thing.dim);
+  update_object_type(&thing, typeBuffer);
+  printf("%s\n", thing.type);
 }
