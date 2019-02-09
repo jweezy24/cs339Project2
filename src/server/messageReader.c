@@ -15,6 +15,8 @@ network AllDMs;
 void parseJson(char* args){
   hardware thing;
   init_hardware(&thing);
+  init_network(&AllDMs);
+  set_network_null(&AllDMs);
   char typeBuffer[100];
   char nameBuffer[100];
   char stateBuffer[100];

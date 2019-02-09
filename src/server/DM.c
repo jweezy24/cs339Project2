@@ -22,4 +22,6 @@ void create_DM(DM* dungeonMaster, char* ip, char* subnet){
 DM* create_nullDM(){
   DM* nullDM = malloc(sizeof(DM));
   nullDM->ip = malloc(sizeof(char)*5);
-  }
+  strcpy(nullDM->ip, "none");
+  return nullDM;
+}
