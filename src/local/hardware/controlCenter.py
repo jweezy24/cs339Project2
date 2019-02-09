@@ -54,7 +54,7 @@ class controller:
         self.fixtures.append(lightGroup.lightGroup(name=name, objects=members, switch=switch))
 
     def add_light(self, name, color, switch):
-        self.fixtures.append(lightObject.Bulb(name=name, color=color, dim=0, switch=switch))
+        self.fixtures.append(lightObject.Bulb(name=name, color=color, dim=10, switch=switch))
 
     def add_outlet(self,space, switch, name):
         if space > 7:
