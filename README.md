@@ -31,15 +31,6 @@ There are three files to run if the user would like to run everything locally.
   * (More will come as we continue building the application)
 
 
-### Prerequisites
-
-Python2.7 is what is the device simulation is built on.
-
-Python 3 is what the locally network manager is build on.
-
-C is what the back-end server is built on.
-
-
 ### Installing
 
 Download the repo. Make sure you have a compiler for Python27 and Python3, you do not need a C compiler. The C code is run on a server. If you want to test the server locally then you would need gcc.
@@ -53,7 +44,7 @@ python unittest.py - Running this command will run 31 tests.
 (Create deviceManager tests)
 
 
-## Built With
+## Built With/Requirements
 
 * [Python27](https://www.python.org/download/releases/2.7/) - The compiler for device simulator
 
