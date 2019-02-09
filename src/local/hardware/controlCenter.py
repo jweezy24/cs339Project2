@@ -216,6 +216,6 @@ class controller:
     def jsonifyOject(self, thing, op):
         s.connect(("8.8.8.8", 80))
         if thing.type == 'bulb':
-            jsonDict = { 'op': op, 'ip': str(s.getsockname()[0]), 'object':{'type': thing.type, 'color' : thing.color,
+            jsonDict = { 'op': op, 'ip': str(s.getsockname()[0]), 'sub':'', 'object':{'type': thing.type, 'color' : thing.color,
             'state': str(thing.switch), 'dim' : thing.dim, 'name': thing.name} }
             return jsonDict

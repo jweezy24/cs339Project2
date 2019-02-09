@@ -14,6 +14,7 @@ typedef struct hardware{
 typedef struct DM{
   hardware* objects;
   char* user;
+  char* subnet_mask;
 }DM;
 
 typedef struct networkObjects{
@@ -47,32 +48,38 @@ char* create_string_attr(char* attr, char* type){
   return attr;
 }
 
-void update_object_type(hardware* object, char* type){
+void set_object_type(hardware* object, char* type){
   char* temp = create_string_attr(object->type, type);
   object->type = malloc(sizeof(char)*strlen(temp));
   strcpy(object->type, temp);
   free(temp);
 }
 
-void update_object_state(hardware* object, char* type){
+void set_object_state(hardware* object, char* type){
   char* temp = create_string_attr(object->state, type);
   object->state = malloc(sizeof(char)*strlen(temp));
   strcpy(object->state, temp);
   free(temp);
 }
 
-void update_object_name(hardware* object, char* type){
+void set_object_name(hardware* object, char* type){
   char* temp = create_string_attr(object->name, type);
   object->name = malloc(sizeof(char)*strlen(temp));
   strcpy(object->name, temp);
   free(temp);
 }
 
-void update_object_color(hardware* object, char* type){
+void set_object_color(hardware* object, char* type){
   char* temp = create_string_attr(object->color, type);
   object->color = malloc(sizeof(char)*strlen(temp));
   strcpy(object->color, temp);
   free(temp);
+}
+
+
+
+void create_DM(){
+
 }
 
 //parsing json to readable code for the server boys
@@ -89,13 +96,9 @@ void parseJson(char* args){
   sscanf( args, "{'ip': %s 'object': {'color': %s 'dim': %d, 'state': %s 'type': %s 'name': %s 'op': %s}",
          ipBuffer, colorBuffer, &dim, stateBuffer, typeBuffer, nameBuffer, opBuffer);
   printf("%s\n", typeBuffer);
-  update_object_dim(&thing, dim);
-  update_object_type(&thing, typeBuffer);
-  update_object_name(&thing, nameBuffer);
-  update_object_color(&thing, colorBuffer);
-  update_object_state(&thing, stateBuffer);
-  printf("%s\n", thing.type);
-  printf("%s\n", thing.state);
-  printf("%s\n", thing.name);
-  printf("%s\n", thing.color);
+  set_object_dim(&thing, dim);
+  set_object_type(&thing, typeBuffer);
+  set_object_name(&thing, nameBuffer);
+  set_object_color(&thing, colorBuffer);
+  set_object_state(&thing, stateBuffer);
 }
