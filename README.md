@@ -67,6 +67,6 @@ python unittest.py - Running this command will run 31 tests.
 * **Drew Mack** - *Built Simulator* - [drew-mack](https://github.com/drew-mack)
 * **Faisal Shaheen** - *Back-end C Dev* - [F423](https://github.com/F423)
 * **Jack Broncato** - *Back-end C Dev* - [jman11111](https://github.com/jman11111)
-* **Asbel** - *Font-end App Developer* - [asbel](https://github.com/asbel)
+* **Asbel Assefa** - *Font-end App Developer* - [asbel](https://github.com/asbel)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
