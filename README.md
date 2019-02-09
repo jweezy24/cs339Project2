@@ -59,7 +59,10 @@ python unittest.py - Running this command will run 31 tests.
 
 * [Python3](https://www.python.org/downloads/release/python-372/) - The compiler for device manager
 
+    * [Netifaces](https://pypi.org/project/netifaces/) - This package is needed for device manager to grab ip
+
 * [C](http://gcc.gnu.org/install/) - The compiler for C
+
 
 ## Authors
 
