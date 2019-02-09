@@ -217,5 +217,5 @@ class controller:
         s.connect(("8.8.8.8", 80))
         if thing.type == 'bulb':
             jsonDict = { 'op': op, 'ip': str(s.getsockname()[0]), 'object':{'type': thing.type, 'color' : thing.color,
-            'state': thing.getState(), 'dim' : str(thing.dim), 'name': thing.name} }
+            'state': str(thing.switch), 'dim' : thing.dim, 'name': thing.name} }
             return jsonDict

@@ -3,48 +3,44 @@
 #include <regex.h>
 #include <fnmatch.h>
 
+typedef struct hardware{
+  char* type;
+  char* name;
+  int dim;
+  char* color;
+  char* state;
+}hardware;
+
+
 typedef struct DM{
-  char* objects;
+  hardware* objects;
   char* user;
 }DM;
 
-char* getIP(char* args){
-  regex_t re;
-  regcomp(&re, "[[0-9]*.[0-9]*.[0-9]*.[0-9]*]", REG_EXTENDED|REG_NOSUB);
-  int count = 0;
-  int status = -1;
-  char buffer[100];
-  int bufferPos = 0;
-  while(args[count] != '\0'){
-    if(args[count] == ','){
-      //reseting buffer
-      status = regexec(&re, buffer, 0, NULL, 0);
-      if (status != 0 || status != -1){
-        return buffer;
-      }
-      bufferPos = 0;
-      for(int i =0; i < 100; i++){
-        buffer[i] = '\0';
-       }
-       count+=1;
-    }else{
-      buffer[bufferPos] = args[count];
-      count+=1;
-    }
-
-  }
-  return "none";
+void initHardware(hardware* object){
+  object = malloc(sizeof(hardware));
+  object->type = malloc(sizeof(char)+1);
+  object->name = malloc(sizeof(char)+1);
+  object->state = malloc(sizeof(char)+1);
+  object->color = malloc(sizeof(char)+1);
 }
 //parsing json to readable code for the server boys
 void parseJson(char* args){
-  regex_t re;
-  regcomp(&re, "[[0-9]*.[0-9]*.[0-9]*.[0-9]*,]", REG_EXTENDED|REG_NOSUB);
-  int status = regexec(&re, args, 0, NULL, 0);
-  if (status != 0){
-    printf("%s\n", getIP(args));
-  }
-  printf("Status: %d", status);
-  printf("%s\n", re);
-  regfree(&re);
-
+  hardware* object;
+  initHardware(object);
+  char typeBuffer[100];
+  char nameBuffer[100];
+  char stateBuffer[100];
+  char colorBuffer[100];
+  char opBuffer[100];
+  char ipBuffer[100];
+  int dim;
+  sscanf( args, "{'ip': %s 'object': {'color': %s 'dim': %d, 'state': %s 'type': %s 'name': %s 'op': %s}",
+         ipBuffer, colorBuffer, &dim, stateBuffer, typeBuffer, nameBuffer, opBuffer);
+  printf("%s\n", nameBuffer);
+  printf("%s\n", colorBuffer);
+  printf("%s\n", typeBuffer);
+  printf("%s\n", stateBuffer);
+  printf("%s\n", opBuffer);
+  printf("%s\n", ipBuffer);
 }
