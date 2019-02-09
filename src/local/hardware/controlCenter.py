@@ -4,6 +4,8 @@ import lightObject
 import outletObject
 import lightGroup
 import miscObject
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 class controller:
     def __init__(self):  # parentheses in the def here makes it a tuple instead of a list
@@ -212,7 +214,8 @@ class controller:
                         i.removeItem(name)
 
     def jsonifyOject(self, thing, op):
+        s.connect(("8.8.8.8", 80))
         if thing.type == 'bulb':
-            jsonDict = { 'op': op, 'object':{'type': thing.type, 'color' : thing.color,
+            jsonDict = { 'op': op, 'ip': str(s.getsockname()[0]), 'object':{'type': thing.type, 'color' : thing.color,
             'state': thing.getState(), 'dim' : str(thing.dim), 'name': thing.name} }
             return jsonDict

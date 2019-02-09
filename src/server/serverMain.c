@@ -12,8 +12,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "messageReader.c"
 
-#define BUFSIZE 1024
+#define BUFSIZE 2048
 
 /*
  * error - wrapper for perror
@@ -87,6 +88,7 @@ int main(int argc, char **argv) {
     bzero(buf, BUFSIZE);
     n = recvfrom(sockfd, buf, BUFSIZE, 0,
 		 (struct sockaddr *) &clientaddr, &clientlen);
+    parseJson(buf);
     if (n < 0)
       error("ERROR in recvfrom");
 
