@@ -27,7 +27,7 @@ void init_hardware(hardware* object){
   object = malloc(sizeof(hardware));
 }
 //updates dim
-void update_object_dim(hardware* object, int dim){
+void set_object_dim(hardware* object, int dim){
   object->dim = dim;
 }
 
@@ -92,10 +92,10 @@ void parseJson(char* args){
   char colorBuffer[100];
   char opBuffer[100];
   char ipBuffer[100];
+  char subnetBuffer[100];
   int dim;
-  sscanf( args, "{'ip': %s 'object': {'color': %s 'dim': %d, 'state': %s 'type': %s 'name': %s 'op': %s}",
-         ipBuffer, colorBuffer, &dim, stateBuffer, typeBuffer, nameBuffer, opBuffer);
-  printf("%s\n", typeBuffer);
+  sscanf( args, "{'ip': %s 'object': {'color': %s 'dim': %d, 'state': %s 'type': %s 'name': %s 'sub': %s 'op': %s}",
+         ipBuffer, colorBuffer, &dim, stateBuffer, typeBuffer, nameBuffer, subnetBuffer, opBuffer);
   set_object_dim(&thing, dim);
   set_object_type(&thing, typeBuffer);
   set_object_name(&thing, nameBuffer);
