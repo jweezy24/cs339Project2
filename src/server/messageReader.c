@@ -2,85 +2,14 @@
 #include <stdlib.h>
 #include <regex.h>
 #include <fnmatch.h>
-
-typedef struct hardware{
-  char* type;
-  char* name;
-  int dim;
-  char* color;
-  char* state;
-}hardware;
-
-typedef struct DM{
-  hardware* objects;
-  char* user;
-  char* subnet_mask;
-}DM;
-
-typedef struct networkObjects{
-  DM* things;
-  int size;
-}network;
-
-//mallocs memory for a hardware object
-void init_hardware(hardware* object){
-  object = malloc(sizeof(hardware));
-}
-//updates dim
-void set_object_dim(hardware* object, int dim){
-  object->dim = dim;
-}
-
-//Pretty much a copy str method except it filters out unwanted characters from the json parse
-char* create_string_attr(char* attr, char* type){
-  attr = malloc(sizeof(char)*strlen(type)+1);
-  int count = 0;
-  int attrCount = 0;
-  while(type[count] != '\0'){
-    if (type[count] == '\'' || type[count] == ',' || type[count] == '}' || type[count] == '{'){
-      count+=1;
-    }else{
-      attr[attrCount] = type[count];
-      type+=1;
-      attrCount+=1;
-    }
-  }
-  return attr;
-}
-
-void set_object_type(hardware* object, char* type){
-  char* temp = create_string_attr(object->type, type);
-  object->type = malloc(sizeof(char)*strlen(temp));
-  strcpy(object->type, temp);
-  free(temp);
-}
-
-void set_object_state(hardware* object, char* type){
-  char* temp = create_string_attr(object->state, type);
-  object->state = malloc(sizeof(char)*strlen(temp));
-  strcpy(object->state, temp);
-  free(temp);
-}
-
-void set_object_name(hardware* object, char* type){
-  char* temp = create_string_attr(object->name, type);
-  object->name = malloc(sizeof(char)*strlen(temp));
-  strcpy(object->name, temp);
-  free(temp);
-}
-
-void set_object_color(hardware* object, char* type){
-  char* temp = create_string_attr(object->color, type);
-  object->color = malloc(sizeof(char)*strlen(temp));
-  strcpy(object->color, temp);
-  free(temp);
-}
+#include "utils.c"
+#include "hardware.c"
+#include "DM.c"
+#include "network.c"
 
 
-
-void create_DM(){
-
-}
+//every machine tied to the server
+network AllDMs;
 
 //parsing json to readable code for the server boys
 void parseJson(char* args){
