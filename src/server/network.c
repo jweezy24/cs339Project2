@@ -15,3 +15,9 @@ void set_network_null(network* net){
   net->things->ip = malloc(sizeof(char)*5);
   strcpy(net->things->ip,"none");
 }
+
+void free_network(network* net){
+  for (int i =0; i < net->size; i++){
+    freeDM(net->things[i]);
+  }
+}

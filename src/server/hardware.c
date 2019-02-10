@@ -46,3 +46,11 @@ void set_object_color(hardware* object, char* type){
   strcpy(object->color, temp);
   free(temp);
 }
+
+void free_hardware(hardware* obj){
+  free(obj->type);
+  free(obj->name);
+  free(obj->color);
+  free(obj->start);
+  free(obj);
+}
