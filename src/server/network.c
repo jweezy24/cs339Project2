@@ -16,8 +16,15 @@ void set_network_null(network* net){
   strcpy(net->things->ip,"none");
 }
 
+int check_if_DM(network* net, char* ip){
+  for(int i = 0; i < net->size; i++ ){
+
+  }
+
+}
+
 void free_network(network* net){
   for (int i =0; i < net->size; i++){
-    freeDM(net->things[i]);
+    freeDM(&net->things[i]);
   }
 }

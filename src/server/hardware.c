@@ -51,6 +51,6 @@ void free_hardware(hardware* obj){
   free(obj->type);
   free(obj->name);
   free(obj->color);
-  free(obj->start);
+  free(obj->state);
   free(obj);
 }

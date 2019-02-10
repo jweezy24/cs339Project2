@@ -27,9 +27,12 @@ void parseJson(char* args){
   int dim;
   sscanf( args, "{'ip': %s 'object': {'color': %s 'dim': %d, 'state': %s 'type': %s 'name': %s 'sub': %s 'op': %s}",
          ipBuffer, colorBuffer, &dim, stateBuffer, typeBuffer, nameBuffer, subnetBuffer, opBuffer);
-  set_object_dim(&thing, dim);
-  set_object_type(&thing, typeBuffer);
-  set_object_name(&thing, nameBuffer);
-  set_object_color(&thing, colorBuffer);
-  set_object_state(&thing, stateBuffer);
+  if(strcmp(opBuffer, "add") == 0){
+    set_object_dim(&thing, dim);
+    set_object_type(&thing, typeBuffer);
+    set_object_name(&thing, nameBuffer);
+    set_object_color(&thing, colorBuffer);
+    set_object_state(&thing, stateBuffer);
+    //add_to_DM(&AllDMs, &thing);
+  }
 }

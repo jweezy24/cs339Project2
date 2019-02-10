@@ -28,9 +28,10 @@ DM* create_nullDM(){
 }
 
 
-void freeDM(*DM dm){
+
+void freeDM(DM* dm){
   for (int i =0; i < dm->size; i++){
-    free_hardware(dm->objects[i]);
+    free_hardware(&dm->objects[i]);
   }
   free(dm->ip);
   free(dm->subnet_mask);
