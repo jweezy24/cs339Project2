@@ -11,7 +11,6 @@ class deviceManager:
         self.objects = []
     def listen(self):
         message, address = self.server_socket.recvfrom(1024)
-        sys.exit(0)
         self.clapBack(address)
         try:
             json_message = eval(message)
