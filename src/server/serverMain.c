@@ -12,11 +12,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-<<<<<<< HEAD
 #include "serverTranslate.h"
-=======
 #include "messageReader.c"
->>>>>>> origin/master
 
 #define BUFSIZE 2048
 
@@ -93,14 +90,7 @@ int main(int argc, char **argv) {
     bzero(buf, BUFSIZE);
     n = recvfrom(sockfd, buf, BUFSIZE, 0,
 		 (struct sockaddr *) &clientaddr, &clientlen);
-<<<<<<< HEAD
-
-    // in theory should modify our recieved string before its echoed
-    translateMessage(buf);
-
-=======
     parseJson(buf);
->>>>>>> origin/master
     if (n < 0)
       error("ERROR in recvfrom");
 

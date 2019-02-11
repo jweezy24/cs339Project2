@@ -1,1 +1,3 @@
-extern char * translateMessage(char * str);
+#include "hardware.c"
+
+extern void objupdate(hardware thingtobeupdated);
