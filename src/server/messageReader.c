@@ -32,6 +32,7 @@ void parseJson(char* args){
   cleanIP = create_string_attr(cleanOP, ipBuffer);
   cleanOP = create_string_attr(cleanOP, opBuffer);
   printf("%s\n", cleanOP);
+  printf("%s\n", args);
   if(strcmp(cleanOP, "add") == 0){
     set_object_dim(&thing, dim);
     set_object_type(&thing, typeBuffer);
