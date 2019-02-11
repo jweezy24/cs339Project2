@@ -1,6 +1,7 @@
 import socket
 import sys
 import os
+import time
 sys.path.insert(0, './hardware')
 import controlCenter
 #this file will simulate plugging hardware into a socket
@@ -8,12 +9,11 @@ import controlCenter
 #sock.sendto('hello'.encode(), ('67.163.37.156', 7999))
 
 sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock2.sendto('hello'.encode(), ('localhost', 8000))
-
-local_server = ('localhost', 8000)
+sock2.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
 
 def main():
+    local_server = ('<broadcast>', 8000)
     localManager = controlCenter.controller()
     try:
         while True:
@@ -23,6 +23,11 @@ def main():
                 localManager.add_light(name, 'red', True)
                 message = str(localManager.jsonifyOject(localManager.get_object_by_name(name), 'add'))
                 sock2.sendto(message, local_server)
+                time.sleep(2)
+                message, address = sock2.recvfrom(1024)
+                if not message:
+                    break
+                #local_server = address
 
     except KeyboardInterrupt:
         print('Exiting')
@@ -30,4 +35,7 @@ def main():
             sys.exit(0)
         except SystemExit:
             os._exit(0)
+
+
+
 main()

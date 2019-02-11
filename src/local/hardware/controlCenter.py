@@ -4,6 +4,8 @@ import lightObject
 import outletObject
 import lightGroup
 import miscObject
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 class controller:
     def __init__(self):  # parentheses in the def here makes it a tuple instead of a list
@@ -52,7 +54,7 @@ class controller:
         self.fixtures.append(lightGroup.lightGroup(name=name, objects=members, switch=switch))
 
     def add_light(self, name, color, switch):
-        self.fixtures.append(lightObject.Bulb(name=name, color=color, dim=0, switch=switch))
+        self.fixtures.append(lightObject.Bulb(name=name, color=color, dim=10, switch=switch))
 
     def add_outlet(self,space, switch, name):
         if space > 7:
@@ -212,7 +214,8 @@ class controller:
                         i.removeItem(name)
 
     def jsonifyOject(self, thing, op):
+        s.connect(("8.8.8.8", 80))
         if thing.type == 'bulb':
-            jsonDict = { 'op': op, 'object':{'type': thing.type, 'color' : thing.color,
-            'state': thing.getState(), 'dim' : str(thing.dim), 'name': thing.name} }
+            jsonDict = { 'op': op, 'ip': str(s.getsockname()[0]), 'sub':'', 'object':{'type': thing.type, 'color' : thing.color,
+            'state': str(thing.switch), 'dim' : thing.dim, 'name': thing.name} }
             return jsonDict
