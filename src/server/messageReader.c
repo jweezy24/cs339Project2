@@ -61,5 +61,8 @@ void parseJson(char* args){
     }
   }
 
+  free(cleanIP);
+  free(cleanOP);
+
 
 }
