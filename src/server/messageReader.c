@@ -42,7 +42,7 @@ void parseJson(char* args){
     }else{
       DM newDM;
       init_DM(&newDM);
-      newDM.size = 1;
+      newDM.size = 0;
       create_DM(&newDM, cleanIP, subnetBuffer);
       add_to_DM(&newDM, &thing, cleanIP);
       add_DM_to_net(newDM, &AllDMs);
