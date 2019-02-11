@@ -31,14 +31,18 @@ void parseJson(char* args){
   char* cleanIP;
   cleanIP = create_string_attr(cleanOP, ipBuffer);
   cleanOP = create_string_attr(cleanOP, opBuffer);
+  printf("%s\n", cleanOP);
   if(strcmp(cleanOP, "add") == 0){
     set_object_dim(&thing, dim);
     set_object_type(&thing, typeBuffer);
     set_object_name(&thing, nameBuffer);
     set_object_color(&thing, colorBuffer);
     set_object_state(&thing, stateBuffer);
-    if(check_if_DM(&AllDMs, ipBuffer) == 0){
-      add_to_DM(get_DM_IP(&AllDMs, ipBuffer), &thing, ipBuffer);
+    printf("%s\n", cleanIP);
+    if(check_if_DM(&AllDMs, cleanIP) == 0){
+      DM* placeHolder = add_to_DM(get_DM_IP(&AllDMs, cleanIP), &thing, cleanIP);
+      printf("%s\n", placeHolder->ip);
+      update_DM_on_net(placeHolder, cleanIP, &AllDMs);
     }else{
       DM newDM;
       init_DM(&newDM);

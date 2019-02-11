@@ -31,6 +31,22 @@ DM* get_DM_IP(network* net, char* ip){
   return create_nullDM();
 }
 
+int get_DM_Index(network* net, char* ip){
+  for(int i = 0; i < net->size; i++ ){
+    if (strcmp(net->things[i].ip, ip) == 0){
+      return i;
+    }
+  }
+  return -1;
+}
+
+void update_DM_on_net(DM* dm, char* ip, network* net){
+  int pos = get_DM_Index(net, ip);
+  if(pos != -1){
+    net->things[pos] = *dm;
+  }
+}
+
 void add_DM_to_net(DM dm, network* net){
   net->things = realloc(net->things, sizeof(DM)*(net->size+1));
   net->things[net->size] = dm;
