@@ -24,6 +24,7 @@ void create_DM(DM* dungeonMaster, char* ip, char* subnet){
   dungeonMaster->subnet_mask = malloc(sizeof(char)*strlen(tempSub));
   strcpy(dungeonMaster->subnet_mask, tempSub);
   free(tempSub);
+  dungeonMaster->objects = malloc(sizeof(hardware));
 }
 
 DM* create_nullDM(){
