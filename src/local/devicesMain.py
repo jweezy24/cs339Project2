@@ -24,10 +24,10 @@ def main():
                 message = str(localManager.jsonifyOject(localManager.get_object_by_name(name), 'add'))
                 sock2.sendto(message, local_server)
                 time.sleep(2)
-                message, address = sock2.recv(1024)
+                message, address = sock2.recvfrom(1024)
                 if not message:
                     break
-                local_server = address
+                #local_server = address
 
     except KeyboardInterrupt:
         print('Exiting')
