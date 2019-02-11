@@ -10,13 +10,13 @@
 
 //every machine tied to the server
 network AllDMs;
-
-//parsing json to readable code for the server boys
+void init_all(){
+  init_network(&AllDMs);
+}
+//parsing json to readable objects for the server boys
 void parseJson(char* args){
   hardware thing;
   init_hardware(&thing);
-  init_network(&AllDMs);
-  set_network_null(&AllDMs);
   char typeBuffer[100];
   char nameBuffer[100];
   char stateBuffer[100];
@@ -27,12 +27,27 @@ void parseJson(char* args){
   int dim;
   sscanf( args, "{'ip': %s 'object': {'color': %s 'dim': %d, 'state': %s 'type': %s 'name': %s 'sub': %s 'op': %s}",
          ipBuffer, colorBuffer, &dim, stateBuffer, typeBuffer, nameBuffer, subnetBuffer, opBuffer);
-  if(strcmp(opBuffer, "add") == 0){
+  char* cleanOP;
+  char* cleanIP;
+  cleanIP = create_string_attr(cleanOP, ipBuffer);
+  cleanOP = create_string_attr(cleanOP, opBuffer);
+  if(strcmp(cleanOP, "add") == 0){
     set_object_dim(&thing, dim);
     set_object_type(&thing, typeBuffer);
     set_object_name(&thing, nameBuffer);
     set_object_color(&thing, colorBuffer);
     set_object_state(&thing, stateBuffer);
-    //add_to_DM(&AllDMs, &thing);
+    if(check_if_DM(&AllDMs, ipBuffer) == 0){
+      add_to_DM(get_DM_IP(&AllDMs, ipBuffer), &thing, ipBuffer);
+    }else{
+      DM newDM;
+      init_DM(&newDM);
+      newDM.size = 0;
+      create_DM(&newDM, cleanIP, subnetBuffer);
+      add_DM_to_net(newDM, &AllDMs);
+      add_to_DM(&newDM, &thing, cleanIP);
+    }
   }
+
+  
 }

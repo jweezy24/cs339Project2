@@ -35,6 +35,7 @@ int main(int argc, char **argv) {
   char *hostaddrp; /* dotted decimal host addr string */
   int optval; /* flag value for setsockopt */
   int n; /* message byte size */
+  init_all();
 
   /*
    * check command line arguments

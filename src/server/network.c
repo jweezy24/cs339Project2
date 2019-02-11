@@ -8,19 +8,33 @@ typedef struct networkObjects{
 
 void init_network(network* net){
   net = malloc(sizeof(network));
-}
-
-void set_network_null(network* net){
   net->things = malloc(sizeof(DM));
-  net->things->ip = malloc(sizeof(char)*5);
-  strcpy(net->things->ip,"none");
+  net->size = 0;
 }
 
 int check_if_DM(network* net, char* ip){
   for(int i = 0; i < net->size; i++ ){
-
+    if (strcmp(net->things[i].ip, ip) == 0){
+      return 0;
+    }
   }
+  return 1;
 
+}
+
+DM* get_DM_IP(network* net, char* ip){
+  for(int i = 0; i < net->size; i++ ){
+    if (strcmp(net->things[i].ip, ip) == 0){
+      return &net->things[i];
+    }
+  }
+  return create_nullDM();
+}
+
+void add_DM_to_net(DM dm, network* net){
+  net->things = realloc(net->things, sizeof(DM)*(net->size+1));
+  net->things[net->size] = dm;
+  net->size+=1;
 }
 
 void free_network(network* net){
