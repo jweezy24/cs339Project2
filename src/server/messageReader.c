@@ -44,8 +44,15 @@ void parseJson(char* args){
       init_DM(&newDM);
       newDM.size = 1;
       create_DM(&newDM, cleanIP, subnetBuffer);
-      add_DM_to_net(newDM, &AllDMs);
       add_to_DM(&newDM, &thing, cleanIP);
+      add_DM_to_net(newDM, &AllDMs);
+    }
+  }
+
+  for(int i = 0; i < AllDMs.size; i++){
+    printf("DM %s exists on network.\n", AllDMs.things[i].ip);
+    for(int j = 0; j < AllDMs.things[i].size; j++){
+      printf("\t Hardware %s exists on DM.\n", AllDMs.things[i].objects[j].name);
     }
   }
 

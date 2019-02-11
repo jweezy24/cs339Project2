@@ -47,6 +47,18 @@ void set_object_color(hardware* object, char* type){
   free(temp);
 }
 
+void hardware_copy_new(hardware* dest, hardware* new){
+  dest->type = malloc(sizeof(char)*strlen(new->type));
+  strcpy(dest->type,new->type);
+  dest->name = malloc(sizeof(char)*strlen(new->name));
+  strcpy(dest->name, new->name);
+  dest->dim = new->dim;
+  dest->color = malloc(sizeof(char)*strlen(new->color));
+  strcpy(dest->color, new->color);
+  dest->state = malloc(sizeof(char)*strlen(new->state));
+  strcpy(dest->state, new->state);
+}
+
 void free_hardware(hardware* obj){
   free(obj->type);
   free(obj->name);
