@@ -13,5 +13,5 @@ all: $(TARGET)
 $(TARGET): $(TARGET).c
 	$(CC) $(CFLAGS) $(LDFLAGS) -o test.exe $(TARGET).c
 
-clean:
-	$(RM) test.exe
+  clean:
+	  $(RM) test.exe
