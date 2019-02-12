@@ -1,3 +1,9 @@
 #include "hardware.c"
+#include "DM.c"
+#include <stdio.h>
+#include <string.h>
+#include "network.c"
 
-extern void objupdate(hardware thingtobeupdated);
+void objupdate(hardware* thingtobeupdated, char* ip);
+
+hardware* findByName(DM* tempDM, char* name);
