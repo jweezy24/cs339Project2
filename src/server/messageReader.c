@@ -6,7 +6,7 @@
 #include "hardware.c"
 #include "DM.c"
 #include "network.c"
-#include "json.h"
+#include <json.h>
 
 
 //every machine tied to the server
