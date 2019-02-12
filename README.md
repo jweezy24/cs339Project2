@@ -54,6 +54,8 @@ python unittest.py - Running this command will run 31 tests.
 
 * [C](http://gcc.gnu.org/install/) - The compiler for C
 
+    * [json-c](https://github.com/json-c/json-c) - dependency for server. Parses json args.
+
 
 ## Authors
 
