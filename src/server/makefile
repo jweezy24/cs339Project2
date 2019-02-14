@@ -6,12 +6,12 @@ CFLAGS  = -g
 TARGET = serverMain
 
 CFLAGS += $(shell pkg-config --cflags json-c)
-LDFLAGS += $(shell pkg-config --libs json-c)
+LDFLAGS += -ljson-c
 
 build: $(TARGET)
 
 $(TARGET): $(TARGET).c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o test.exe $(TARGET).c
+	$(CC) $(CFLAGS) -o test.exe $(TARGET).c $(LDFLAGS)
 
   clean:
 	  $(RM) test.exe

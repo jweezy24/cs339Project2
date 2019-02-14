@@ -7,17 +7,18 @@ class deviceManager:
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.bind(('', 8000))
-        self.server_address = '67.163.37.156'
+        #self.server_address = '67.163.37.156'
+        self.server_address = 'localhost'
         self.objects = []
     def listen(self):
         message, address = self.server_socket.recvfrom(1024)
         self.clapBack(address)
         try:
             json_message = eval(message)
-            subnet_mask = self.getMask()
-            for i in subnet_mask.keys():
-                if subnet_mask.get(i)[1] == json_message['ip']:
-                    json_message['sub'] = subnet_mask.get(i)[0]
+            #subnet_mask
+            #for i in subnet_mask.keys():
+            #    if subnet_mask.get(i)[1] == json_message['ip']:
+            #        json_message['sub'] = subnet_mask.get(i)[0]
             if json_message['op'] == 'add':
                 print('object added.')
                 self.objects.append(json_message)

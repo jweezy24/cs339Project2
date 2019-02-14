@@ -14,47 +14,49 @@ network AllDMs;
 void init_all(){
   init_network(&AllDMs);
 }
+
+char* get_json_attr_object_server(char* attr, struct json_object *json){
+  struct json_object  *tmp;
+  struct json_object *tmp2;
+  json_object_object_get_ex(json, "object", &tmp);
+  tmp2 = json_tokener_parse(json_object_to_json_string_ext(json, "object", &tmp));
+  char* attr_got = malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PLAIN)));
+  char* temp_attr =  json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PLAIN);
+  char* place_holder = create_string_attr(attr_got,temp_attr);
+  strcpy(attr_got, place_holder);
+  return attr_got;
+}
+
+char* get_json_attr_server(char* attr, struct json_object *json){
+  struct json_object  *tmp;
+  json_object_object_get_ex(json, attr, &tmp);
+  char* attr_got = malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PLAIN)));
+  char* temp_attr =  json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PLAIN);
+  char* place_holder = create_string_attr(attr_got,temp_attr);
+  strcpy(attr_got, place_holder);
+  return attr_got;
+}
 //parsing json to readable objects for the server boys
 void parseJson(char* args){
+  struct json_object *jobj;
   hardware thing;
   init_hardware(&thing);
-  char typeBuffer[100];
-  char nameBuffer[100];
-  char stateBuffer[100];
-  char colorBuffer[100];
-  char opBuffer[100];
-  char ipBuffer[100];
-  char subnetBuffer[100];
-  int dim;
-  sscanf( args, "{'ip': %s 'object': {'color': %s 'dim': %d, 'state': %s 'type': %s 'name': %s 'sub': %s 'op': %s}",
-         ipBuffer, colorBuffer, &dim, stateBuffer, typeBuffer, nameBuffer, subnetBuffer, opBuffer);
-  char* cleanOP;
-  char* cleanIP;
-  cleanIP = create_string_attr(cleanOP, ipBuffer);
-  cleanOP = create_string_attr(cleanOP, opBuffer);
-  printf("%s\n", cleanOP);
-  printf("%s\n", args);
-  if(strcmp(cleanOP, "add") == 0){
-    set_object_dim(&thing, dim);
-    set_object_type(&thing, typeBuffer);
-    set_object_name(&thing, nameBuffer);
-    set_object_color(&thing, colorBuffer);
-    set_object_state(&thing, stateBuffer);
-    printf("%s\n", cleanIP);
-    if(check_if_DM(&AllDMs, cleanIP) == 0){
-      DM* placeHolder = add_to_DM(get_DM_IP(&AllDMs, cleanIP), &thing, cleanIP);
-      printf("%s\n", placeHolder->ip);
-      update_DM_on_net(placeHolder, cleanIP, &AllDMs);
-    }else{
-      DM newDM;
-      init_DM(&newDM);
-      newDM.size = 0;
-      create_DM(&newDM, cleanIP, subnetBuffer);
-      add_to_DM(&newDM, &thing, cleanIP);
-      add_DM_to_net(newDM, &AllDMs);
-    }
-  }
-
+  struct {
+		int flag;
+		const char *flag_str;
+	} json_flags[] = {
+		{ JSON_C_TO_STRING_PLAIN, "JSON_C_TO_STRING_PLAIN" },
+		{ JSON_C_TO_STRING_SPACED, "JSON_C_TO_STRING_SPACED" },
+		{ JSON_C_TO_STRING_PRETTY, "JSON_C_TO_STRING_PRETTY" },
+		{ JSON_C_TO_STRING_NOZERO, "JSON_C_TO_STRING_NOZERO" },
+		{ JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY, "JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY" },
+		{ -1, NULL }
+};
+  jobj = json_tokener_parse(args);
+  char *ip = get_json_attr_server("ip", jobj);
+  char *subnet_mask = get_json_attr_server("sub", jobj);
+  char *object_name = get_json_attr_object_server("name", jobj);
+  printf("%s", object_name);
   for(int i = 0; i < AllDMs.size; i++){
     printf("DM %s exists on network.\n", AllDMs.things[i].ip);
     for(int j = 0; j < AllDMs.things[i].size; j++){
@@ -62,8 +64,7 @@ void parseJson(char* args){
     }
   }
 
-  free(cleanIP);
-  free(cleanOP);
+
 
 
 }

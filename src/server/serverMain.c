@@ -13,8 +13,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include "messageReader.c"
+#include <json.h>
 
-#define BUFSIZE 2048
+#define BUFSIZE 1024
 
 /*
  * error - wrapper for perror

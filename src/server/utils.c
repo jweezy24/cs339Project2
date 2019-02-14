@@ -7,7 +7,7 @@ char* create_string_attr(char* attr, char* type){
   int count = 0;
   int attrCount = 0;
   while(type[count] != '\0'){
-    if (type[count] == '\'' || type[count] == ',' || type[count] == '}' || type[count] == '{'){
+    if (type[count] == '\'' || type[count] == ',' || type[count] == '\"' ){
       count+=1;
     }else{
       attr[attrCount] = type[count];
