@@ -33,7 +33,12 @@ There are three files to run if the user would like to run everything locally.
 
 ### Installing
 
-Download the repo. Make sure you have a compiler for Python27 and Python3, you do not need a C compiler. The C code is run on a server. If you want to test the server locally then you would need gcc.
+
+Local:
+Download the repo. Make sure you have a compiler for Python27 and Python3, you do not need a C compiler.
+
+Server:
+The server currently only runs on a debian based linux distro. While in the server directory (Cs339Project2/src/server), run sudo make install. That will install all the packages need to handle the server. Then 'make' to build the server.
 
 ## Running the tests
 
