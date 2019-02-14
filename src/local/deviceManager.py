@@ -16,13 +16,14 @@ class deviceManager:
                 self.objects.append(json_message)
                 self.client_socket.sendto(message, ('localhost', 7999))
         except NameError:
-            print('Incorrect Json format')
+            print('Incorrect Json format:\n{}\nitem not acted upon'.format(message))
 
 
 def main():
-    devices = deviceManager()
+    DM = deviceManager()
     while True:
-        devices.listen()
+        DM.listen()
+
 
 if __name__ == '__main__':
     main()

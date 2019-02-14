@@ -1,40 +1,42 @@
-class Bulb:
-    # I was thinking we treat the dim setting as a percentage
-    # 0 is no dim 100 is fully dimmed
-    # the switch setting will tell us if the light is on or off
-    # if switch is false the light is off, if the switch is true the light is on
-    # Color will be a string value that will define the color
-    # Outlet is the smart outlet the light is tied to
-    def __init__(self, name, color="default", dim=0, switch=True):
-        self.color = color.lower()
-        self.dim = dim
-        self.switch = switch
+import socket
+import heart
+import sys
+import os
+
+class LightBulb:
+    def __init__(self, name, color="default", bright=100, power=True):
+        self.id = 1
         self.name = name
-        self.type = "bulb"
+
+        self.color = color.lower()
+        self.bright = bright
+        self.power = power
+        self.type = "light_bulb"
         self.grouped = False
 
+
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.server = ('localhost', 8000)
+
+
+
     def flip(self):
-        self.switch = not self.switch
+        self.power = not self.power
 
-    def setDim(self, dim):
-        self.dim = dim
+    def set_bright(self, bright):
+        self.bright = bright
 
-    def getDim(self):
-        return self.dim
+    def get_bright(self):
+        return self.bright
 
-    def getState(self):
-        if self.switch:
-            return "Light is on"
+    def get_state(self):
+        if self.power:
+            return "on"
         else:
-            return "Light is off"
+            return "off"
 
-    def getColor(self):
+    def get_color(self):
         return self.color
 
-    def setDim(self, val):
-        self.dim = val
-
-    def setColor(self, color):
+    def set_color(self, color):
         self.color = color
-    def getColor(self):
-        return self.color

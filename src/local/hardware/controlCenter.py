@@ -6,7 +6,7 @@ import lightGroup
 import miscObject
 
 class controller:
-    def __init__(self):  # parentheses in the def here makes it a tuple instead of a list
+    def __init__(self):
         self.threads = []
         self.fixtures = []
 
@@ -24,7 +24,7 @@ class controller:
         oldDestination = ''
         foundDest = False
         if destination == name:
-            print 'The item your trying to move is itself. Returning home.'
+            print('The item your trying to move is itself. Returning home.')
             return
         item = ''
         for i in self.fixtures:
@@ -51,25 +51,25 @@ class controller:
     def add_group(self,name, members, switch):
         self.fixtures.append(lightGroup.lightGroup(name=name, objects=members, switch=switch))
 
-    def add_light(self, name, color, switch):
-        self.fixtures.append(lightObject.Bulb(name=name, color=color, dim=0, switch=switch))
+    def add_light(self, light):
+        self.fixtures.append(light)
 
     def add_outlet(self,space, switch, name):
         if space > 7:
-            print 'That is too many spaces. No outlet created.'
+            print('That is too many spaces. No outlet created.')
             return
         self.fixtures.append(outletObject.Outlet(space=space, switch=switch, name=name))
 
     def gather_group(self):
         options = list()
         devices = list()
-        print 'What devices belong to this group? Options are as follows:'
+        print('What devices belong to this group? Options are as follows:')
         for f in self.fixtures:
             if not f.grouped and f.type != 'group':
                 options.append(f.name)
                 devices.append(f)
-                print f.name
-        print 'When you are done adding members, type "done".'
+                print(f.name)
+        print('When you are done adding members, type "done".')
 
         member_names = list()
         members = list()
@@ -78,18 +78,18 @@ class controller:
             if proposed_member == 'done' and len(members) >= 2:
                 break
             elif proposed_member == 'done' and len(members) < 2:
-                print 'You may not make a group with less than 2 members.'
+                print('You may not make a group with less than 2 members.')
                 continue
             if proposed_member not in options:
-                print '"{}" is not a groupable fixture, please try again.'.format(proposed_member)
+                print('"{}" is not a groupable fixture, please try again.'.format(proposed_member))
                 continue
             if proposed_member in member_names:
-                print '"{}" has already been added to this group.'.format(proposed_member)
+                print('"{}" has already been added to this group.'.format(proposed_member))
                 continue
             members.append(devices[options.index(proposed_member)])
             member_names.append(proposed_member)
             self.delete(proposed_member)
-            print 'added "{}" to the group.'.format(proposed_member)
+            print('added "{}" to the group.'.format(proposed_member))
 
         return tuple(members)
 
@@ -212,7 +212,7 @@ class controller:
                         i.removeItem(name)
 
     def jsonifyOject(self, thing, op):
-        if thing.type == 'bulb':
+        if thing.type == 'light_bulb':
             jsonDict = { 'op': op, 'object':{'type': thing.type, 'color' : thing.color,
             'state': thing.getState(), 'dim' : str(thing.dim), 'name': thing.name} }
             return jsonDict
