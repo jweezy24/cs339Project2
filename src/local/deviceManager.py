@@ -1,10 +1,12 @@
 import socket
+
 class deviceManager:
     def __init__(self):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.bind(('', 8000))
         self.objects = []
+        
     def listen(self):
         message, address = self.server_socket.recvfrom(1024)
         try:
@@ -21,4 +23,6 @@ def main():
     devices = deviceManager()
     while True:
         devices.listen()
-main()
+
+if __name__ == '__main__':
+    main()
