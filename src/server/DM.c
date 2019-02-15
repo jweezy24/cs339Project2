@@ -16,15 +16,11 @@ void init_DM(DM* tempDM){
 }
 
 void create_DM(DM* dungeonMaster, char* ip, char* subnet){
-  char* tempIp = create_string_attr(dungeonMaster->ip, ip);
-  dungeonMaster->ip = malloc(sizeof(char)*strlen(tempIp));
-  strcpy(dungeonMaster->ip, tempIp);
-  free(tempIp);
-  char* tempSub = create_string_attr(dungeonMaster->subnet_mask, subnet);
-  dungeonMaster->subnet_mask = malloc(sizeof(char)*strlen(tempSub));
-  strcpy(dungeonMaster->subnet_mask, tempSub);
-  free(tempSub);
-  dungeonMaster->objects = malloc(sizeof(hardware));
+  dungeonMaster->ip = malloc(sizeof(char)*strlen(ip));
+  strcpy(dungeonMaster->ip, ip);
+  dungeonMaster->subnet_mask = malloc(sizeof(char)*strlen(subnet));
+  strcpy(dungeonMaster->subnet_mask, subnet);
+  //dungeonMaster->objects = malloc(sizeof(hardware));
 }
 
 DM* create_nullDM(){
@@ -43,7 +39,7 @@ int name_check(DM* tempDM, char* name){
   return 1;
 }
 
-DM* add_to_DM(DM* requested_DM, hardware* newWare, char* ip){
+DM* add_to_DM(DM* requested_DM, hardware* newWare){
   if(strcmp(requested_DM->ip, "none") == 0){
     return create_nullDM();
   }else{
