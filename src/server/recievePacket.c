@@ -114,4 +114,5 @@ void *recieve_packet(void *port) {
       if (n < 0)
         error("ERROR in sendto");
     }
+    close(sockfd);
 }
