@@ -32,9 +32,9 @@ char* get_json_attr_object_server(char* attr, struct json_object *json){
 char* get_json_attr_server(char* attr, struct json_object *json){
   struct json_object  *tmp;
   json_object_object_get_ex(json, attr, &tmp);
-  char* attr_got = malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PLAIN))+1);
-  char* temp_attr =  malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PLAIN))+1);
-  strcpy(temp_attr, json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PLAIN));
+  char* attr_got = malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY))+1);
+  char* temp_attr =  malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY))+1);
+  strcpy(temp_attr, json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY));
   strcpy(attr_got, temp_attr);
   free(temp_attr);
   free(tmp);
