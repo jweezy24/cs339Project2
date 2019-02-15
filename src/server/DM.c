@@ -50,6 +50,38 @@ DM* add_to_DM(DM* requested_DM, hardware* newWare){
   }
 }
 
+hardware* get_hardware_name(DM* tmpDM, char* name){
+  for(int i =0; i < tmpDM->size; i++){
+    if(strcmp(name, tmpDM->objects[i].name) == 0){
+      return &tmpDM->objects[i];
+    }
+  }
+  return create_nullDM();
+}
+
+DM* remove_from_dm(DM* tmpDM, hardware* badware){
+  for(int i = 0; i < tmpDM->size; i++){
+    if(strcmp(badware->name, tmpDM->objects[i].name) == 0){
+      tmpDM->size-=1;
+    }
+  }
+  DM* newDM;
+  init_DM(newDM);
+  newDM->objects = calloc(tmpDM->size, sizeof(hardware));
+  newDM->size = tmpDM->size;
+  newDM->ip = malloc(sizeof(char)*strlen(tmpDM->ip)+1);
+  strcpy(newDM->ip, tmpDM->ip);
+  newDM->subnet_mask = malloc(sizeof(char)*strlen(tmpDM->subnet_mask)+1);
+  strcpy(newDM->subnet_mask, tmpDM->subnet_mask);
+  int dmPos=0;
+  for(int i = 0; i < tmpDM->size+1; i++){
+    if(strcmp(badware->name, tmpDM->objects[i].name) != 0){
+      hardware_copy_new(&newDM->objects[dmPos], &tmpDM->objects[i]);
+      dmPos+=1;
+    }
+  }
+}
+
 
 
 void freeDM(DM* dm){

@@ -116,4 +116,5 @@ void *recieve_packet(void *port) {
     }else{
       timeout();
     }
+    close(sockfd);
 }

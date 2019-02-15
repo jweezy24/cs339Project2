@@ -65,7 +65,6 @@ void parseJson(char* args){
     set_object_color(&thing, get_json_attr_object_server("color",jobj));
     set_object_name(&thing, get_json_attr_object_server("name",jobj));
     set_object_state(&thing, get_json_attr_object_server ("state",jobj));
-    set_object_type(&thing, get_json_attr_object_server("type",jobj));
     if(strcmp(get_DM_IP(&AllDMs, ip)->ip, "none") != 0){
       DM tmp = *get_DM_IP(&AllDMs,ip);
       add_to_DM(&tmp, &thing);
@@ -78,6 +77,18 @@ void parseJson(char* args){
       tmpDM = *add_to_DM(&tmpDM, &thing);
       add_DM_to_net(tmpDM, &AllDMs);
     }
+  }
+  if(strcmp(op,"delete") == 0){
+    set_object_dim(&thing, get_json_attr_object_server("dim", jobj));
+    set_object_color(&thing, get_json_attr_object_server("color",jobj));
+    set_object_name(&thing, get_json_attr_object_server("name",jobj));
+    set_object_state(&thing, get_json_attr_object_server ("state",jobj));
+    if(strcmp(get_DM_IP(&AllDMs, ip)->ip, "none") != 0){
+      DM tmpDM = *get_DM_IP(&AllDMs, ip);
+      remove_from_dm(&tmpDM,&thing);
+    }//else{
+
+    //}
   }
 
   free(ip);
