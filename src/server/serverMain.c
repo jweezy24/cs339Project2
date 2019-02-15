@@ -14,6 +14,7 @@
 #include <arpa/inet.h>
 #include "serverTranslate.h"
 #include "messageReader.c"
+#include <pthread.h>
 
 #define BUFSIZE 2048
 
@@ -82,15 +83,27 @@ int main(int argc, char **argv) {
    * main loop: wait for a datagram, then echo it
    */
   clientlen = sizeof(clientaddr);
-  while (1) {
+  // allocate space for threading
+  pthread_t *tid = malloc( 20 * sizeof(pthread_t) );
+  // for making correct thread number
+  int threadnum = 0;
+  // setting joinable attribute
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
+  while (1) {
+    
     /*
      * recvfrom: receive a UDP datagram from a client
      */
     bzero(buf, BUFSIZE);
     n = recvfrom(sockfd, buf, BUFSIZE, 0,
 		 (struct sockaddr *) &clientaddr, &clientlen);
-    parseJson(buf);
+    
+    //create thread for updating, sending updates
+    pthread_create( &tid[threadnum], &attr, parseJson,(void *)buf);
+    threadnum++;
     if (n < 0)
       error("ERROR in recvfrom");
 
@@ -116,4 +129,11 @@ int main(int argc, char **argv) {
     if (n < 0)
       error("ERROR in sendto");
   }
+
+  /* Wait for all threads to complete */
+    for (int i=0; i<threadnum; i++) {
+        pthread_join(tid[i], NULL);
+    }
+    printf ("Main(): Waited on %d  threads. Done.\n", threadnum);
+
 }

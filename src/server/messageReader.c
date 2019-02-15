@@ -14,7 +14,8 @@ void init_all(){
   init_network(&AllDMs);
 }
 //parsing json to readable objects for the server boys
-void parseJson(char* args){
+void parseJson(void * genericparam){
+  char* args = (char *)genericparam;
   hardware thing;
   init_hardware(&thing);
   char typeBuffer[100];
@@ -50,7 +51,7 @@ void parseJson(char* args){
       newDM.size = 0;
       create_DM(&newDM, cleanIP, subnetBuffer);
       add_to_DM(&newDM, &thing, cleanIP);
-      add_DM_to_net(newDM, &AllDMs);
+      add_DM_to_net(newDM,&AllDMs);
     }
   }
 
