@@ -113,7 +113,5 @@ void *recieve_packet(void *port) {
   	       (struct sockaddr *) &clientaddr, clientlen);
       if (n < 0)
         error("ERROR in sendto");
-    }else{
-      timeout();
     }
 }

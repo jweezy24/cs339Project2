@@ -6,12 +6,12 @@ CFLAGS  = -g
 TARGET = serverMain
 
 CFLAGS += $(shell pkg-config --cflags json-c)
-LDFLAGS += -ljson-c -lpthread
+LDFLAGS += $(shell pkg-config --libs json-c) -lpthread
 
 build: $(TARGET)
 
 $(TARGET): $(TARGET).c
-	$(CC) $(CFLAGS) -o test.exe $(TARGET).c $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wall -o test.exe $(TARGET).c  $(LDFLAGS)
 
   clean:
 	  $(RM) test.exe
@@ -22,7 +22,7 @@ install:
 	git clone https://github.com/json-c/json-c
 	cd json-c && libtoolize
 	cd json-c && sh autogen.sh
-	cd json-c && ./configure  --enable-threading
+	cd json-c && ./configure
 	cd json-c && make
 	cd json-c && make install
 	rm -r json-c
