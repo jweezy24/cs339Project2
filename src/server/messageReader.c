@@ -18,17 +18,14 @@ void init_all(){
 char* get_json_attr_object_server(char* attr, struct json_object *json){
   struct json_object  *tmp;
   struct json_object *tmp2;
-  struct json_object *tmp3;
   json_object_object_get_ex(json, "object", &tmp);
-  tmp2 = json_tokener_parse(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PLAIN));
+  tmp2 = json_tokener_parse(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY));
   json_object_object_get_ex(tmp, attr, &tmp2);
-  char* attr_got = malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PLAIN))+1);
-  char* temp_attr =  malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PLAIN))+1);
-  strcpy(temp_attr, json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PLAIN));
-  char* place_holder = create_string_attr(attr_got,temp_attr);
-  strcpy(attr_got, place_holder);
+  char* attr_got = malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PRETTY)));
+  char* temp_attr =  malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PRETTY)));
+  strcpy(temp_attr, json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PRETTY));
+  strcpy(attr_got, temp_attr);
   free(temp_attr);
-  free(place_holder);
   return attr_got;
 }
 
@@ -38,10 +35,8 @@ char* get_json_attr_server(char* attr, struct json_object *json){
   char* attr_got = malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PLAIN))+1);
   char* temp_attr =  malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PLAIN))+1);
   strcpy(temp_attr, json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PLAIN));
-  char* place_holder = create_string_attr(attr_got,temp_attr);
-  strcpy(attr_got, place_holder);
+  strcpy(attr_got, temp_attr);
   free(temp_attr);
-  free(place_holder);
   free(tmp);
   return attr_got;
 }
@@ -65,7 +60,8 @@ void parseJson(char* args){
   char *ip = get_json_attr_server("ip", jobj);
   char *subnet_mask = get_json_attr_server("sub", jobj);
   char* op = get_json_attr_server("op", jobj);
-  if(strcmp(op,"add") == 0){
+  printf("%s\n", op);
+  if(strcmp(op,"\"add\"") == 0){
     set_object_dim(&thing, get_json_attr_object_server("dim", jobj));
     set_object_color(&thing, get_json_attr_object_server("color",jobj));
     set_object_name(&thing, get_json_attr_object_server("name",jobj));
