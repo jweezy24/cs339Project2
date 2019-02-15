@@ -20,42 +20,34 @@ void set_object_dim(hardware* object, int dim){
 }
 
 void set_object_type(hardware* object, char* type){
-  char* temp = create_string_attr(object->type, type);
-  object->type = malloc(sizeof(char)*strlen(temp));
-  strcpy(object->type, temp);
-  free(temp);
+  object->type = malloc(sizeof(char)*strlen(type)+1);
+  strcpy(object->type, type);
 }
 
 void set_object_state(hardware* object, char* type){
-  char* temp = create_string_attr(object->state, type);
-  object->state = malloc(sizeof(char)*strlen(temp));
-  strcpy(object->state, temp);
-  free(temp);
+  object->state = malloc(sizeof(char)*strlen(type)+1);
+  strcpy(object->state, type);
 }
 
 void set_object_name(hardware* object, char* type){
-  char* temp = create_string_attr(object->name, type);
-  object->name = malloc(sizeof(char)*strlen(temp));
-  strcpy(object->name, temp);
-  free(temp);
+  object->name = malloc(sizeof(char)*strlen(type)+1);
+  strcpy(object->name, type);
 }
 
 void set_object_color(hardware* object, char* type){
-  char* temp = create_string_attr(object->color, type);
-  object->color = malloc(sizeof(char)*strlen(temp));
-  strcpy(object->color, temp);
-  free(temp);
+  object->color = malloc(sizeof(char)*strlen(type)+1);
+  strcpy(object->color, type);
 }
 
 void hardware_copy_new(hardware* dest, hardware* new){
-  dest->type = malloc(sizeof(char)*strlen(new->type));
+  dest->type = malloc(sizeof(char)*strlen(new->type)+1);
   strcpy(dest->type,new->type);
-  dest->name = malloc(sizeof(char)*strlen(new->name));
+  dest->name = malloc(sizeof(char)*strlen(new->name)+1);
   strcpy(dest->name, new->name);
   dest->dim = new->dim;
-  dest->color = malloc(sizeof(char)*strlen(new->color));
+  dest->color = malloc(sizeof(char)*strlen(new->color)+1);
   strcpy(dest->color, new->color);
-  dest->state = malloc(sizeof(char)*strlen(new->state));
+  dest->state = malloc(sizeof(char)*strlen(new->state)+1);
   strcpy(dest->state, new->state);
 }
 
