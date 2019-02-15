@@ -6,7 +6,7 @@ CFLAGS  = -g
 TARGET = serverMain
 
 CFLAGS += $(shell pkg-config --cflags json-c)
-LDFLAGS += -ljson-c
+LDFLAGS += -ljson-c -lpthread
 
 build: $(TARGET)
 

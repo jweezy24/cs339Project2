@@ -17,3 +17,15 @@ char* create_string_attr(char* attr, char* type){
   }
   return attr;
 }
+
+/*
+ * error - wrapper for perror
+ */
+void error(char *msg) {
+  perror(msg);
+  exit(1);
+}
+
+void timeout(){
+  printf("Timeout occured.\n");
+}

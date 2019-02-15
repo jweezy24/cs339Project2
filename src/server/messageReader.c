@@ -60,7 +60,6 @@ void parseJson(char* args){
   char *ip = get_json_attr_server("ip", jobj);
   char *subnet_mask = get_json_attr_server("sub", jobj);
   char* op = get_json_attr_server("op", jobj);
-  printf("%s\n", op);
   if(strcmp(op,"\"add\"") == 0){
     set_object_dim(&thing, get_json_attr_object_server("dim", jobj));
     set_object_color(&thing, get_json_attr_object_server("color",jobj));
@@ -68,9 +67,7 @@ void parseJson(char* args){
     set_object_state(&thing, get_json_attr_object_server ("state",jobj));
     set_object_type(&thing, get_json_attr_object_server("type",jobj));
     if(strcmp(get_DM_IP(&AllDMs, ip)->ip, "none") != 0){
-      printf("HERE if\n");
       DM tmp = *get_DM_IP(&AllDMs,ip);
-      printf("here\n");
       add_to_DM(&tmp, &thing);
       update_DM_on_net(&tmp, ip, &AllDMs);
     }else{
