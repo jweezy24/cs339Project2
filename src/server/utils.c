@@ -26,6 +26,11 @@ void error(char *msg) {
   exit(1);
 }
 
+void no_exit_error(char* msg){
+  printf(msg);
+  printf("\n");
+}
+
 void timeout(){
   printf("Timeout occured.\n");
 }

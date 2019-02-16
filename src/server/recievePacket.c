@@ -33,7 +33,6 @@ void *recieve_packet(void *port) {
   fd_set rfds;
   struct timeval tv;
   int retval;
-  init_all();
 
   FD_ZERO(&rfds);
 

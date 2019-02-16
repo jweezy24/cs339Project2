@@ -27,8 +27,10 @@ int main(int argc, char **argv) {
     fprintf(stderr, "usage: %s <port>\n", argv[0]);
     exit(1);
   }
+  init_network(&AllDMs);
   //create_recieve_thread(argv[1]);
   while(1){
+    //get_most_recent_from_DM();
     create_recieve_thread(argv[1]);
   }
 }

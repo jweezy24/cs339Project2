@@ -51,6 +51,10 @@ void hardware_copy_new(hardware* dest, hardware* new){
   strcpy(dest->state, new->state);
 }
 
+void hardware_cmp(hardware* old, hardware* new){
+  
+}
+
 void free_hardware(hardware* obj){
   free(obj->type);
   free(obj->name);

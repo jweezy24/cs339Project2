@@ -11,9 +11,6 @@
 
 //every machine tied to the server
 network AllDMs;
-void init_all(){
-  init_network(&AllDMs);
-}
 
 char* get_json_attr_object_server(char* attr, struct json_object *json){
   struct json_object  *tmp;
@@ -29,6 +26,8 @@ char* get_json_attr_object_server(char* attr, struct json_object *json){
   return attr_got;
 }
 
+
+
 char* get_json_attr_server(char* attr, struct json_object *json){
   struct json_object  *tmp;
   json_object_object_get_ex(json, attr, &tmp);
@@ -37,8 +36,40 @@ char* get_json_attr_server(char* attr, struct json_object *json){
   strcpy(temp_attr, json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY));
   strcpy(attr_got, temp_attr);
   free(temp_attr);
-  free(tmp);
   return attr_got;
+}
+
+void get_json_attr_routine_server(struct json_object *json){
+  struct json_object *tmp2;
+  hardware thing;
+  char* ip = get_json_attr_server("ip", json);
+  char* subnet = get_json_attr_server("sub", json);
+  json_object_object_get_ex(json, "object", &tmp2);
+  set_object_dim(&thing, get_json_attr_server("dim", tmp2));
+  set_object_color(&thing, get_json_attr_server("color",tmp2));
+  set_object_name(&thing, get_json_attr_server("name",tmp2));
+  set_object_state(&thing, get_json_attr_server ("state",tmp2));
+  set_object_type(&thing, get_json_attr_server("type",tmp2));
+  printf("%d\n", AllDMs.size);
+  DM tmpDM = *get_DM_IP(&AllDMs, ip);
+  if(strcmp(tmpDM.ip, "none") == 0){
+    DM tmpDM;
+    init_DM(&tmpDM);
+    tmpDM.size = 0;
+    create_DM(&tmpDM, ip, subnet);
+    tmpDM = *add_to_DM(&tmpDM, &thing);
+    add_DM_to_net(tmpDM, &AllDMs);
+  }else{
+    if(name_check(&tmpDM, thing.name) == 1){
+      DM tmp = *get_DM_IP(&AllDMs,ip);
+      add_to_DM(&tmp, &thing);
+      update_DM_on_net(&tmp, ip, &AllDMs);
+    }
+  }
+  for(int j = 0; j < tmpDM.size; j++){
+   printf("\t Hardware %s exists on DM.\n", tmpDM.objects[j].name);
+  }
+  free(ip);
 }
 //parsing json to readable objects for the server boys
 void parseJson(char* args){
@@ -90,9 +121,13 @@ void parseJson(char* args){
       DM newDM = *remove_from_dm(&tmpDM,&thing);
       newDM.size-=1;
       update_DM_on_net(&newDM, ip, &AllDMs);
-    }//else{
+    }else{
+      no_exit_error("Id not Valid");
+    }
+  }
 
-    //}
+  if(strcmp(op, "\"routine\"") == 0){
+    get_json_attr_routine_server(jobj);
   }
 
   free(ip);
@@ -106,6 +141,7 @@ void parseJson(char* args){
       printf("\t Hardware %s exists on DM.\n", AllDMs.things[i].objects[j].name);
     }
   }
+
 
 
 

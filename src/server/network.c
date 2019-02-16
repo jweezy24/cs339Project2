@@ -23,9 +23,12 @@ int check_if_DM(network* net, char* ip){
 }
 
 DM* get_DM_IP(network* net, char* ip){
-  for(int i = 0; i < net->size; i++ ){
-    if (strcmp(net->things[i].ip, ip) == 0){
-      return &net->things[i];
+  printf("%d\n", net->size);
+  if(net->size > 0){
+    for(int i = 0; i < net->size; i++ ){
+      if (strcmp(net->things[i].ip, ip) == 0){
+        return &net->things[i];
+      }
     }
   }
   return create_nullDM();
