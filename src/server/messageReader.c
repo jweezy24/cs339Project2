@@ -50,7 +50,6 @@ void get_json_attr_routine_server(struct json_object *json){
   set_object_name(&thing, get_json_attr_server("name",tmp2));
   set_object_state(&thing, get_json_attr_server ("state",tmp2));
   set_object_type(&thing, get_json_attr_server("type",tmp2));
-  printf("%d\n", AllDMs.size);
   DM tmpDM = *get_DM_IP(&AllDMs, ip);
   if(strcmp(tmpDM.ip, "none") == 0){
     DM tmpDM;
