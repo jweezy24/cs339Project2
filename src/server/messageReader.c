@@ -64,11 +64,9 @@ void get_json_attr_routine_server(struct json_object *json){
       add_to_DM(&tmp, &thing);
       update_DM_on_net(&tmp, ip, &AllDMs);
     }
-  }
-  for(int j = 0; j < tmpDM.size; j++){
-   printf("\t Hardware %s exists on DM.\n", tmpDM.objects[j].name);
-  }
   free(ip);
+  free(subnet);
+  }
 }
 //parsing json to readable objects for the server boys
 void parseJson(char* args){
