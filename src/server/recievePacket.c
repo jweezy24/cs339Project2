@@ -130,8 +130,8 @@ void *recieve_packet(void *port) {
       if (n < 0)
         error("ERROR in sendto");
     }
-    close(sockfd);
     signal(SIGPIPE,sigpipe_handler);
     socket_OK=0;
+    close(sockfd);
     //pthread_mutex_unlock(&lock);
 }
