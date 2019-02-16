@@ -46,7 +46,7 @@ DM* add_to_DM(DM* requested_DM, hardware* newWare){
     printf("%d\n", requested_DM->size);
     if(requested_DM->size == 0){
       printf("here\n");
-      requested_DM->objects = malloc(sizeof(hardware)*2);
+      requested_DM->objects = malloc(sizeof(hardware)*1);
       hardware_copy_new(&requested_DM->objects[0], newWare);
       requested_DM->size+=1;
       return requested_DM;
