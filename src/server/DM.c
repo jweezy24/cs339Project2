@@ -43,9 +43,12 @@ DM* add_to_DM(DM* requested_DM, hardware* newWare){
   if(strcmp(requested_DM->ip, "none") == 0){
     return create_nullDM();
   }else{
+    printf("%d\n", requested_DM->size);
     if(requested_DM->size == 0){
-      requested_DM->objects = realloc(requested_DM->objects, sizeof(hardware)*(requested_DM->size+2));
+      printf("here\n");
+      requested_DM->objects = malloc(sizeof(hardware)*2);
       hardware_copy_new(&requested_DM->objects[0], newWare);
+      requested_DM->size+=1;
       return requested_DM;
     }else{
       requested_DM->objects = realloc(requested_DM->objects, sizeof(hardware)*(requested_DM->size+1));

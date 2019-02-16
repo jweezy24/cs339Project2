@@ -51,13 +51,14 @@ void get_json_attr_routine_server(struct json_object *json){
   set_object_state(&thing, get_json_attr_server ("state",tmp2));
   set_object_type(&thing, get_json_attr_server("type",tmp2));
   DM tmpDM1 = *get_DM_IP(&AllDMs, ip);
+  printf("%s\n", tmpDM1.ip);
   if(strcmp(tmpDM1.ip, "none") == 0){
     DM tmpDM;
     init_DM(&tmpDM);
     tmpDM.size = 0;
     create_DM(&tmpDM, ip, subnet);
     tmpDM = *add_to_DM(&tmpDM, &thing);
-    add_DM_to_net(tmpDM, &AllDMs);
+    add_DM_to_net(*add_to_DM(&tmpDM, &thing), &AllDMs);
   }else{
     if(name_check(&tmpDM1, thing.name) == 1){
       DM tmp = *get_DM_IP(&AllDMs,ip);
