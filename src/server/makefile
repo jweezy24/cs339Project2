@@ -25,4 +25,5 @@ install:
 	cd json-c && ./configure
 	cd json-c && make
 	cd json-c && make install
+	sudo ldconfig /usr/local/lib
 	rm -r json-c
