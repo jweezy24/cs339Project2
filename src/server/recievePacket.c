@@ -132,5 +132,6 @@ void *recieve_packet(void *port) {
     }
     close(sockfd);
     signal(SIGPIPE,sigpipe_handler);
+    socket_OK=0;
     //pthread_mutex_unlock(&lock);
 }
