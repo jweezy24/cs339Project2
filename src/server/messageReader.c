@@ -57,7 +57,6 @@ void get_json_attr_routine_server(struct json_object *json){
     init_DM(&tmpDM);
     tmpDM.size = 0;
     create_DM(&tmpDM, ip, subnet);
-    tmpDM = *add_to_DM(&tmpDM, &thing);
     add_DM_to_net(*add_to_DM(&tmpDM, &thing), &AllDMs);
   }else{
     if(name_check(&tmpDM1, thing.name) == 1){
