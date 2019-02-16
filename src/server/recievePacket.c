@@ -57,9 +57,8 @@ void *recieve_packet(void *port) {
   /*
    * socket: create the parent socket
    */
-  signal(SIGPIPE,sigpipe_handler);
-  socket_OK = 1;
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+  socket_OK = 1;
   if (sockfd < 0)
     error("ERROR opening socket");
 
@@ -115,7 +114,7 @@ void *recieve_packet(void *port) {
       hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr,
   			  sizeof(clientaddr.sin_addr.s_addr), AF_INET);
       if (hostp == NULL)
-        error("ERROR on gethostbyaddr");
+        error("ERROR on gethostbyaddr");signal(SIGPIPE,sigpipe_handler);
       hostaddrp = inet_ntoa(clientaddr.sin_addr);
       if (hostaddrp == NULL)
         error("ERROR on inet_ntoa\n");
