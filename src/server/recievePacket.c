@@ -33,6 +33,7 @@ void *recieve_packet(void *port) {
   fd_set rfds;
   struct timeval tv;
   int retval;
+  pthread_mutex_t lock;
 
   FD_ZERO(&rfds);
 
@@ -82,12 +83,15 @@ void *recieve_packet(void *port) {
      */
     bzero(buf, BUFSIZE);
     FD_SET(sockfd, &rfds);
+    //pthread_mutex_lock(&lock);
     retval = select(sockfd +1 , &rfds, NULL, NULL, &tv);
     if(retval){
       printf("%s\n",rfds);
       n = recvfrom(sockfd, buf, BUFSIZE, 0,
   		 (struct sockaddr *) &clientaddr, &clientlen);
+      pthread_mutex_lock(&lock);
       parseJson(buf);
+      pthread_mutex_unlock(&lock);
       if (n < 0)
         error("ERROR in recvfrom");
 
@@ -114,4 +118,5 @@ void *recieve_packet(void *port) {
         error("ERROR in sendto");
     }
     close(sockfd);
+    //pthread_mutex_unlock(&lock);
 }

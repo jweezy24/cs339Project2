@@ -50,6 +50,7 @@ void update_DM_on_net(DM* dm, char* ip, network* net){
 }
 
 void add_DM_to_net(DM dm, network* net){
+  printf("%d\n", net->size);
   net->things = realloc(net->things, sizeof(DM)*(net->size+1));
   net->things[net->size] = dm;
   net->size+=1;

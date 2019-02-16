@@ -45,7 +45,6 @@ DM* add_to_DM(DM* requested_DM, hardware* newWare){
   }else{
     if(requested_DM->size == 0){
       hardware_copy_new(&requested_DM->objects, newWare);
-      requested_DM->size+=1;
       return requested_DM;
     }else{
       requested_DM->objects = realloc(requested_DM->objects, sizeof(hardware)*(requested_DM->size+1));
