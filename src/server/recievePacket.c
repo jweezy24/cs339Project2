@@ -57,9 +57,9 @@ void *recieve_packet(void *port) {
   /*
    * socket: create the parent socket
    */
+  signal(SIGPIPE,sigpipe_handler);
   socket_OK = 1;
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-  signal(SIGPIPE,sigpipe_handler);
   if (sockfd < 0)
     error("ERROR opening socket");
 
@@ -132,6 +132,6 @@ void *recieve_packet(void *port) {
         error("ERROR in sendto");
     }
     close(sockfd);
-    socket_OK = 0;
+    signal(SIGPIPE,sigpipe_handler);
     //pthread_mutex_unlock(&lock);
 }
