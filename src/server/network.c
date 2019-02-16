@@ -53,6 +53,11 @@ void add_DM_to_net(DM dm, network* net){
   net->size+=1;
 }
 
+void delete_dm_on_net(network* net, DM* dm){
+  DM* tmpDM = get_DM_IP(net, dm->ip);
+
+}
+
 void free_network(network* net){
   for (int i =0; i < net->size; i++){
     freeDM(&net->things[i]);

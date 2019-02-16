@@ -79,14 +79,17 @@ void parseJson(char* args){
       add_DM_to_net(tmpDM, &AllDMs);
     }
   }
-  if(strcmp(op,"delete") == 0){
+  if(strcmp(op,"\"delete\"") == 0){
     set_object_dim(&thing, get_json_attr_object_server("dim", jobj));
     set_object_color(&thing, get_json_attr_object_server("color",jobj));
     set_object_name(&thing, get_json_attr_object_server("name",jobj));
     set_object_state(&thing, get_json_attr_object_server ("state",jobj));
+    set_object_type(&thing, get_json_attr_object_server("type",jobj));
     if(strcmp(get_DM_IP(&AllDMs, ip)->ip, "none") != 0){
       DM tmpDM = *get_DM_IP(&AllDMs, ip);
-      remove_from_dm(&tmpDM,&thing);
+      DM newDM = *remove_from_dm(&tmpDM,&thing);
+      newDM.size-=1;
+      update_DM_on_net(&newDM, ip, &AllDMs);
     }//else{
 
     //}

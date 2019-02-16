@@ -28,6 +28,15 @@ def main():
                 if not message:
                     break
                 #local_server = address
+            if user == 'delete':
+                name = raw_input('What is the name of the light?')
+                message = str(localManager.jsonifyOject(localManager.get_object_by_name(name), 'delete'))
+                localManager.delete(name)
+                sock2.sendto(message, local_server)
+                time.sleep(2)
+                message, address = sock2.recvfrom(1024)
+                if not message:
+                    break
 
     except KeyboardInterrupt:
         print('Exiting')

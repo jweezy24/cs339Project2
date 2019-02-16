@@ -23,6 +23,9 @@ class deviceManager:
                 print('object added.')
                 self.objects.append(json_message)
                 self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
+            if json_message['op'] == 'delete':
+                print('object deleted.')
+                self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
         except NameError:
             print('Incorrect Json format')
     def getMask(self):
