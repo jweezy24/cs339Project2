@@ -89,9 +89,9 @@ void *recieve_packet(void *port) {
       printf("%s\n",rfds);
       n = recvfrom(sockfd, buf, BUFSIZE, 0,
   		 (struct sockaddr *) &clientaddr, &clientlen);
-      pthread_mutex_lock(&lock);
+      //pthread_mutex_lock(&lock);
       parseJson(buf);
-      pthread_mutex_unlock(&lock);
+      //pthread_mutex_unlock(&lock);
       if (n < 0)
         error("ERROR in recvfrom");
 
