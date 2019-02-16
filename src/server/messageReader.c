@@ -59,7 +59,7 @@ void get_json_attr_routine_server(struct json_object *json){
     tmpDM = *add_to_DM(&tmpDM, &thing);
     add_DM_to_net(tmpDM, &AllDMs);
   }else{
-    if(name_check(&tmpDM, thing.name) == 1){
+    if(name_check(&tmpDM1, thing.name) == 1){
       DM tmp = *get_DM_IP(&AllDMs,ip);
       add_to_DM(&tmp, &thing);
       update_DM_on_net(&tmp, ip, &AllDMs);
