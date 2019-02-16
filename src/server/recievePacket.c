@@ -16,8 +16,20 @@
 #include <json.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <signal.h>
 
 #define BUFSIZE 1024
+
+
+int socket_OK=0;
+
+
+
+void sigpipe_handler()
+{
+    printf("SIGPIPE caught\n");
+    socket_OK=0;
+}
 
 void *recieve_packet(void *port) {
   int sockfd; /* socket */
@@ -45,7 +57,9 @@ void *recieve_packet(void *port) {
   /*
    * socket: create the parent socket
    */
+  socket_OK = 1;
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+  signal(SIGPIPE,sigpipe_handler);
   if (sockfd < 0)
     error("ERROR opening socket");
 
@@ -90,7 +104,7 @@ void *recieve_packet(void *port) {
       n = recvfrom(sockfd, buf, BUFSIZE, 0,
   		 (struct sockaddr *) &clientaddr, &clientlen);
       //pthread_mutex_lock(&lock);
-      parseJson(buf);
+      enqueue(&packets, buf);
       //pthread_mutex_unlock(&lock);
       if (n < 0)
         error("ERROR in recvfrom");
@@ -118,5 +132,6 @@ void *recieve_packet(void *port) {
         error("ERROR in sendto");
     }
     close(sockfd);
+    socket_OK = 0;
     //pthread_mutex_unlock(&lock);
 }
