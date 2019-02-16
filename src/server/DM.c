@@ -43,10 +43,16 @@ DM* add_to_DM(DM* requested_DM, hardware* newWare){
   if(strcmp(requested_DM->ip, "none") == 0){
     return create_nullDM();
   }else{
-    requested_DM->objects = realloc(requested_DM->objects, sizeof(hardware)*(requested_DM->size+1));
-    hardware_copy_new(&requested_DM->objects[requested_DM->size], newWare);
-    requested_DM->size+=1;
-    return requested_DM;
+    if(requested_DM->size == 0){
+      hardware_copy_new(&requested_DM->objects, newWare);
+      requested_DM->size+=1;
+      return requested_DM;
+    }else{
+      requested_DM->objects = realloc(requested_DM->objects, sizeof(hardware)*(requested_DM->size+1));
+      hardware_copy_new(&requested_DM->objects[requested_DM->size], newWare);
+      requested_DM->size+=1;
+      return requested_DM;
+    }
   }
 }
 
