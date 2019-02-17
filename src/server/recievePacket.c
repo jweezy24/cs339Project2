@@ -61,9 +61,11 @@ void *recieve_packet(void *port) {
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   socket_OK = 1;
   pthread_mutex_lock(&lock);
-  if (sockfd < 0)
+  if (sockfd < 0){
+    pthread_mutex_unlock(&lock);
+    pthread_mutex_destroy(&lock);
     error("ERROR opening socket");
-
+  }
   /* setsockopt: Handy debugging trick that lets
    * us rerun the server immediately after we kill it;
    * otherwise we have to wait about 20 secs.
@@ -85,8 +87,12 @@ void *recieve_packet(void *port) {
    * bind: associate the parent socket with a port
    */
   if (bind(sockfd, (struct sockaddr *) &serveraddr,
-	   sizeof(serveraddr)) < 0)
-    error("ERROR on binding");
+	   sizeof(serveraddr)) < 0){
+       close(sockfd);
+       pthread_mutex_unlock(&lock);
+       pthread_mutex_destroy(&lock);
+       error("ERROR on binding");
+     }
 
   /*
    * main loop: wait for a datagram, then echo it
@@ -101,25 +107,36 @@ void *recieve_packet(void *port) {
     //pthread_mutex_lock(&lock);
     retval = select(sockfd +1 , &rfds, NULL, NULL, &tv);
     if(retval){
-      printf("%s\n",rfds);
       n = recvfrom(sockfd, buf, BUFSIZE, 0,
   		 (struct sockaddr *) &clientaddr, &clientlen);
       //pthread_mutex_lock(&lock);
       enqueue(&packets, buf);
       //pthread_mutex_unlock(&lock);
-      if (n < 0)
+      if (n < 0){
+        close(sockfd);
+        pthread_mutex_unlock(&lock);
+        pthread_mutex_destroy(&lock);
         error("ERROR in recvfrom");
+      }
 
       /*
        * gethostbyaddr: determine who sent the datagram
        */
       hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr,
   			  sizeof(clientaddr.sin_addr.s_addr), AF_INET);
-      if (hostp == NULL)
+      if (hostp == NULL){
+        close(sockfd);
+        pthread_mutex_unlock(&lock);
+        pthread_mutex_destroy(&lock);
         error("ERROR on gethostbyaddr");signal(SIGPIPE,sigpipe_handler);
+      }
       hostaddrp = inet_ntoa(clientaddr.sin_addr);
-      if (hostaddrp == NULL)
+      if (hostaddrp == NULL){
+        close(sockfd);
+        pthread_mutex_unlock(&lock);
+        pthread_mutex_destroy(&lock);
         error("ERROR on inet_ntoa\n");
+      }
       printf("server received datagram from %s (%s)\n",
   	   hostp->h_name, hostaddrp);
       printf("server received %d/%d bytes: %s\n", strlen(buf), n, buf);
@@ -129,8 +146,12 @@ void *recieve_packet(void *port) {
        */
       n = sendto(sockfd, buf, strlen(buf), 0,
   	       (struct sockaddr *) &clientaddr, clientlen);
-      if (n < 0)
+      if (n < 0){
+        close(sockfd);
+        pthread_mutex_unlock(&lock);
+        pthread_mutex_destroy(&lock);
         error("ERROR in sendto");
+      }
     }
     signal(SIGPIPE,sigpipe_handler);
     socket_OK=0;
