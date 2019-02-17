@@ -64,6 +64,7 @@ void *recieve_packet(void *port) {
   if (sockfd < 0){
     pthread_mutex_unlock(&lock);
     pthread_mutex_destroy(&lock);
+    signal(SIGPIPE,sigpipe_handler);
     error("ERROR opening socket");
   }
   /* setsockopt: Handy debugging trick that lets
@@ -91,6 +92,7 @@ void *recieve_packet(void *port) {
        close(sockfd);
        pthread_mutex_unlock(&lock);
        pthread_mutex_destroy(&lock);
+       signal(SIGPIPE,sigpipe_handler);
        error("ERROR on binding");
      }
 
@@ -116,6 +118,7 @@ void *recieve_packet(void *port) {
         close(sockfd);
         pthread_mutex_unlock(&lock);
         pthread_mutex_destroy(&lock);
+        signal(SIGPIPE,sigpipe_handler);
         error("ERROR in recvfrom");
       }
 
@@ -128,6 +131,7 @@ void *recieve_packet(void *port) {
         close(sockfd);
         pthread_mutex_unlock(&lock);
         pthread_mutex_destroy(&lock);
+        signal(SIGPIPE,sigpipe_handler);
         error("ERROR on gethostbyaddr");
       }
       hostaddrp = inet_ntoa(clientaddr.sin_addr);
@@ -135,6 +139,7 @@ void *recieve_packet(void *port) {
         close(sockfd);
         pthread_mutex_unlock(&lock);
         pthread_mutex_destroy(&lock);
+        signal(SIGPIPE,sigpipe_handler);
         error("ERROR on inet_ntoa\n");
       }
       printf("server received datagram from %s (%s)\n",
@@ -150,6 +155,7 @@ void *recieve_packet(void *port) {
         close(sockfd);
         pthread_mutex_unlock(&lock);
         pthread_mutex_destroy(&lock);
+        signal(SIGPIPE,sigpipe_handler);
         error("ERROR in sendto");
       }
     }
