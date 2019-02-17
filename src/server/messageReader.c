@@ -127,7 +127,7 @@ void parseJson(char* args){
 
   if(strcmp(op, "\"routine\"") == 0){
     get_json_attr_routine_server(jobj);
-    DM_status_watch(&AllDMs, ip);
+    AllDMs = *DM_status_watch(&AllDMs, ip);
   }
 
   if(strcmp(args, "none") == 0){
@@ -142,7 +142,7 @@ void parseJson(char* args){
   printf("here in parser\n");
 
   for(int i = 0; i < AllDMs.size; i++){
-    printf("DM %d exists on network.\n", AllDMs.things[i].status);
+    printf("DM %d exists on network.\n", AllDMs.things[i].ip);
     for(int j = 0; j < AllDMs.things[i].size; j++){
       printf("\t Hardware %s exists on DM.\n", AllDMs.things[i].objects[j].name);
     }
