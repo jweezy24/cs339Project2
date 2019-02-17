@@ -128,7 +128,7 @@ void *recieve_packet(void *port) {
         close(sockfd);
         pthread_mutex_unlock(&lock);
         pthread_mutex_destroy(&lock);
-        error("ERROR on gethostbyaddr");signal(SIGPIPE,sigpipe_handler);
+        error("ERROR on gethostbyaddr");
       }
       hostaddrp = inet_ntoa(clientaddr.sin_addr);
       if (hostaddrp == NULL){
@@ -153,9 +153,8 @@ void *recieve_packet(void *port) {
         error("ERROR in sendto");
       }
     }
-    signal(SIGPIPE,sigpipe_handler);
-    socket_OK=0;
     close(sockfd);
+    signal(SIGPIPE,sigpipe_handler);
     pthread_mutex_unlock(&lock);
     pthread_mutex_destroy(&lock);
 }
