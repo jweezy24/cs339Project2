@@ -59,9 +59,13 @@ void add_DM_to_net(DM dm, network* net){
 network* remove_from_network(network* tmpNet, DM* badDM){
   network *newNet = malloc(sizeof(network));
   newNet->things = malloc(tmpNet->size * sizeof(DM));
-  newNet->size = tmpNet->size;
+  if(tmpNet->size > 0){
+    newNet->size = tmpNet->size-1;
+  }else{
+    newNet->size = 0;
+  }
   int netPos=0;
-  for(int i = 0; i < (tmpNet)->size; i++){
+  for(int i = 0; i < (tmpNet)->size-1; i++){
     if(strcmp(badDM->ip, (tmpNet)->things[i].ip) != 0){
       DM d;
       init_DM(&d);
