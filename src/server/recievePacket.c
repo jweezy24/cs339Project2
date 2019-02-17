@@ -136,4 +136,5 @@ void *recieve_packet(void *port) {
     socket_OK=0;
     close(sockfd);
     pthread_mutex_unlock(&lock);
+    pthread_mutex_destroy(&lock);
 }
