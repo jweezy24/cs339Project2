@@ -55,34 +55,41 @@ void add_DM_to_net(DM dm, network* net){
   net->things[net->size] = dm;
   net->size+=1;
 }
+void add_DM_to_net_new(DM dm, network* net){
+  net->things[0] = dm;
+  net->size +=1;
+}
 
 network* remove_from_network(network* tmpNet, DM* badDM){
   network *newNet = malloc(sizeof(network));
-  newNet->things = malloc(tmpNet->size * sizeof(DM));
-  if(tmpNet->size > 0){
-    newNet->size = tmpNet->size-1;
-  }else{
-    newNet->size = 0;
-  }
+  newNet->things = malloc(sizeof(DM));
+  newNet->size = 0;
   int netPos=0;
-  for(int i = 0; i < (tmpNet)->size-1; i++){
-    if(strcmp(badDM->ip, (tmpNet)->things[i].ip) != 0){
+  for(int i = 0; i < tmpNet->size; i++){
+    if(strcmp(badDM->ip, tmpNet->things[i].ip) != 0){
       DM d;
       init_DM(&d);
-      DM_copy_new(&d, &(tmpNet)->things[i]);
-      add_DM_to_net(d,newNet);
-      netPos+=1;
+      DM_copy_new(&d, &tmpNet->things[i]);
+      if(newNet->size == 0){
+        add_DM_to_net_new(d,newNet);
+        netPos+=1;
+      }else{
+        add_DM_to_net(d, newNet);
+        netPos+=1;
+      }
     }
   }
   if(netPos == 0){
     newNet->size =0;
+  }else{
+    newNet->size = netPos;
   }
   return newNet;
 }
 
 network* DM_status_watch(network* net, char* ip){
   for(int i = 0; i < net->size; i++){
-    if(net->things[i].status <= -5){
+    if(net->things[i].status <= -20){
      return remove_from_network(net, &net->things[i]);
     }else if(strcmp(net->things[i].ip, ip) != 0){
       net->things[i].status-=1;
