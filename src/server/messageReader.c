@@ -142,7 +142,7 @@ void parseJson(char* args){
   printf("here in parser\n");
 
   for(int i = 0; i < AllDMs.size; i++){
-    printf("DM %d exists on network.\n", AllDMs.things[i].ip);
+    printf("DM %s exists on network.\n", AllDMs.things[i].ip);
     for(int j = 0; j < AllDMs.things[i].size; j++){
       printf("\t Hardware %s exists on DM.\n", AllDMs.things[i].objects[j].name);
     }
