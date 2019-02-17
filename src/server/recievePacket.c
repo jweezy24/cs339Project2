@@ -22,7 +22,6 @@
 
 
 int socket_OK=0;
-pthread_mutex_t lock;
 
 
 void sigpipe_handler()
@@ -45,6 +44,7 @@ void *recieve_packet(void *port) {
   fd_set rfds;
   struct timeval tv;
   int retval;
+  pthread_mutex_t lock;
 
   pthread_mutex_init(&lock, NULL);
 
