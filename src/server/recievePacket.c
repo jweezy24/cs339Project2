@@ -159,8 +159,8 @@ void *recieve_packet(void *port) {
         error("ERROR in sendto");
       }
     }
-    close(sockfd);
     signal(SIGPIPE,sigpipe_handler);
+    close(sockfd);
     pthread_mutex_unlock(&lock);
     pthread_mutex_destroy(&lock);
 }
