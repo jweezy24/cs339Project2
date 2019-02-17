@@ -63,8 +63,9 @@ network* remove_from_network(network* tmpNet, DM* badDM){
   int netPos=0;
   for(int i = 0; i < (tmpNet)->size; i++){
     if(strcmp(badDM->ip, (tmpNet)->things[i].ip) != 0){
-      DM *d;
-      DM_copy_new(d, &(tmpNet)->things[i]);
+      DM d;
+      init_DM(&d);
+      DM_copy_new(&d, &(tmpNet)->things[i]);
       add_DM_to_net(d,newNet);
       netPos+=1;
     }
