@@ -7,12 +7,14 @@ typedef struct DM{
   char* ip;
   char* subnet_mask;
   int size;
+  int status;
 }DM;
 
 void init_DM(DM* tempDM){
   tempDM = malloc(sizeof(DM));
   tempDM->objects = malloc(sizeof(hardware));
   tempDM->size = 0;
+  tempDM->status= 0;
 }
 
 void create_DM(DM* dungeonMaster, char* ip, char* subnet){
@@ -68,11 +70,25 @@ hardware* get_hardware_name(DM* tmpDM, char* name){
   return create_nullDM();
 }
 
+void DM_copy_new(DM* newDM, DM* oldDM){
+  newDM = malloc(sizeof(DM));
+  newDM->objects = malloc(sizeof(hardware)* oldDM->size);
+  newDM->ip = malloc(sizeof(char*) * strlen(oldDM->ip));
+  newDM->subnet_mask = malloc(sizeof(char*) * strlen(oldDM->subnet_mask));
+  newDM->status = 0;
+  strcpy(newDM->ip, oldDM->ip);
+  strcpy(newDM->subnet_mask, oldDM->subnet_mask);
+  for(int i = 0; i < oldDM->size; i++){
+    hardware_copy_new(&newDM->objects[i], &oldDM->objects[i]);
+  }
+}
+
 DM* remove_from_dm(DM* tmpDM, hardware* badware){
   DM *newDM = malloc(sizeof(hardware));
   newDM->objects = malloc(tmpDM->size * sizeof(hardware));
   newDM->size = tmpDM->size;
   newDM->ip = malloc(sizeof(char)*strlen(tmpDM->ip)+1);
+  newDM->status = 0;
   strcpy(newDM->ip, tmpDM->ip);
   newDM->subnet_mask = malloc(sizeof(char)*strlen(tmpDM->subnet_mask)+1);
   strcpy(newDM->subnet_mask, tmpDM->subnet_mask);
@@ -87,6 +103,11 @@ DM* remove_from_dm(DM* tmpDM, hardware* badware){
 }
 
 
+void update_status(DM* dm){
+  if(dm->status < 0){
+    dm->status = 0;
+  }
+}
 
 void freeDM(DM* dm){
   for (int i =0; i < dm->size; i++){

@@ -102,6 +102,7 @@ void parseJson(char* args){
       DM tmpDM;
       init_DM(&tmpDM);
       tmpDM.size = 0;
+      tmpDM.status = 0;
       create_DM(&tmpDM, ip, subnet_mask);
       tmpDM = *add_to_DM(&tmpDM, &thing);
       add_DM_to_net(tmpDM, &AllDMs);
@@ -115,6 +116,7 @@ void parseJson(char* args){
     set_object_type(&thing, get_json_attr_object_server("type",jobj));
     if(strcmp(get_DM_IP(&AllDMs, ip)->ip, "none") != 0){
       DM tmpDM = *get_DM_IP(&AllDMs, ip);
+      tmpDM.status = 0;
       DM newDM = *remove_from_dm(&tmpDM,&thing);
       newDM.size-=1;
       update_DM_on_net(&newDM, ip, &AllDMs);
@@ -125,6 +127,11 @@ void parseJson(char* args){
 
   if(strcmp(op, "\"routine\"") == 0){
     get_json_attr_routine_server(jobj);
+    DM_status_watch(&AllDMs, ip);
+  }
+
+  if(strcmp(args, "none") == 0){
+    AllDMs = *DM_status_watch(&AllDMs, "none");
   }
 
   free(ip);
@@ -132,8 +139,10 @@ void parseJson(char* args){
   free(op);
   free(jobj);
 
+  printf("here in parser\n");
+
   for(int i = 0; i < AllDMs.size; i++){
-    printf("DM %s exists on network.\n", AllDMs.things[i].ip);
+    printf("DM %d exists on network.\n", AllDMs.things[i].status);
     for(int j = 0; j < AllDMs.things[i].size; j++){
       printf("\t Hardware %s exists on DM.\n", AllDMs.things[i].objects[j].name);
     }

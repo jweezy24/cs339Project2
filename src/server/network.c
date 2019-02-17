@@ -56,9 +56,37 @@ void add_DM_to_net(DM dm, network* net){
   net->size+=1;
 }
 
-void delete_dm_on_net(network* net, DM* dm){
-  DM* tmpDM = get_DM_IP(net, dm->ip);
+network* remove_from_network(network* tmpNet, DM* badDM){
+  network *newNet = malloc(sizeof(network));
+  newNet->things = malloc((tmpNet)->size * sizeof(DM));
+  newNet->size = (tmpNet)->size;
+  int netPos=0;
+  printf("here\n");
+  for(int i = 0; i < (tmpNet)->size; i++){
+    if(strcmp(badDM->ip, (tmpNet)->things[i].ip) != 0){
+      DM_copy_new(&newNet->things[netPos], &(tmpNet)->things[i]);
+      netPos+=1;
+    }
+  }
+  if(netPos == 0){
+    newNet->size =0;
+  }
+  return newNet;
+}
 
+network* DM_status_watch(network* net, char* ip){
+  for(int i = 0; i < net->size; i++){
+    if(net->things[i].status <= -20){
+      network tmpNet = *remove_from_network(net, &net->things[i]);
+      net = &tmpNet;
+    }else if(strcmp(net->things[i].ip, ip) != 0){
+      net->things[i].status-=1;
+    }else{
+      net->things[i].status=0;
+    }
+
+  }
+  return net;
 }
 
 void free_network(network* net){

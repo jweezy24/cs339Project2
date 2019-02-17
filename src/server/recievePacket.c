@@ -59,7 +59,7 @@ void *recieve_packet(void *port) {
 
   FD_ZERO(&rfds);
 
-  tv.tv_sec = 1;
+  tv.tv_sec = 2;
   tv.tv_usec = 0;
 
   portno = atoi((char*)port);
