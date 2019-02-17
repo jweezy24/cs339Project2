@@ -30,6 +30,17 @@ void sigpipe_handler()
     socket_OK=0;
 }
 
+void close_socket(int sd){
+  if(fd >= 0){
+    if(shutdown(fd, SHUT_RDWR) < 0){
+      error("shutdown socket");
+    }
+    if(close(fd) < 0){
+      error("close");
+    }
+  }
+}
+
 void *recieve_packet(void *port) {
   int sockfd; /* socket */
   int portno; /* port to listen on */
@@ -89,7 +100,7 @@ void *recieve_packet(void *port) {
    */
   if (bind(sockfd, (struct sockaddr *) &serveraddr,
 	   sizeof(serveraddr)) < 0){
-       close(sockfd);
+       close_socket(sockfd);
        pthread_mutex_unlock(&lock);
        pthread_mutex_destroy(&lock);
        signal(SIGPIPE,sigpipe_handler);
@@ -115,7 +126,7 @@ void *recieve_packet(void *port) {
       enqueue(&packets, buf);
       //pthread_mutex_unlock(&lock);
       if (n < 0){
-        close(sockfd);
+        close_socket(sockfd);
         pthread_mutex_unlock(&lock);
         pthread_mutex_destroy(&lock);
         signal(SIGPIPE,sigpipe_handler);
@@ -128,7 +139,7 @@ void *recieve_packet(void *port) {
       hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr,
   			  sizeof(clientaddr.sin_addr.s_addr), AF_INET);
       if (hostp == NULL){
-        close(sockfd);
+        close_socket(sockfd);
         pthread_mutex_unlock(&lock);
         pthread_mutex_destroy(&lock);
         signal(SIGPIPE,sigpipe_handler);
@@ -136,7 +147,7 @@ void *recieve_packet(void *port) {
       }
       hostaddrp = inet_ntoa(clientaddr.sin_addr);
       if (hostaddrp == NULL){
-        close(sockfd);
+        close_socket(sockfd);
         pthread_mutex_unlock(&lock);
         pthread_mutex_destroy(&lock);
         signal(SIGPIPE,sigpipe_handler);
@@ -152,7 +163,7 @@ void *recieve_packet(void *port) {
       n = sendto(sockfd, buf, strlen(buf), 0,
   	       (struct sockaddr *) &clientaddr, clientlen);
       if (n < 0){
-        close(sockfd);
+        close_socket(sockfd);
         pthread_mutex_unlock(&lock);
         pthread_mutex_destroy(&lock);
         signal(SIGPIPE,sigpipe_handler);
@@ -160,7 +171,7 @@ void *recieve_packet(void *port) {
       }
     }
     signal(SIGPIPE,sigpipe_handler);
-    close(sockfd);
+    close_socket(sockfd);
     socket_OK = 0;
     pthread_mutex_unlock(&lock);
     pthread_mutex_destroy(&lock);
