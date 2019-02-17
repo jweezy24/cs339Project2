@@ -58,9 +58,9 @@ void *recieve_packet(void *port) {
   /*
    * socket: create the parent socket
    */
+   socket_OK = 1;
+   pthread_mutex_lock(&lock);
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-  socket_OK = 1;
-  pthread_mutex_lock(&lock);
   if (sockfd < 0){
     pthread_mutex_unlock(&lock);
     pthread_mutex_destroy(&lock);
