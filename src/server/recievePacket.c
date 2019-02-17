@@ -31,14 +31,12 @@ void sigpipe_handler()
 }
 
 void close_socket(int sd){
-  if(fd >= 0){
-    if(shutdown(fd, SHUT_RDWR) < 0){
-      error("shutdown socket");
-    }
-    if(close(fd) < 0){
+  if(sd >= 0){
+    if(close(sd) < 0){
       error("close");
     }
-  }
+   }
+   thread_count-=1;
 }
 
 void *recieve_packet(void *port) {
@@ -61,7 +59,7 @@ void *recieve_packet(void *port) {
 
   FD_ZERO(&rfds);
 
-  tv.tv_sec = 3;
+  tv.tv_sec = 1;
   tv.tv_usec = 0;
 
   portno = atoi((char*)port);
@@ -73,6 +71,7 @@ void *recieve_packet(void *port) {
    pthread_mutex_lock(&lock);
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   if (sockfd < 0){
+    close_socket(sockfd);
     pthread_mutex_unlock(&lock);
     pthread_mutex_destroy(&lock);
     signal(SIGPIPE,sigpipe_handler);
