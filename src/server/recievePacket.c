@@ -59,6 +59,7 @@ void *recieve_packet(void *port) {
    */
   sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   socket_OK = 1;
+  pthread_mutex_lock(&lock);
   if (sockfd < 0)
     error("ERROR opening socket");
 
@@ -133,5 +134,5 @@ void *recieve_packet(void *port) {
     signal(SIGPIPE,sigpipe_handler);
     socket_OK=0;
     close(sockfd);
-    //pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&lock);
 }
