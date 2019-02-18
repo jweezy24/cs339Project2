@@ -25,7 +25,6 @@ char* get_json_attr_object_server(char* attr, struct json_object *json){
   free(temp_attr);
   return attr_got;
 }
-<<<<<<< HEAD
 
 
 
@@ -64,47 +63,6 @@ void get_json_attr_routine_server(struct json_object *json){
       DM tmp = *get_DM_IP(&AllDMs,ip);
       add_to_DM(&tmp, &thing);
       update_DM_on_net(&tmp, ip, &AllDMs);
-=======
-//parsing json to readable objects for the server boys
-void parseJson(void * genericparam){
-  char* args = (char *)genericparam;
-  hardware thing;
-  init_hardware(&thing);
-  char typeBuffer[100];
-  char nameBuffer[100];
-  char stateBuffer[100];
-  char colorBuffer[100];
-  char opBuffer[100];
-  char ipBuffer[100];
-  char subnetBuffer[100];
-  int dim;
-  sscanf( args, "{'ip': %s 'object': {'color': %s 'dim': %d, 'state': %s 'type': %s 'name': %s 'sub': %s 'op': %s}",
-         ipBuffer, colorBuffer, &dim, stateBuffer, typeBuffer, nameBuffer, subnetBuffer, opBuffer);
-  char* cleanOP;
-  char* cleanIP;
-  cleanIP = create_string_attr(cleanOP, ipBuffer);
-  cleanOP = create_string_attr(cleanOP, opBuffer);
-  printf("%s\n", cleanOP);
-  printf("%s\n", args);
-  if(strcmp(cleanOP, "add") == 0){
-    set_object_dim(&thing, dim);
-    set_object_type(&thing, typeBuffer);
-    set_object_name(&thing, nameBuffer);
-    set_object_color(&thing, colorBuffer);
-    set_object_state(&thing, stateBuffer);
-    printf("%s\n", cleanIP);
-    if(check_if_DM(&AllDMs, cleanIP) == 0){
-      DM* placeHolder = add_to_DM(get_DM_IP(&AllDMs, cleanIP), &thing, cleanIP);
-      printf("%s\n", placeHolder->ip);
-      update_DM_on_net(placeHolder, cleanIP, &AllDMs);
-    }else{
-      DM newDM;
-      init_DM(&newDM);
-      newDM.size = 0;
-      create_DM(&newDM, cleanIP, subnetBuffer);
-      add_to_DM(&newDM, &thing, cleanIP);
-      add_DM_to_net(newDM,&AllDMs);
->>>>>>> JackB
     }
   free(ip);
   free(subnet);
