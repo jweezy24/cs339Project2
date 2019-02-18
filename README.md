@@ -8,7 +8,7 @@ There are three files to run if the user would like to run everything locally.
 
 1) C Server
     To compile, (be in Cs339Project2/src/server) `sudo make install`, then `make`
-    To run, ./test.exe 7999     
+    To run, `./test.exe 7999`     
     The C server code will be running on a server, this is to test everything locally
 
 2) Python 3 Device Manager
