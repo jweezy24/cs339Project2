@@ -10,8 +10,8 @@ class deviceManager:
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.bind(('', 8000))
         self.server_socket.settimeout(3)
-        self.server_address = '67.163.37.156'
-        #self.server_address = 'localhost'
+        #self.server_address = '67.163.37.156'
+        self.server_address = 'localhost'
         self.objects = []
     def listen(self):
         message = ''

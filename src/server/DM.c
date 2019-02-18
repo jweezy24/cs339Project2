@@ -71,11 +71,12 @@ hardware* get_hardware_name(DM* tmpDM, char* name){
 }
 
 void DM_copy_new(DM* newDM, DM* oldDM){
+  printf("OLD NODE IP = %s\n", oldDM->ip);
   newDM = malloc(sizeof(DM));
   newDM->objects = malloc(sizeof(hardware)* oldDM->size);
-  newDM->ip = malloc(sizeof(char*) * strlen(oldDM->ip));
-  newDM->subnet_mask = malloc(sizeof(char*) * strlen(oldDM->subnet_mask));
-  newDM->status = 0;
+  newDM->ip = malloc(sizeof(char) * strlen(oldDM->ip));
+  newDM->subnet_mask = malloc(sizeof(char) * strlen(oldDM->subnet_mask));
+  newDM->status = oldDM->status;
   strcpy(newDM->ip, oldDM->ip);
   strcpy(newDM->subnet_mask, oldDM->subnet_mask);
   for(int i = 0; i < oldDM->size; i++){

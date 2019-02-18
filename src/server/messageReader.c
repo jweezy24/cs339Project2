@@ -139,8 +139,6 @@ void parseJson(char* args){
   free(op);
   free(jobj);
 
-  printf("here in parser\n");
-
   for(int i = 0; i < AllDMs.size; i++){
     printf("DM %s exists on network.\n", AllDMs.things[i].ip);
     for(int j = 0; j < AllDMs.things[i].size; j++){
