@@ -15,23 +15,41 @@
 
 void SetUp()
 {
-
+  hardware* initH;
+  hardware* hardware_1 = (hardware*)malloc(sizeof(hardware));
 }
 
 void TearDown()
 {
-
+  //free(hardware_1);
 }
 
+TEST(createNullDMTest, create_nullDM){
+  ASSERT_EQ( strcmp(create_nullDM()->ip, (char*)"none"), 0);
+}
 
-//Cleared 10/8/18
+TEST(init_hardware_test, init_hardware){
+  hardware initH = *init_hardware(&initH);
+  ASSERT_EQ(initH.dim, 0);
+}
+
+TEST(init_DM_Test, init_DM){
+  DM tmpDM = *init_DM(&tmpDM);
+  ASSERT_EQ(tmpDM.size, 0);
+  ASSERT_EQ(tmpDM.status, 0);
+}
+
+TEST(init_network_test, init_network){
+  network tmpNet = *init_network(&tmpNet);
+  ASSERT_EQ(tmpNet.size, 0);
+}
+
 TEST(createQueueTest, createQueue)
 {
   queue* temp = createQueue(2);
   ASSERT_EQ(-1, strComp(temp->head->currentWord, (char*)"\0"));
 }
 
-//Cleared 10/8/18
 TEST(enqueueTest, enqueue)
 {
   queue* temp = createQueue(2);
@@ -72,7 +90,7 @@ TEST(getAllElementsTest, getAllElements)
   ASSERT_EQ(-1, strComp(tester->words[1].word,(char*)"test2"));
 
 }
-//Queue length gets how many current elements are in the queue
+
 TEST(queueLengthTest, queueLength)
 {
   queue* tempQ = createQueue(2);
@@ -88,6 +106,7 @@ TEST(queueLengthTest, queueLength)
 
 int main(int argc, char **args)
 {
+  SetUp();
   testing::InitGoogleTest(&argc, args);
   return RUN_ALL_TESTS();
 }

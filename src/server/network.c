@@ -6,10 +6,11 @@ typedef struct networkObjects{
   int size;
 }network;
 
-void init_network(network* net){
+network* init_network(network* net){
   net = (network*)malloc(sizeof(network));
   net->things = (DM*)malloc(sizeof(DM));
   net->size = 0;
+  return net;
 }
 
 int check_if_DM(network* net, char* ip){

@@ -9,8 +9,10 @@ typedef struct hardware{
   char* state;
 }hardware;
 
-void init_hardware(hardware* object){
+hardware* init_hardware(hardware* object){
   object = (hardware*)malloc(sizeof(hardware));
+  object->dim = 0;
+  return object;
 }
 
 

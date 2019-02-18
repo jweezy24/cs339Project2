@@ -10,11 +10,12 @@ typedef struct DM{
   int status;
 }DM;
 
-void init_DM(DM* tempDM){
+DM* init_DM(DM* tempDM){
   tempDM = (DM*)malloc(sizeof(DM));
   tempDM->objects = (hardware*)malloc(sizeof(hardware));
   tempDM->size = 0;
   tempDM->status= 0;
+  return tempDM;
 }
 
 void create_DM(DM* dungeonMaster, char* ip, char* subnet){
