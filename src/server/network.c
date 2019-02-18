@@ -7,8 +7,8 @@ typedef struct networkObjects{
 }network;
 
 void init_network(network* net){
-  net = malloc(sizeof(network));
-  net->things = malloc(sizeof(DM));
+  net = (network*)malloc(sizeof(network));
+  net->things = (DM*)malloc(sizeof(DM));
   net->size = 0;
 }
 
@@ -43,7 +43,7 @@ int get_DM_Index(network* net, char* ip){
 }
 
 void update_DM_on_net(DM* dm, char* ip, network* net){
-  int pos = get_DM_Index(net, ip);
+  int pos = (int)get_DM_Index(net, ip);
   if(pos != -1){
     net->things[pos] = *dm;
   }
@@ -51,7 +51,7 @@ void update_DM_on_net(DM* dm, char* ip, network* net){
 
 void add_DM_to_net(DM dm, network* net){
   printf("%d\n", net->size);
-  net->things = realloc(net->things, sizeof(DM)*(net->size+1));
+  net->things = (DM*)realloc(net->things, sizeof(DM)*(net->size+1));
   net->things[net->size] = dm;
   net->size+=1;
 }
@@ -61,8 +61,8 @@ void add_DM_to_net_new(DM dm, network* net){
 }
 
 network* remove_from_network(network* tmpNet, DM* badDM){
-  network *newNet = malloc(sizeof(network));
-  newNet->things = malloc(sizeof(DM));
+  network *newNet = (network*)malloc(sizeof(network));
+  newNet->things = (DM*)malloc(sizeof(DM));
   newNet->size = 0;
   int netPos=0;
   for(int i = 0; i < tmpNet->size; i++){

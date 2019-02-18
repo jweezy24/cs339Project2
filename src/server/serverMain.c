@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     if(socket_OK == 0 && thread_count < 10){
       create_recieve_thread(argv[1]);
       if(packets.elements == 0){
-        parseJson("none");
+        parseJson((char*)"none");
       }
     }
     if(packets.elements > 0){

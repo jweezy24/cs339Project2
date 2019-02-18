@@ -74,7 +74,7 @@ void *recieve_packet(void *port) {
     close_socket(sockfd);
     pthread_mutex_unlock(&lock);
     pthread_mutex_destroy(&lock);
-    signal(SIGPIPE,sigpipe_handler);
+    signal(SIGPIPE,(void)sigpipe_handler);
     error("ERROR opening socket");
   }
   /* setsockopt: Handy debugging trick that lets

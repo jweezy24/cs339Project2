@@ -15,11 +15,11 @@ network AllDMs;
 char* get_json_attr_object_server(char* attr, struct json_object *json){
   struct json_object  *tmp;
   struct json_object *tmp2;
-  json_object_object_get_ex(json, "object", &tmp);
+  json_object_object_get_ex(json, (char*)"object", &tmp);
   tmp2 = json_tokener_parse(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY));
   json_object_object_get_ex(tmp, attr, &tmp2);
-  char* attr_got = malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PRETTY)));
-  char* temp_attr =  malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PRETTY)));
+  char* attr_got = (char*)malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PRETTY)));
+  char* temp_attr =  (char*)malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PRETTY)));
   strcpy(temp_attr, json_object_to_json_string_ext(tmp2, JSON_C_TO_STRING_PRETTY));
   strcpy(attr_got, temp_attr);
   free(temp_attr);
@@ -31,10 +31,10 @@ char* get_json_attr_object_server(char* attr, struct json_object *json){
 char* get_json_attr_server(char* attr, struct json_object *json){
   struct json_object  *tmp;
   json_object_object_get_ex(json, attr, &tmp);
-  char* attr_got = malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY))+1);
-  char* temp_attr =  malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY))+1);
-  strcpy(temp_attr, json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY));
-  strcpy(attr_got, temp_attr);
+  char* attr_got = (char*) malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY))+1);
+  char* temp_attr =  (char*)malloc(sizeof(char)*strlen(json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY))+1);
+  strcpy(temp_attr, (char*)json_object_to_json_string_ext(tmp, JSON_C_TO_STRING_PRETTY));
+  strcpy(attr_got, (char*)temp_attr);
   free(temp_attr);
   return attr_got;
 }
@@ -42,17 +42,17 @@ char* get_json_attr_server(char* attr, struct json_object *json){
 void get_json_attr_routine_server(struct json_object *json){
   struct json_object *tmp2;
   hardware thing;
-  char* ip = get_json_attr_server("ip", json);
-  char* subnet = get_json_attr_server("sub", json);
-  json_object_object_get_ex(json, "object", &tmp2);
-  set_object_dim(&thing, get_json_attr_server("dim", tmp2));
-  set_object_color(&thing, get_json_attr_server("color",tmp2));
-  set_object_name(&thing, get_json_attr_server("name",tmp2));
-  set_object_state(&thing, get_json_attr_server ("state",tmp2));
-  set_object_type(&thing, get_json_attr_server("type",tmp2));
+  char* ip = (char*)get_json_attr_server((char*)"ip", json);
+  char* subnet = (char*)get_json_attr_server((char*)"sub", json);
+  json_object_object_get_ex(json, (char*)"object", &tmp2);
+  set_object_dim(&thing, atoi(get_json_attr_server((char*)"dim", tmp2)));
+  set_object_color(&thing, (char*)get_json_attr_server((char*)"color",tmp2));
+  set_object_name(&thing, (char*)get_json_attr_server((char*)"name",tmp2));
+  set_object_state(&thing, (char*)get_json_attr_server ((char*)"state",tmp2));
+  set_object_type(&thing, (char*)get_json_attr_server((char*)"type",tmp2));
   DM tmpDM1 = *get_DM_IP(&AllDMs, ip);
   printf("%s\n", tmpDM1.ip);
-  if(strcmp(tmpDM1.ip, "none") == 0){
+  if(strcmp(tmpDM1.ip, (char*)"none") == 0){
     DM tmpDM;
     init_DM(&tmpDM);
     tmpDM.size = 0;
@@ -77,24 +77,24 @@ void parseJson(char* args){
 		int flag;
 		const char *flag_str;
 	} json_flags[] = {
-		{ JSON_C_TO_STRING_PLAIN, "JSON_C_TO_STRING_PLAIN" },
-		{ JSON_C_TO_STRING_SPACED, "JSON_C_TO_STRING_SPACED" },
-		{ JSON_C_TO_STRING_PRETTY, "JSON_C_TO_STRING_PRETTY" },
-		{ JSON_C_TO_STRING_NOZERO, "JSON_C_TO_STRING_NOZERO" },
-		{ JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY, "JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY" },
+		{ JSON_C_TO_STRING_PLAIN, (char*)"JSON_C_TO_STRING_PLAIN" },
+		{ JSON_C_TO_STRING_SPACED, (char*)"JSON_C_TO_STRING_SPACED" },
+		{ JSON_C_TO_STRING_PRETTY, (char*)"JSON_C_TO_STRING_PRETTY" },
+		{ JSON_C_TO_STRING_NOZERO, (char*)"JSON_C_TO_STRING_NOZERO" },
+		{ JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY, (char*)"JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY" },
 		{ -1, NULL }
 };
   jobj = json_tokener_parse(args);
-  char *ip = get_json_attr_server("ip", jobj);
-  char *subnet_mask = get_json_attr_server("sub", jobj);
-  char* op = get_json_attr_server("op", jobj);
-  if(strcmp(op,"\"add\"") == 0){
-    set_object_dim(&thing, get_json_attr_object_server("dim", jobj));
-    set_object_color(&thing, get_json_attr_object_server("color",jobj));
-    set_object_name(&thing, get_json_attr_object_server("name",jobj));
-    set_object_state(&thing, get_json_attr_object_server ("state",jobj));
-    set_object_type(&thing, get_json_attr_object_server("type",jobj));
-    if(strcmp(get_DM_IP(&AllDMs, ip)->ip, "none") != 0){
+  char *ip = (char*)get_json_attr_server((char*)"ip", jobj);
+  char *subnet_mask = (char*)get_json_attr_server((char*)"sub", jobj);
+  char* op = (char*)get_json_attr_server((char*)"op", jobj);
+  if(strcmp(op,(char*)"\"add\"") == 0){
+    set_object_dim(&thing, atoi(get_json_attr_object_server((char*)"dim", jobj)));
+    set_object_color(&thing, (char*)get_json_attr_object_server((char*)"color",jobj));
+    set_object_name(&thing, (char*)get_json_attr_object_server((char*)"name",jobj));
+    set_object_state(&thing, (char*)get_json_attr_object_server ((char*)"state",jobj));
+    set_object_type(&thing, (char*)get_json_attr_object_server((char*)"type",jobj));
+    if(strcmp(get_DM_IP(&AllDMs, ip)->ip, (char*)"none") != 0){
       DM tmp = *get_DM_IP(&AllDMs,ip);
       add_to_DM(&tmp, &thing);
       update_DM_on_net(&tmp, ip, &AllDMs);
@@ -108,30 +108,30 @@ void parseJson(char* args){
       add_DM_to_net(tmpDM, &AllDMs);
     }
   }
-  if(strcmp(op,"\"delete\"") == 0){
-    set_object_dim(&thing, get_json_attr_object_server("dim", jobj));
-    set_object_color(&thing, get_json_attr_object_server("color",jobj));
-    set_object_name(&thing, get_json_attr_object_server("name",jobj));
-    set_object_state(&thing, get_json_attr_object_server ("state",jobj));
-    set_object_type(&thing, get_json_attr_object_server("type",jobj));
-    if(strcmp(get_DM_IP(&AllDMs, ip)->ip, "none") != 0){
+  if(strcmp(op,(char*)"\"delete\"") == 0){
+    set_object_dim(&thing, atoi(get_json_attr_object_server((char*)"dim", jobj)));
+    set_object_color(&thing, get_json_attr_object_server((char*)"color",jobj));
+    set_object_name(&thing, get_json_attr_object_server((char*)"name",jobj));
+    set_object_state(&thing, get_json_attr_object_server ((char*)"state",jobj));
+    set_object_type(&thing, get_json_attr_object_server((char*)"type",jobj));
+    if(strcmp(get_DM_IP(&AllDMs, ip)->ip, (char*)"none") != 0){
       DM tmpDM = *get_DM_IP(&AllDMs, ip);
       tmpDM.status = 0;
       DM newDM = *remove_from_dm(&tmpDM,&thing);
       newDM.size-=1;
       update_DM_on_net(&newDM, ip, &AllDMs);
     }else{
-      no_exit_error("Id not Valid");
+      no_exit_error((char*)"Id not Valid");
     }
   }
 
-  if(strcmp(op, "\"routine\"") == 0){
+  if(strcmp(op, (char*)"\"routine\"") == 0){
     get_json_attr_routine_server(jobj);
     AllDMs = *DM_status_watch(&AllDMs, ip);
   }
 
-  if(strcmp(args, "none") == 0){
-    AllDMs = *DM_status_watch(&AllDMs, "none");
+  if(strcmp(args, (char*)"none") == 0){
+    AllDMs = *DM_status_watch(&AllDMs, (char*)"none");
   }
 
   free(ip);

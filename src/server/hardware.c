@@ -10,7 +10,7 @@ typedef struct hardware{
 }hardware;
 
 void init_hardware(hardware* object){
-  object = malloc(sizeof(hardware));
+  object = (hardware*)malloc(sizeof(hardware));
 }
 
 
@@ -20,35 +20,35 @@ void set_object_dim(hardware* object, int dim){
 }
 
 void set_object_type(hardware* object, char* type){
-  object->type = malloc(sizeof(char)*strlen(type)+1);
+  object->type = (char*)malloc(sizeof(char)*strlen(type)+1);
   strcpy(object->type, type);
 }
 
 void set_object_state(hardware* object, char* type){
-  object->state = malloc(sizeof(char)*strlen(type)+1);
+  object->state = (char*)malloc(sizeof(char)*strlen(type)+1);
   strcpy(object->state, type);
 }
 
 void set_object_name(hardware* object, char* type){
-  object->name = malloc(sizeof(char)*strlen(type)+1);
+  object->name = (char*)malloc(sizeof(char)*strlen(type)+1);
   strcpy(object->name, type);
 }
 
 void set_object_color(hardware* object, char* type){
-  object->color = malloc(sizeof(char)*strlen(type)+1);
+  object->color = (char*)malloc(sizeof(char)*strlen(type)+1);
   strcpy(object->color, type);
 }
 
-void hardware_copy_new(hardware* dest, hardware* new){
-  dest->type = malloc(sizeof(char)*strlen(new->type)+1);
-  strcpy(dest->type,new->type);
-  dest->name = malloc(sizeof(char)*strlen(new->name)+1);
-  strcpy(dest->name, new->name);
-  dest->dim = new->dim;
-  dest->color = malloc(sizeof(char)*strlen(new->color)+1);
-  strcpy(dest->color, new->color);
-  dest->state = malloc(sizeof(char)*strlen(new->state)+1);
-  strcpy(dest->state, new->state);
+void hardware_copy_new(hardware* dest, hardware* newHardware){
+  dest->type = (char*)malloc(sizeof(char)*strlen(newHardware->type)+1);
+  strcpy(dest->type,newHardware->type);
+  dest->name = (char*)malloc(sizeof(char)*strlen(newHardware->name)+1);
+  strcpy(dest->name, newHardware->name);
+  dest->dim = newHardware->dim;
+  dest->color = (char*)malloc(sizeof(char)*strlen(newHardware->color)+1);
+  strcpy(dest->color, newHardware->color);
+  dest->state = (char*)malloc(sizeof(char)*strlen(newHardware->state)+1);
+  strcpy(dest->state, newHardware->state);
 }
 
 void free_hardware(hardware* obj){
