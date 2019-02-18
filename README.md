@@ -69,9 +69,11 @@ The server currently only runs on a debian based linux distro. While in the serv
 
     * [Netifaces](https://pypi.org/project/netifaces/) - This package is needed for device manager to grab ip
 
-* [C](http://gcc.gnu.org/install/) - The compiler for C
+* [C](http://gcc.gnu.org/install/) - The compiler for C (All C dependencies will be installed with make file)
 
     * [json-c](https://github.com/json-c/json-c) - dependency for server. Parses json args.
+
+    * [googleTest](https://github.com/google/googletest) - Dependency for C tests
 
 
 ## Authors
