@@ -7,18 +7,18 @@ We build a system of objects that listen to each other on multiple networks. SER
 There are three files to run if the user would like to run everything locally.
 
 1) C Server
-    To compile, (be in Cs339Project2/src/server) gcc serverMain.c -o test.exe
+    To compile, (be in Cs339Project2/src/server) `sudo make install`, then `make`
     To run, ./test.exe 7999     
     The C server code will be running on a server, this is to test everything locally
 
 2) Python 3 Device Manager
     This will always run locally, this acts a middle man between the c server and a local network.
-    To run this, (be in Cs339Project2/src/local) python3 deviceManager.py
+    To run this, (be in Cs339Project2/src/local) `python3 deviceManager.py`
     To test locally or over multiple networks, device manager has to be run on each machine.
 
 3) Python 2.7 hardware simulation
     To simulate plugging devices in at the lowest level we developed this python app.
-    There is a console application, to run (be in Cs339Project2/src/local) python devicesMain.py
+    There is a console application, to run (be in Cs339Project2/src/local) `python devicesMain.py`
     This will give you commands to create objects that will send signals to a locally running device manager.
 
 
