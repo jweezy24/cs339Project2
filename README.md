@@ -1,6 +1,6 @@
 # Cs339Project2
 
-We build a system of objects that listen to each other on multiple networks.
+We build a system of objects that listen to each other on multiple networks. SERVER ONLY WORKS ON DEBIAN BASED OPERATING SYSTEMS.
 
 ## Getting Started
 
