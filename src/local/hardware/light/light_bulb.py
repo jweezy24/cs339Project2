@@ -1,42 +1,33 @@
-import socket
-import heart
-import sys
-import os
 
-class LightBulb:
-    def __init__(self, name, color="default", bright=100, power=True):
-        self.id = 1
-        self.name = name
-
+class Bulb:
+    def __init__(self, name, color="default", dim=0, power=True):
         self.color = color.lower()
-        self.bright = bright
+        self.dim = dim
         self.power = power
-        self.type = "light_bulb"
+        self.name = name
+        self.type = "bulb"
         self.grouped = False
 
+    def j_summary(self):
+        return "'object': {"
+            "'ip': {ip},"
+            "'name': {nm}"
+        }"
 
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.server = ('localhost', 8000)
-
-
+    def get_state(self):
+        return self.power
 
     def flip(self):
         self.power = not self.power
 
-    def set_bright(self, bright):
-        self.bright = bright
+    def set_dim(self, dim):
+        self.dim = dim
 
-    def get_bright(self):
-        return self.bright
-
-    def get_state(self):
-        if self.power:
-            return "on"
-        else:
-            return "off"
-
-    def get_color(self):
-        return self.color
+    def get_dim(self):
+        return self.dim
 
     def set_color(self, color):
         self.color = color
+
+    def get_color(self):
+        return self.color
