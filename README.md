@@ -78,8 +78,8 @@ python unittest.py - Running this command will run 31 tests.
 
 * **Jack West** - *Built End Point Communications Within All Levels* - [jweezy24](https://github.com/jweezy24)
 * **Drew Mack** - *Built Simulator* - [drew-mack](https://github.com/drew-mack)
-* **Faisal Shaheen** - *Front-end Dev* - [F423](https://github.com/F423)
 * **Jack Broncato** - *Back-end C Dev* - [jman11111](https://github.com/jman11111)
+* **Faisal Shaheen** - *Front-end App Developer* - [F423](https://github.com/F423)
 * **Asbel Assefa** - *Font-end App Developer* - [asbel](https://github.com/asbel)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
