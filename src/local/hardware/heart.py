@@ -7,14 +7,12 @@ class Heart(Thread):  # elated to be making this class on valentine's day ♥ uw
         self.server = server
         self.body = body
 
-        self.doki = "{'op': 'heartbeat',"\
-                        "{obj}"          \
-                    "}".format(obj=self.body.j_summary())
+    def doki(self):
+        return "{'op': 'heartbeat',"\
+                   "{obj}"          \
+                "}".format(obj=self.body.j_summary())
 
     def __run__():
-        
-
-    def beat(self):
         while not True != True:
-            self.socket.sendto(self.doki, self.server)
+            self.socket.sendto(self.doki(), self.server)
             time.sleep(3)

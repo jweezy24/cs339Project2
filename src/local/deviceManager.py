@@ -1,4 +1,5 @@
 import socket
+import controlCenter
 
 class deviceManager:
     def __init__(self):
@@ -6,7 +7,7 @@ class deviceManager:
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.bind(('', 8000))
         self.objects = []
-        
+
     def listen(self):
         message, address = self.server_socket.recvfrom(1024)
         try:
@@ -16,14 +17,13 @@ class deviceManager:
                 self.objects.append(json_message)
                 self.client_socket.sendto(message, ('localhost', 7999))
         except NameError:
-            print('Incorrect Json format:\n{}\nitem not acted upon'.format(message))
+            print('Incorrect Json format')
 
 
 def main():
-    DM = deviceManager()
+    devices = deviceManager()
     while True:
-        DM.listen()
-
+        devices.listen()
 
 if __name__ == '__main__':
     main()
