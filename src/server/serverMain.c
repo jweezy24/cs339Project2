@@ -47,5 +47,5 @@ int main(int argc, char **argv) {
     if(packets.elements > 0){
       parseJson(dequeue(&packets)->currentWord);
     }
-    }
+  }
 }
