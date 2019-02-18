@@ -26,8 +26,6 @@ char* get_json_attr_object_server(char* attr, struct json_object *json){
   return attr_got;
 }
 
-
-
 char* get_json_attr_server(char* attr, struct json_object *json){
   struct json_object  *tmp;
   json_object_object_get_ex(json, attr, &tmp);
@@ -63,6 +61,7 @@ void get_json_attr_routine_server(struct json_object *json){
       DM tmp = *get_DM_IP(&AllDMs,ip);
       add_to_DM(&tmp, &thing);
       update_DM_on_net(&tmp, ip, &AllDMs);
+
     }
   free(ip);
   free(subnet);
@@ -79,7 +78,8 @@ void display_net(){
 
 }
 //parsing json to readable objects for the server boys
-void parseJson(char* args){
+void parseJson(void * argsvoid){
+  char* args = (char *)argsvoid;
   struct json_object *jobj;
   hardware thing;
   init_hardware(&thing);

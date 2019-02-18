@@ -4,6 +4,7 @@
  */
 
 int thread_count=0;
+int threadsend_count = 0;
 
 #include <stdio.h>
 #include <unistd.h>
@@ -18,6 +19,9 @@ int thread_count=0;
 #include "queueUpPackets.c"
 #include "recievePacket.c"
 #include "threadHub.c"
+#include "serverTranslate.h"
+#include <pthread.h>
+
 
 
 
@@ -30,6 +34,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "usage: %s <port>\n", argv[0]);
     exit(1);
   }
+  
   init_network(&AllDMs);
   init_queue(&packets);
   while(1){
@@ -42,5 +47,5 @@ int main(int argc, char **argv) {
     if(packets.elements > 0){
       parseJson(dequeue(&packets)->currentWord);
     }
-  }
+    }
 }
