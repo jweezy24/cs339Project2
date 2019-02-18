@@ -1,18 +1,18 @@
 import time
 from threading import Thread
 
-class Heart:  # elated to be making this class on valentine's day ♥ uwu ♥
+class Heart(Thread):  # elated to be making this class on valentine's day ♥ uwu ♥
     def __init__(self, body, socket, server=('localhost', 8000)):
         self.socket = socket
         self.server = server
         self.body = body
 
-        self.doki = {'op': 'heartbeat',
-                        'object': {
-                            'ip': self.body.ip,
-                            'name': self.body.name
-                        }
-                    }
+        self.doki = "{'op': 'heartbeat',"\
+                        "{obj}"          \
+                    "}".format(obj=self.body.j_summary())
+
+    def __run__():
+        
 
     def beat(self):
         while not True != True:
