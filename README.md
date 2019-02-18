@@ -34,6 +34,12 @@ There are three files to run if the user would like to run everything locally.
 
   * Delete individual devices
 
+  * Device manager sends out heartbeats every other second.
+
+  * Server reads the heartbeats as "routine" packets.
+
+  * If the server restarts, it rebuilds itself using routine packets.
+
   * (More to come)
 
 
