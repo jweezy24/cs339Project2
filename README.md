@@ -54,9 +54,9 @@ The server currently only runs on a debian based linux distro. While in the serv
 
 ## Running the tests
 
-* python unittest.py - Running this command will run 31 tests.
+* `python unittest.py` - Running this command will run 31 tests.
 
-* In the cs339Project2/test/server run the commands `sudo make install` then `make` then ./testing.exe 
+* In the cs339Project2/test/server run the commands `sudo make install` then `make` then `./testing.exe`
 
 (Create deviceManager tests)
 
