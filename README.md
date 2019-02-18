@@ -28,7 +28,19 @@ There are three files to run if the user would like to run everything locally.
 
   * Sends Json messages over UDP socket functionality
 
-  * (More will come as we continue building the application)
+  * Times out device managers after a period of time.
+
+  * Add devices to device manager
+
+  * Delete individual devices
+
+  * Device manager sends out heartbeats every other second.
+
+  * Server reads the heartbeats as "routine" packets.
+
+  * If the server restarts, it rebuilds itself using routine packets.
+
+  * (More to come)
 
 
 ### Installing
@@ -66,8 +78,8 @@ python unittest.py - Running this command will run 31 tests.
 
 * **Jack West** - *Built End Point Communications Within All Levels* - [jweezy24](https://github.com/jweezy24)
 * **Drew Mack** - *Built Simulator* - [drew-mack](https://github.com/drew-mack)
-* **Faisal Shaheen** - *Back-end C Dev* - [F423](https://github.com/F423)
 * **Jack Broncato** - *Back-end C Dev* - [jman11111](https://github.com/jman11111)
+* **Faisal Shaheen** - *Front-end App Developer* - [F423](https://github.com/F423)
 * **Asbel Assefa** - *Font-end App Developer* - [asbel](https://github.com/asbel)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.

@@ -68,6 +68,16 @@ void get_json_attr_routine_server(struct json_object *json){
   free(subnet);
   }
 }
+
+void display_net(){
+  for(int i = 0; i < AllDMs.size; i++){
+    printf("DM %s exists on network.\n", AllDMs.things[i].ip);
+    for(int j = 0; j < AllDMs.things[i].size; j++){
+      printf("\t Hardware %s exists on DM.\n", AllDMs.things[i].objects[j].name);
+    }
+  }
+
+}
 //parsing json to readable objects for the server boys
 void parseJson(char* args){
   struct json_object *jobj;
@@ -107,6 +117,7 @@ void parseJson(char* args){
       tmpDM = *add_to_DM(&tmpDM, &thing);
       add_DM_to_net(tmpDM, &AllDMs);
     }
+    display_net();
   }
   if(strcmp(op,(char*)"\"delete\"") == 0){
     set_object_dim(&thing, atoi(get_json_attr_object_server((char*)"dim", jobj)));
@@ -123,11 +134,13 @@ void parseJson(char* args){
     }else{
       no_exit_error((char*)"Id not Valid");
     }
+    display_net();
   }
 
   if(strcmp(op, (char*)"\"routine\"") == 0){
     get_json_attr_routine_server(jobj);
     AllDMs = *DM_status_watch(&AllDMs, ip);
+    display_net();
   }
 
   if(strcmp(args, (char*)"none") == 0){
@@ -138,15 +151,6 @@ void parseJson(char* args){
   free(subnet_mask);
   free(op);
   free(jobj);
-
-  printf("here in parser\n");
-
-  for(int i = 0; i < AllDMs.size; i++){
-    printf("DM %s exists on network.\n", AllDMs.things[i].ip);
-    for(int j = 0; j < AllDMs.things[i].size; j++){
-      printf("\t Hardware %s exists on DM.\n", AllDMs.things[i].objects[j].name);
-    }
-  }
 
 
 

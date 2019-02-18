@@ -75,7 +75,7 @@ void DM_copy_new(DM* newDM, DM* oldDM){
   newDM->objects = (hardware*)malloc(sizeof(hardware)* oldDM->size);
   newDM->ip = (char*)malloc(sizeof(char*) * strlen(oldDM->ip));
   newDM->subnet_mask = (char*)malloc(sizeof(char*) * strlen(oldDM->subnet_mask));
-  newDM->status = 0;
+  newDM->status = oldDM->status;
   strcpy(newDM->ip, oldDM->ip);
   strcpy(newDM->subnet_mask, oldDM->subnet_mask);
   for(int i = 0; i < oldDM->size; i++){
