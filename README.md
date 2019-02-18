@@ -28,7 +28,13 @@ There are three files to run if the user would like to run everything locally.
 
   * Sends Json messages over UDP socket functionality
 
-  * (More will come as we continue building the application)
+  * Times out device managers after a period of time.
+
+  * Add devices to device manager
+
+  * Delete individual devices
+
+  * (More to come)
 
 
 ### Installing
@@ -66,7 +72,7 @@ python unittest.py - Running this command will run 31 tests.
 
 * **Jack West** - *Built End Point Communications Within All Levels* - [jweezy24](https://github.com/jweezy24)
 * **Drew Mack** - *Built Simulator* - [drew-mack](https://github.com/drew-mack)
-* **Faisal Shaheen** - *Back-end C Dev* - [F423](https://github.com/F423)
+* **Faisal Shaheen** - *Front-end Dev* - [F423](https://github.com/F423)
 * **Jack Broncato** - *Back-end C Dev* - [jman11111](https://github.com/jman11111)
 * **Asbel Assefa** - *Font-end App Developer* - [asbel](https://github.com/asbel)
 
