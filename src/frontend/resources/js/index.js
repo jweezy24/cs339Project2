@@ -13,7 +13,7 @@ app.use(express.static('public'));
 //socket setup
 var io = socket(server);
 //listen to make a connection
-io.on('connection'.function(){
-	console.log('made socket connection') 
-})
+io.on('connection',function(socket){
+	console.log('made socket connection', socket.id) 
+});
 
