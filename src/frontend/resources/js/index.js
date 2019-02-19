@@ -1,19 +1,33 @@
 var express = require('express');
 var socket = require('socket.io');
+var http = require('http');
+var ipAddress = "localhost"
+var port = "4000";
+
+module.exports = app;
+
 // App setup
 var app = express();
+app.set('port', port);
+
 //Create a server
-var server = app.listen(5000,function(){
-	console.log('listen to requests on port 5000')
-});
+var io = socket(server);
+var server = http.createServer();
+server.listen(port,ipAddress);
+socket = io.listen(server);
 
 //static files
 app.use(express.static('public'));
 
 //socket setup
-var io = socket(server);
 //listen to make a connection
 io.on('connection',function(socket){
-	console.log('made socket connection', socket.id) 
+	console.log('made socket connection', socket.id);
+	socket.on('msg',function(data){
+		io.emit('msg'.data);
+		console.log(data);
+	}) 
 });
+
+
 
