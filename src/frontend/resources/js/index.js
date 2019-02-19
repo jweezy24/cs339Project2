@@ -1,8 +1,8 @@
 var express = require('express');
 var socket = require('socket.io');
 var http = require('http');
-var ipAddress = "localhost"
-var port = "4000";
+var ipAddress = "67.163.37.156"
+var port = "7999";
 
 module.exports = app;
 
