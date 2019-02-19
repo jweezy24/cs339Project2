@@ -42,22 +42,22 @@ void set_object_color(hardware* object, char* type){
 }
 // these methods will overwrite previous values instead of initializing them
 void set_new_object_type(hardware* object, char* type){
-  object->type = (char*)calloc(sizeof(char)*strlen(type)+1);
+  object->type = (char*)calloc(1,sizeof(char)*strlen(type)+1);
   strcpy(object->type, type);
 }
 
 void set_new_object_state(hardware* object, char* type){
-  object->state = (char*)calloc(sizeof(char)*strlen(type)+1);
+  object->state = (char*)calloc(1,sizeof(char)*strlen(type)+1);
   strcpy(object->state, type);
 }
 
 void set_new_object_name(hardware* object, char* type){
-  object->name = (char*)calloc(sizeof(char)*strlen(type)+1);
+  object->name = (char*)calloc(1,sizeof(char)*strlen(type)+1);
   strcpy(object->name, type);
 }
 
 void set_new_object_color(hardware* object, char* type){
-  object->color = (char*)calloc(sizeof(char)*strlen(type)+1);
+  object->color = (char*)calloc(1,sizeof(char)*strlen(type)+1);
   strcpy(object->color, type);
 }
 
@@ -73,16 +73,17 @@ void hardware_copy_new(hardware* dest, hardware* newHardware){
   strcpy(dest->state, newHardware->state);
 }
 
-void hardware_copy_replace(hardware* dest, hardware* newHardware){
-  dest->type = (char*)calloc(sizeof(char)*strlen(newHardware->type)+1);
-  strcpy(dest->type,newHardware->type);
-  dest->name = (char*)calloc(sizeof(char)*strlen(newHardware->name)+1);
-  strcpy(dest->name, newHardware->name);
-  dest->dim = newHardware->dim;
-  dest->color = (char*)calloc(sizeof(char)*strlen(newHardware->color)+1);
-  strcpy(dest->color, newHardware->color);
-  dest->state = (char*)calloc(sizeof(char)*strlen(newHardware->state)+1);
-  strcpy(dest->state, newHardware->state);
+// this will replace the currect values by reallocating space for them
+void hardware_copy_replace(hardware* dest, hardware* replaceHardware){
+  dest->type = (char*)calloc(1,sizeof(char)*strlen(replaceHardware->type)+1);
+  strcpy(dest->type,replaceHardware->type);
+  dest->name = (char*)calloc(1,sizeof(char)*strlen(replaceHardware->name)+1);
+  strcpy(dest->name, replaceHardware->name);
+  dest->dim = replaceHardware->dim;
+  dest->color = (char*)calloc(1,sizeof(char)*strlen(replaceHardware->color)+1);
+  strcpy(dest->color, replaceHardware->color);
+  dest->state = (char*)calloc(1,sizeof(char)*strlen(replaceHardware->state)+1);
+  strcpy(dest->state, replaceHardware->state);
 }
 
 void free_hardware(hardware* obj){

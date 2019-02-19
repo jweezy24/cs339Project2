@@ -107,6 +107,54 @@ TEST(hardware_test_methods_6, hardware_copy_new){
   ASSERT_EQ(hware2.dim, 10);
 }
 
+TEST(hardware_test_replace_methods_1, set_new_object_name){
+  hardware hware = *init_hardware(&hware);
+  set_object_name(&hware, (char*)"test");
+  set_new_object_name(&hware, (char*)"tester");
+  ASSERT_EQ(strcmp(hware.name, (char*)"tester"), 0);
+}
+
+TEST(hardware_test_replace_methods_2, set_new_object_type){
+  hardware hware = *init_hardware(&hware);
+  set_object_type(&hware, (char*)"bulb");
+  set_new_object_type(&hware, (char*)"bulbor");
+  ASSERT_EQ(strcmp(hware.type, (char*)"bulbor"), 0);
+}
+
+TEST(hardware_test_replace_methods_3, set_new_object_color){
+  hardware hware = *init_hardware(&hware);
+  set_object_color(&hware, (char*)"blue");
+  set_new_object_color(&hware, (char*)"bluer");
+  ASSERT_EQ(strcmp(hware.color, (char*)"bluer"), 0);
+}
+
+TEST(hardware_test_replace_methods_4, set_new_object_state){
+  hardware hware = *init_hardware(&hware);
+  set_object_state(&hware, (char*)"True");
+  set_new_object_state(&hware, (char*)"Truer");
+  ASSERT_EQ(strcmp(hware.state, (char*)"Truer"), 0);
+}
+
+TEST(hardware_test_replace_methods_5, hardware_copy_replace){
+  hardware hware = *init_hardware(&hware);
+  hardware hware2 = *init_hardware(&hware2);
+  set_object_state(&hware, (char*)"Truer");
+  set_object_color(&hware, (char*)"bluer");
+  set_object_type(&hware, (char*)"bulbor");
+  set_object_name(&hware, (char*)"tester");
+  
+  set_object_state(&hware2, (char*)"True");
+  set_object_color(&hware2, (char*)"blue");
+  set_object_type(&hware2, (char*)"bulb");
+  set_object_name(&hware2, (char*)"test");
+
+  hardware_copy_replace(&hware2, &hware);
+  ASSERT_EQ(strcmp(hware2.state, (char*)"Truer"), 0);
+  ASSERT_EQ(strcmp(hware2.type, (char*)"bulbor"), 0);
+  ASSERT_EQ(strcmp(hware2.color, (char*)"bluer"), 0);
+  ASSERT_EQ(strcmp(hware2.name, (char*)"tester"), 0);
+}
+
 TEST(DM_test_methods_2, add_to_DM){
   hardware hware = *init_hardware(&hware);
   set_object_state(&hware, (char*)"True");
