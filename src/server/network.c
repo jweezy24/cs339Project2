@@ -89,11 +89,9 @@ network remove_from_network(network* tmpNet, DM* badDM){
 
 network* DM_status_watch(network* net, char* ip){
   for(int i = 0; i < net->size; i++){
-    //printf("%d SIZE  %s IP NET SHIT\n", net->size, net->things[0].ip);
     if(net->things[i].status <= -10){
      network newNet = remove_from_network(net, &net->things[i]);
      net = &newNet;
-     //printf("%d SIZE  %s IP NET SHIT\n", newNet.size, newNet.things[0].ip);
     }else if(strcmp(net->things[i].ip, ip) != 0){
       net->things[i].status-=1;
     }else{

@@ -125,6 +125,15 @@ TEST(DM_test_methods_2, add_to_DM){
 
 }
 
+TEST(network_method_test_2, DM_status_watch){
+  DM tmpDM = *init_DM(&tmpDM);
+  network tmpNet = *init_network(&tmpNet);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  add_DM_to_net(tmpDM, &tmpNet);
+  tmpNet = *DM_status_watch(&tmpNet, (char*)"none");
+  ASSERT_EQ(tmpNet.things[0].status, -1);
+}
+
 TEST(createQueueTest, createQueue)
 {
   queue* temp = createQueue(2);
