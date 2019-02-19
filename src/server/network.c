@@ -51,7 +51,6 @@ void update_DM_on_net(DM* dm, char* ip, network* net){
 }
 
 void add_DM_to_net(DM dm, network* net){
-  printf("%d\n", net->size);
   net->things = (DM*)realloc(net->things, sizeof(DM)*(net->size+1));
   net->things[net->size] = dm;
   net->size+=1;
@@ -67,7 +66,6 @@ network remove_from_network(network* tmpNet, DM* badDM){
   init_network(&newNet);
   newNet.size = 0;
   int netPos=0;
-  printf("NAME OF BAD DM: %s", badDM->ip);
   for(int i = 0; i < tmpNet->size; i++){
     if(strcmp(badDM->ip, tmpNet->things[i].ip) != 0){
       if(newNet.size == 0){
