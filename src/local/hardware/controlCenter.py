@@ -4,6 +4,8 @@ import lightObject
 import outletObject
 import lightGroup
 import miscObject
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 class controller:
     def __init__(self):
@@ -212,7 +214,14 @@ class controller:
                         i.removeItem(name)
 
     def jsonifyOject(self, thing, op):
-        if thing.type == 'light_bulb':
-            jsonDict = { 'op': op, 'object':{'type': thing.type, 'color' : thing.color,
-            'state': thing.getState(), 'dim' : str(thing.dim), 'name': thing.name} }
-            return jsonDict
+        try:
+            s.connect(("8.8.8.8", 80))
+            if thing.type == 'bulb':
+                jsonDict = { 'op': op, 'ip': str(s.getsockname()[0]), 'sub':'', 'object':{'type': thing.type, 'color' : thing.color,
+                'state': str(thing.switch), 'dim' : thing.dim, 'name': thing.name} }
+                return jsonDict
+        except:
+            if thing.type == 'bulb':
+                jsonDict = { 'op': op, 'ip': '127.0.0.1', 'sub':'', 'object':{'type': thing.type, 'color' : thing.color,
+                'state': str(thing.switch), 'dim' : thing.dim, 'name': thing.name} }
+                return jsonDict
