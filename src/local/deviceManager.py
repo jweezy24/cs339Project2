@@ -57,8 +57,6 @@ class deviceManager:
 
     def name_check(self, port):
         for i in self.objects:
-            print(port)
-            print(i[0])
             if i[0] == port:
                 return True
         return False
@@ -87,7 +85,6 @@ class deviceManager:
     def reset_timeout(self,port):
         for i in self.threads:
             if(i[1] == port):
-                print("here")
                 i[0].do_run = True
                 return
 
