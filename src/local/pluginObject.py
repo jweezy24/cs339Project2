@@ -32,7 +32,7 @@ listener_socket.bind(('0.0.0.0', 0))
 
 sock.settimeout(1)
 
-local_server = ("localhost", 8000)
+local_server = ("<broadcast>", 8000)
 localManager = controlCenter.controller()
 
 def main():
@@ -42,7 +42,6 @@ def main():
     dict = localManager.jsonifyOject(localManager.get_object_by_name(sys.argv[1]), 'add')
     dict.update({"port": listener_socket.getsockname()[1] })
     message = str(dict)
-    sock2.sendto(message, local_server)
 
     while True:
         try:
@@ -55,8 +54,9 @@ def main():
             print "No packets received"
         else:
             print message2
-            heartbeat["ip"] = dict.get("ip")
-            heartbeat["port"] = dict.get("port")
+        heartbeat["ip"] = dict.get("ip")
+        heartbeat["port"] = dict.get("port")
+        print heartbeat
         sock2.sendto(str(heartbeat), local_server)
 
 main()

@@ -31,6 +31,7 @@ def timer(smartDev, commands):
     return notify(smartDev)
 
 
+
 def scheduleTime(smartDev, commands):
     now = datetime.datetime.now()
     val = now.strftime('%Y-%m-%d %H:%M:%S').split(' ')

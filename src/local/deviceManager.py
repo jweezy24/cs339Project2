@@ -3,7 +3,7 @@ import netifaces
 import sys
 import json
 import time
-import thread
+import threading
 
 class deviceManager:
     def __init__(self):
@@ -19,6 +19,7 @@ class deviceManager:
         self.server_address = '67.163.37.156'
         #self.server_address = 'localhost'
         self.objects = []
+        self.threads = []
     def listen(self):
         message = ''
         address = ''
@@ -28,26 +29,23 @@ class deviceManager:
             print("timeout")
             return
 
-        try:
-            json_message = eval(message)
-            print(json_message)
-            #subnet_mask
-            #for i in subnet_mask.keys():
-            #    if subnet_mask.get(i)[1] == json_message['ip']:
-            #        json_message['sub'] = subnet_mask.get(i)[0]
-            if json_message['op'] == 'add':
+        #try:
+        json_message = eval(message)
+        print(json_message)
+        if json_message['op'] == 'heartbeat':
+            if(not self.name_check(json_message["port"])):
                 print('object added.')
                 self.objects.append((json_message["port"],json_message))
-                #self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
-                self.clapBack(json_message["port"], json_message["ip"])
-                time.sleep(3)
-            if json_message['op'] == 'delete':
-                print('object deleted.')
-                self.remove_Item(json_message["object"]["name"])
-                print(self.objects)
-                self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
-        except NameError:
-            print('Incorrect Json format')
+                self.init_timeout_obj(json_message["port"])
+            else:
+                self.reset_timeout(json_message["port"])
+        if json_message['op'] == 'delete':
+            print('object deleted.')
+            self.remove_Item(json_message["object"]["name"])
+            print(self.objects)
+            self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
+    #except NameError:
+        #print('Incorrect Json format')
     def getMask(self):
         interfaces = netifaces.interfaces()
         addresses = {}
@@ -56,6 +54,14 @@ class deviceManager:
             if len(tempDict.keys()) > 0:
                 addresses.update({i: (tempDict.get(2)[0]['netmask'], tempDict.get(2)[0]['addr'])})
         return addresses
+
+    def name_check(self, port):
+        for i in self.objects:
+            print(port)
+            print(i[0])
+            if i[0] == port:
+                return True
+        return False
     #multicast function
     def clapBack(self,port,ip):
         #self.client_socket.sendto("robot".encode(), (ip, int(port)))
@@ -64,6 +70,7 @@ class deviceManager:
         for i in self.objects:
             if item == i[0]:
                 self.objects.remove(i)
+
     def object_scan(self):
         json_dictionary = {"op" : "routine", "objects" : '', "len" :len(self.objects)}
         tmpList =[]
@@ -73,16 +80,33 @@ class deviceManager:
             time.sleep(0.3)
 
     def init_timeout_obj(self, object_port):
-        thread.start_new_thread( self.timeout_watcher, (object_port, ) )
+        t = threading.Thread(target=self.timeout, args=(object_port,))
+        self.threads.append((t, object_port))
+        t.start()
 
-    def timeout_watcher(self,name):
-        for i in self.objects:
-            
+    def reset_timeout(self,port):
+        for i in self.threads:
+            if(i[1] == port):
+                print("here")
+                i[0].do_run = True
+                return
 
+    def timeout(self,port):
+        while True:
+            t = threading.currentThread()
+            if(getattr(t, "do_run", True)):
+                time.sleep(2)
+                t.do_run = False
+            else:
+                time.sleep(2)
+                if(not getattr(t, "do_run", True)):
+                    self.remove_Item(port)
+                    print('removed '+ str(port))
+                    return port
+        return port
 
 def main():
     devices = deviceManager()
     while True:
         devices.listen()
-        devices.object_scan()
 main()
