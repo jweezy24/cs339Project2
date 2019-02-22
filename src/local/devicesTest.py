@@ -13,6 +13,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 local_server = ("<broadcast>", 8000)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+sock.settimeout(2)
 
 def main():
     host = connect_to_server()
