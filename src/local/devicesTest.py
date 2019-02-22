@@ -8,12 +8,12 @@ import controlCenter
 #sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 #sock.sendto('hello'.encode(), ('67.163.37.156', 7999))
 
-sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock2.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+sock2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
 def main():
-    local_server = ('<broadcast>', 8000)
+    local_server = ('127.0.0.1', 7999)
+    sock2.connect(local_server)
     localManager = controlCenter.controller()
     try:
         while True:

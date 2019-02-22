@@ -19,7 +19,6 @@ class deviceManager:
         self.server_address = '67.163.37.156'
         self.front_end_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.front_end_socket.bind(('', 7999))
-        self.front_end_socket.settimeout(2)
         #self.server_address = 'localhost'
         self.objects = []
         self.threads = []
@@ -112,9 +111,11 @@ class deviceManager:
         return port
 
     def handle_front(self):
+        self.front_end_socket.listen(2)
         while True:
             try:
-                self.front_end_socket.listen()
+                connection, client_address = self.front_end_socket.accept()
+                print(client_address)
             except socket.timeout:
                 print("Front-end timeout")
 
