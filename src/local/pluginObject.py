@@ -30,11 +30,14 @@ sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 listener_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 listener_socket.bind(('0.0.0.0', 0))
 
+sock.settimeout(1)
+
 local_server = ("localhost", 8000)
 localManager = controlCenter.controller()
 
 def main():
     message2 = ""
+    heartbeat = {"ip":"", "op":"heartbeat", "port":0 }
     localManager.add_light(sys.argv[1], 'red', True)
     dict = localManager.jsonifyOject(localManager.get_object_by_name(sys.argv[1]), 'add')
     dict.update({"port": listener_socket.getsockname()[1] })
@@ -52,5 +55,8 @@ def main():
             print "No packets received"
         else:
             print message2
+            heartbeat["ip"] = dict.get("ip")
+            heartbeat["port"] = dict.get("port")
+        sock2.sendto(str(heartbeat), local_server)
 
 main()
