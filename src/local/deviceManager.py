@@ -8,7 +8,12 @@ class deviceManager:
     def __init__(self):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.multicast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        self.MULTICAST_TTL = 32
+        self.multicast_socket.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.MULTICAST_TTL)
         self.server_socket.bind(('', 8000))
+        self.MCAST_GRP = '224.0.0.1'
+        self.MCAST_PORT = 5007
         self.server_socket.settimeout(3)
         self.server_address = '67.163.37.156'
         #self.server_address = 'localhost'
@@ -22,7 +27,6 @@ class deviceManager:
             print("timeout")
             return
 
-        self.clapBack(address)
         try:
             json_message = eval(message)
             print(json_message)
@@ -32,9 +36,10 @@ class deviceManager:
             #        json_message['sub'] = subnet_mask.get(i)[0]
             if json_message['op'] == 'add':
                 print('object added.')
-                self.objects.append((json_message["object"]["name"],json_message))
-                self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
-                time.sleep(1)
+                self.objects.append((json_message["port"],json_message))
+                #self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
+                self.clapBack(json_message["port"], json_message["ip"])
+                time.sleep(3)
             if json_message['op'] == 'delete':
                 print('object deleted.')
                 self.remove_Item(json_message["object"]["name"])
@@ -50,8 +55,10 @@ class deviceManager:
             if len(tempDict.keys()) > 0:
                 addresses.update({i: (tempDict.get(2)[0]['netmask'], tempDict.get(2)[0]['addr'])})
         return addresses
-    def clapBack(self,address):
-        self.server_socket.sendto("aye".encode(), address)
+    #multicast function
+    def clapBack(self,port,ip):
+        #self.client_socket.sendto("robot".encode(), (ip, int(port)))
+        self.multicast_socket.sendto("robot".encode(), (self.MCAST_GRP, self.MCAST_PORT))
     def remove_Item(self,item):
         for i in self.objects:
             if item == i[0]:
