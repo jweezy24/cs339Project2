@@ -17,9 +17,13 @@ class deviceManager:
         self.MCAST_PORT = 5007
         self.server_socket.settimeout(3)
         self.server_address = '67.163.37.156'
+        self.front_end_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.front_end_socket.bind(('', 7999))
+        self.front_end_socket.settimeout(2)
         #self.server_address = 'localhost'
         self.objects = []
         self.threads = []
+        self.threads_front = []
     def listen(self):
         message = ''
         address = ''
@@ -82,6 +86,11 @@ class deviceManager:
         self.threads.append((t, object_port))
         t.start()
 
+    def init_front(self):
+        t = threading.Thread(target=self.handle_front)
+        self.threads_front.append(t)
+        t.start()
+
     def reset_timeout(self,port):
         for i in self.threads:
             if(i[1] == port):
@@ -102,8 +111,17 @@ class deviceManager:
                     return port
         return port
 
+    def handle_front(self):
+        while True:
+            try:
+                self.front_end_socket.listen()
+            except socket.timeout:
+                print("Front-end timeout")
+
+
 def main():
     devices = deviceManager()
+    devices.init_front()
     while True:
         devices.listen()
 main()

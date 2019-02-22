@@ -17,26 +17,15 @@ def main():
     localManager = controlCenter.controller()
     try:
         while True:
-            user = raw_input('Enter a command (add-light move delete)')
-            if user == 'add-light':
+            user = raw_input('Enter a command (turn-off, turn-on, list)')
+            if user == 'turn-off':
                 name = raw_input('What is the name of the light?')
                 localManager.add_light(name, 'red', True)
                 message = str(localManager.jsonifyOject(localManager.get_object_by_name(name), 'add'))
                 sock2.sendto(message, local_server)
-                time.sleep(2)
-                message, address = sock2.recvfrom(1024)
-                if not message:
-                    break
-                #local_server = address
-            if user == 'delete':
-                name = raw_input('What is the name of the light?')
-                message = str(localManager.jsonifyOject(localManager.get_object_by_name(name), 'delete'))
-                localManager.delete(name)
-                sock2.sendto(message, local_server)
-                time.sleep(2)
-                message, address = sock2.recvfrom(1024)
-                if not message:
-                    break
+            if user == "list":
+                request = {"op":"list"}
+
 
     except KeyboardInterrupt:
         print('Exiting')
