@@ -18,7 +18,7 @@ class deviceManager:
         self.server_socket.settimeout(3)
         self.server_address = '67.163.37.156'
         self.front_end_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.front_end_socket.bind(('', 7999))
+        self.front_end_socket.bind(('0.0.0.0', 7999))
         #self.server_address = 'localhost'
         self.objects = []
         self.threads = []
@@ -28,27 +28,31 @@ class deviceManager:
         address = ''
         try:
             message, address = self.server_socket.recvfrom(1024)
+            print(str(message))
+            if str(message) == "b'aye'":
+                self.server_socket.sendto("what up boo".encode(), address)
+                return
         except socket.timeout:
             print("timeout")
             return
 
-        #try:
-        json_message = eval(message)
-        print(json_message)
-        if json_message['op'] == 'heartbeat':
-            if(not self.name_check(json_message["port"])):
-                print('object added.')
-                self.objects.append((json_message["port"],json_message))
-                self.init_timeout_obj(json_message["port"])
-            else:
-                self.reset_timeout(json_message["port"])
-        if json_message['op'] == 'delete':
-            print('object deleted.')
-            self.remove_Item(json_message["object"]["name"])
-            print(self.objects)
-            self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
-    #except NameError:
-        #print('Incorrect Json format')
+        try:
+            json_message = eval(message)
+            print(json_message)
+            if json_message['op'] == 'heartbeat':
+                if(not self.name_check(json_message["port"])):
+                    print('object added.')
+                    self.objects.append((json_message["port"],json_message))
+                    self.init_timeout_obj(json_message["port"])
+                else:
+                    self.reset_timeout(json_message["port"])
+            if json_message['op'] == 'delete':
+                print('object deleted.')
+                self.remove_Item(json_message["object"]["name"])
+                print(self.objects)
+                self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
+        except NameError:
+            print('Incorrect Json format')
     def getMask(self):
         interfaces = netifaces.interfaces()
         addresses = {}

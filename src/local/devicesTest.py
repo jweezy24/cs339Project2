@@ -9,20 +9,26 @@ import controlCenter
 #sock.sendto('hello'.encode(), ('67.163.37.156', 7999))
 
 sock2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
+local_server = ("<broadcast>", 8000)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
 def main():
-    local_server = ('127.0.0.1', 7999)
-    sock2.connect(local_server)
-    localManager = controlCenter.controller()
+    host = connect_to_server()
+    while host[0] == 0:
+        print("server not up")
+        time.sleep(4)
+        host = connect_to_server()
+    sock2.connect(host)
     try:
         while True:
             user = raw_input('Enter a command (turn-off, turn-on, list)')
             if user == 'turn-off':
+                dict = {"op":"turn-off", "name":""}
                 name = raw_input('What is the name of the light?')
-                localManager.add_light(name, 'red', True)
-                message = str(localManager.jsonifyOject(localManager.get_object_by_name(name), 'add'))
-                sock2.sendto(message, local_server)
+                dict["name"] = name
+                sock2.sendto(str(dict), address)
             if user == "list":
                 request = {"op":"list"}
 
@@ -33,6 +39,17 @@ def main():
             sys.exit(0)
         except SystemExit:
             os._exit(0)
+
+
+def connect_to_server():
+    try:
+        sock.sendto("aye", local_server)
+        message, address = sock.recvfrom(1024)
+        host = (address[0], 7999)
+        sock.close()
+        return host
+    except socket.error:
+        return (0,0)
 
 
 

@@ -37,8 +37,8 @@ localManager = controlCenter.controller()
 
 def main():
     message2 = ""
-    heartbeat = {"ip":"", "op":"heartbeat", "port":0, "name": sys.argv[1]}
-    localManager.add_light(sys.argv[1], 'red', True)
+    heartbeat = {"ip":"", "op":"heartbeat", "port":0, "name": sys.argv[1], "switch": True, "dim":0, "color":"white"}
+    localManager.add_light(sys.argv[1], 'white', True)
     dict = localManager.jsonifyOject(localManager.get_object_by_name(sys.argv[1]), 'add')
     dict.update({"port": listener_socket.getsockname()[1] })
     message = str(dict)
