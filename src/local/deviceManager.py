@@ -3,6 +3,7 @@ import netifaces
 import sys
 import json
 import time
+import thread
 
 class deviceManager:
     def __init__(self):
@@ -70,6 +71,13 @@ class deviceManager:
             i[1]["op"] = "routine"
             self.client_socket.sendto(json.dumps(i[1]).encode(), (self.server_address, 7999))
             time.sleep(0.3)
+
+    def init_timeout_obj(self, object_port):
+        thread.start_new_thread( self.timeout_watcher, (object_port, ) )
+
+    def timeout_watcher(self,name):
+        for i in self.objects:
+            
 
 
 def main():
