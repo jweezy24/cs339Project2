@@ -78,10 +78,10 @@ The server currently only runs on a debian based linux distro. While in the serv
 
 ## Authors
 
-* **Jack West** - *Built End Point Communications Within All Levels* - [jweezy24](https://github.com/jweezy24)
+* **Jack West** - *Front-end, Server Dev, and networking Dev* - [jweezy24](https://github.com/jweezy24)
 * **Drew Mack** - *Built Simulator* - [drew-mack](https://github.com/drew-mack)
 * **Jack Broncato** - *Back-end C Dev* - [jman11111](https://github.com/jman11111)
-* **Faisal Shaheen** - *Front-end App Developer* - [F423](https://github.com/F423)
-* **Asbel Assefa** - *Font-end App Developer* - [asbel](https://github.com/asbel)
+* **Faisal Shaheen** - *Wrote Tests* - [F423](https://github.com/F423)
+* **Asbel Assefa** - *Wrote Tests* - [asbel](https://github.com/asbel)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
