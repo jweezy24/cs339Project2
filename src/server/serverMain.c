@@ -19,7 +19,7 @@ int threadsend_count = 0;
 #include "queueUpPackets.c"
 #include "recievePacket.c"
 #include "threadHub.c"
-#include "serverTranslate.h"
+#include "servertranslate.h"
 #include <pthread.h>
 
 

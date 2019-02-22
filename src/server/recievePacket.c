@@ -69,7 +69,7 @@ void *recieve_packet(void *port) {
    */
    socket_OK = 1;
    pthread_mutex_lock(&lock);
-  sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+  sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if (sockfd < 0){
     close_socket(sockfd);
     pthread_mutex_unlock(&lock);
