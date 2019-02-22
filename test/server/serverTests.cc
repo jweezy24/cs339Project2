@@ -173,6 +173,125 @@ TEST(DM_test_methods_2, add_to_DM){
 
 }
 
+TEST(network_method_test_2, DM_status_watch){
+  DM tmpDM = *init_DM(&tmpDM);
+  network tmpNet = *init_network(&tmpNet);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  add_DM_to_net(tmpDM, &tmpNet);
+  tmpNet = *DM_status_watch(&tmpNet, (char*)"none");
+  ASSERT_EQ(tmpNet.things[0].status, -1);
+}
+
+TEST(network_method_test_3, remove_from_network ){
+  DM tmpDM = *init_DM(&tmpDM);
+  network tmpNet = *init_network(&tmpNet);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  add_DM_to_net(tmpDM, &tmpNet);
+  tmpNet = remove_from_network(&tmpNet, &tmpDM);
+  ASSERT_EQ(tmpNet.size, 0);
+}
+
+TEST(network_method_test_4, get_DM_IP){
+  DM tmpDM = *init_DM(&tmpDM);
+  network tmpNet = *init_network(&tmpNet);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  add_DM_to_net(tmpDM, &tmpNet);
+  DM testDMGood = *get_DM_IP(&tmpNet, (char*)"127.0.0.1");
+  DM testDMBad = *get_DM_IP(&tmpNet, (char*)"garbage");
+  ASSERT_EQ(strcmp(testDMGood.ip, (char*)"127.0.0.1"), 0);
+  ASSERT_EQ(strcmp(testDMBad.ip, (char*)"none"), 0);
+}
+
+TEST(network_method_test_5, get_DM_Index){
+  DM tmpDM = *init_DM(&tmpDM);
+  network tmpNet = *init_network(&tmpNet);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  add_DM_to_net(tmpDM, &tmpNet);
+  ASSERT_EQ(get_DM_Index(&tmpNet,(char*) "127.0.0.1"), 0);
+  ASSERT_EQ(get_DM_Index(&tmpNet,(char*) "garbage"), -1);
+}
+
+TEST(network_method_test_6, check_if_DM){
+  DM tmpDM = *init_DM(&tmpDM);
+  network tmpNet = *init_network(&tmpNet);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  add_DM_to_net(tmpDM, &tmpNet);
+  ASSERT_EQ(check_if_DM(&tmpNet,(char*) "127.0.0.1"), 0);
+  ASSERT_EQ(check_if_DM(&tmpNet,(char*) "garbage"), 1);
+}
+
+TEST(DM_test_methods_3, remove_from_dm){
+  hardware hware = *init_hardware(&hware);
+  set_object_state(&hware, (char*)"True");
+  set_object_color(&hware, (char*)"blue");
+  set_object_type(&hware, (char*)"bulb");
+  set_object_name(&hware, (char*)"test");
+  set_object_dim(&hware, 10);
+  DM tmpDM = *init_DM(&tmpDM);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  add_to_DM(&tmpDM, &hware);
+  ASSERT_EQ(strcmp(tmpDM.objects[0].state, (char*)"True"), 0);
+  ASSERT_EQ(strcmp(tmpDM.objects[0].type, (char*)"bulb"), 0);
+  ASSERT_EQ(strcmp(tmpDM.objects[0].color, (char*)"blue"), 0);
+  ASSERT_EQ(strcmp(tmpDM.objects[0].name, (char*)"test"), 0);
+  ASSERT_EQ(tmpDM.objects[0].dim, 10);
+  tmpDM = *remove_from_dm(&tmpDM, &hware);
+  ASSERT_EQ(tmpDM.size, 0);
+}
+
+TEST(DM_test_methods_4, update_status){
+  DM tmpDM = *init_DM(&tmpDM);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  tmpDM.status = -1;
+  update_status(&tmpDM);
+  ASSERT_EQ(tmpDM.status, 0);
+}
+
+TEST(DM_test_methods_5, name_check){
+  hardware hware = *init_hardware(&hware);
+  set_object_state(&hware, (char*)"True");
+  set_object_color(&hware, (char*)"blue");
+  set_object_type(&hware, (char*)"bulb");
+  set_object_name(&hware, (char*)"test");
+  set_object_dim(&hware, 10);
+  hardware hware2 = *init_hardware(&hware);
+  set_object_state(&hware2, (char*)"True");
+  set_object_color(&hware2, (char*)"blue");
+  set_object_type(&hware2, (char*)"bulb");
+  set_object_name(&hware2, (char*)"aye");
+  set_object_dim(&hware2, 10);
+  DM tmpDM = *init_DM(&tmpDM);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  add_to_DM(&tmpDM, &hware);
+  add_to_DM(&tmpDM, &hware2);
+  ASSERT_EQ(name_check(&tmpDM, (char*)"test"), 0);
+  ASSERT_EQ(name_check(&tmpDM, (char*)"aye"), 0);
+  ASSERT_EQ(name_check(&tmpDM, (char*)"yo"), 1);
+}
+
+TEST(DM_test_methods_6, get_hardware_name){
+  hardware hware = *init_hardware(&hware);
+  set_object_state(&hware, (char*)"True");
+  set_object_color(&hware, (char*)"blue");
+  set_object_type(&hware, (char*)"bulb");
+  set_object_name(&hware, (char*)"test");
+  set_object_dim(&hware, 10);
+  hardware hware2 = *init_hardware(&hware);
+  set_object_state(&hware2, (char*)"True");
+  set_object_color(&hware2, (char*)"blue");
+  set_object_type(&hware2, (char*)"bulb");
+  set_object_name(&hware2, (char*)"aye");
+  set_object_dim(&hware2, 10);
+  DM tmpDM = *init_DM(&tmpDM);
+  create_DM(&tmpDM, (char*)"127.0.0.1", (char*)"255.255.255.0");
+  add_to_DM(&tmpDM, &hware);
+  add_to_DM(&tmpDM, &hware2);
+  hardware goodWare = get_hardware_name(&tmpDM, (char*)"test");
+  hardware badWare = get_hardware_name(&tmpDM, (char*)"bad");
+  ASSERT_STREQ(badWare.name, (char*)"NONE");
+  ASSERT_STREQ(goodWare.name, (char*)"test");
+}
+
 TEST(createQueueTest, createQueue)
 {
   queue* temp = createQueue(2);

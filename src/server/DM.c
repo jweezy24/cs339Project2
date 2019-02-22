@@ -62,13 +62,17 @@ DM* add_to_DM(DM* requested_DM, hardware* newWare){
   }
 }
 
-hardware* get_hardware_name(DM* tmpDM, char* name){
+hardware get_hardware_name(DM* tmpDM, char* name){
   for(int i =0; i < tmpDM->size; i++){
     if(strcmp(name, tmpDM->objects[i].name) == 0){
-      return &tmpDM->objects[i];
+      return tmpDM->objects[i];
     }
   }
-  return NULL;
+  hardware null_hardware;
+  null_hardware = *init_hardware(&null_hardware);
+  (&null_hardware)->name = (char*)malloc(sizeof(char)*5);
+  strcpy((&null_hardware)->name, (char*)"NONE");
+  return null_hardware;
 }
 
 void DM_copy_new(DM* newDM, DM* oldDM){
@@ -100,6 +104,7 @@ DM* remove_from_dm(DM* tmpDM, hardware* badware){
       dmPos+=1;
     }
   }
+  newDM->size = dmPos;
   return newDM;
 }
 
