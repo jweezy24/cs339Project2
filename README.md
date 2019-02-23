@@ -10,6 +10,7 @@ There are three files to run if the user would like to run everything locally.
     To compile, (be in Cs339Project2/src/server) `sudo make install`, then `make`
     To run, `./test.exe 7999`     
     The C server code will be running on a server, this is to test everything locally
+
     Built By:
       * **Jack West** - [jweezy24](https://github.com/jweezy24)
       * **Jack Broncato** - [jman11111](https://github.com/jman11111)
@@ -18,6 +19,7 @@ There are three files to run if the user would like to run everything locally.
     This will always run locally, this acts a middle man between the c server and a local network.
     To run this, (be in Cs339Project2/src/local) `python3 deviceManager.py`
     To test locally or over multiple networks, device manager has to be run on each machine.
+
     Built By:
       * **Jack West** - [jweezy24](https://github.com/jweezy24)
 
@@ -25,12 +27,14 @@ There are three files to run if the user would like to run everything locally.
     To simulate plugging devices in at the lowest level we developed scripts to be run as hardware.
     This is a console application, to run (be in Cs339Project2/src/local) `python pluginObject.py <name of object>`
     This will give you commands to create objects that will send signals to a locally running device manager.
+
     Built By:
       * **Drew Mack** - [drew-mack](https://github.com/drew-mack)
 
 4) Python 2.7 Front-End
     For the user to send commands to their lights, we developed a front-end communication system to send commands to any light on the user's LAN.
     To build, run the command `python devicesTest.py`
+
     Built By:
       * **Jack West** - [jweezy24](https://github.com/jweezy24)
 
@@ -39,57 +43,57 @@ There are three files to run if the user would like to run everything locally.
 
   #### C Server ####
 
-    * Three distinct levels of operation. (Device Simulation -> Local network manager -> Main server)
+  * Three distinct levels of operation. (Device Simulation -> Local network manager -> Main server)
 
-    * Sends Json messages over UDP socket functionality
+  * Sends Json messages over UDP socket functionality
 
-    * Times out device managers after a period of time.
+  * Times out device managers after a period of time.
 
-    * Add devices to device manager
+  * Add devices to device manager
 
-    * Delete individual devices
+  * Delete individual devices
 
-    * Device manager sends out heartbeats every other second.
+  * Device manager sends out heartbeats every other second.
 
-    * Server reads the heartbeats as "routine" packets.
+  * Server reads the heartbeats as "routine" packets.
 
-    * If the server restarts, it rebuilds itself using routine packets.
+  * If the server restarts, it rebuilds itself using routine packets.
 
   #### Device Manager ####
 
-    * Builds objects from heartbeats from hardware
+  * Builds objects from heartbeats from hardware
 
-    * Uses multicast to update objects
+  * Uses multicast to update objects
 
-    * Uses TCP to connect to a front-end
+  * Uses TCP to connect to a front-end
 
-    * Can schedule tasks at specific times in a new thread
+  * Can schedule tasks at specific times in a new thread
 
-    * Front-end TCP connection lives in a new thread
+  * Front-end TCP connection lives in a new thread
 
-    * Turn on/off lights based off of assigned port
+  * Turn on/off lights based off of assigned port
 
-    * Parses json messages to trigger events and build objects
+  * Parses json messages to trigger events and build objects
 
-    * Times out objects after not getting a heartbeat for 2-4 seconds
+  * Times out objects after not getting a heartbeat for 2-4 seconds
 
   #### Front End ####
 
-    * Python console application
+  * Python console application
 
-    * Issues commands over a TCP connection to device manager
+  * Issues commands over a TCP connection to device manager
 
-    * Able to issue turn on/off, list, and schedule commands
+  * Able to issue turn on/off, list, and schedule commands
 
-    * Error catching, can be booted up before or after the DM
+  * Error catching, can be booted up before or after the DM
 
-    * Closes sockets such that it does not break the DM
+  * Closes sockets such that it does not break the DM
 
   #### Device Simulator ####
 
-    * Creates a instance of a device that sends heartbeats to a local DM
+  * Creates a instance of a device that sends heartbeats to a local DM
 
-    * Can be changed by json messages sent by DM
+  * Can be changed by json messages sent by DM
 
 
 
