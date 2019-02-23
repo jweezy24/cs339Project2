@@ -126,15 +126,25 @@ class deviceManager:
         while True:
             try:
                 message = connection.recv(1024)
-                print(message)
-                connection.send(self.parse_json(message).encode())
+                if(message != ''):
+                    connection.send(self.parse_json(message).encode())
             except KeyboardInterrupt:
+                connection.close()
                 self.front_end_socket.shutdown(socket.SHUT_RDWR)
+            except:
+                connection.close()
+                connection = self.connect_front_end()
+
+    def connect_front_end(self):
+        self.front_end_socket.listen(2)
+        connection, client_address = self.front_end_socket.accept()
+        return connection
+
 
     def display_objects(self):
         retStr = ""
         for i in self.objects:
-            retStr += "Name: " + str(i[1]["name"]) + "\tOn: " + str(i[1]["switch"])
+            retStr += "Name: " + str(i[1]["port"]) + "\tOn: " + str(i[1]["switch"]) + "\n"
         return retStr
 
     def socket_close(self):

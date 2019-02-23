@@ -24,7 +24,13 @@ def main():
     sock2.connect(host)
     try:
         while True:
-            user = raw_input('Enter a command (turn-off, turn-on, list)')
+            try:
+                user = raw_input('Enter a command (turn-off, turn-on, list)')
+            except KeyboardInterrupt:
+                sock2.shutdown(socket.SHUT_RDWR)
+                sock2.close()
+                print("Exiting")
+                sys.exit(0)
             if user == 'turn-off':
                 dict = {"op":"turn-off", "name":""}
                 name = raw_input('What is the name of the light?')
