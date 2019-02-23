@@ -28,31 +28,13 @@ class deviceManager:
         address = ''
         try:
             message, address = self.server_socket.recvfrom(1024)
-            print(str(message))
             if str(message) == "b'aye'":
                 self.server_socket.sendto("what up boo".encode(), address)
                 return
         except socket.timeout:
             print("timeout")
             return
-
-        try:
-            json_message = eval(message)
-            print(json_message)
-            if json_message['op'] == 'heartbeat':
-                if(not self.name_check(json_message["port"])):
-                    print('object added.')
-                    self.objects.append((json_message["port"],json_message))
-                    self.init_timeout_obj(json_message["port"])
-                else:
-                    self.reset_timeout(json_message["port"])
-            if json_message['op'] == 'delete':
-                print('object deleted.')
-                self.remove_Item(json_message["object"]["name"])
-                print(self.objects)
-                self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
-        except NameError:
-            print('Incorrect Json format')
+        self.parse_json(message)
     def getMask(self):
         interfaces = netifaces.interfaces()
         addresses = {}
@@ -61,6 +43,30 @@ class deviceManager:
             if len(tempDict.keys()) > 0:
                 addresses.update({i: (tempDict.get(2)[0]['netmask'], tempDict.get(2)[0]['addr'])})
         return addresses
+
+    def parse_json(self, packet):
+        try:
+            json_message = eval(packet)
+            if json_message['op'] == 'heartbeat':
+                if(not self.name_check(json_message["port"])):
+                    print('object added.')
+                    self.objects.append((json_message["port"],json_message))
+                    self.init_timeout_obj(json_message["port"])
+                    return "done"
+                else:
+                    self.reset_timeout(json_message["port"])
+                    return "Done"
+            if json_message['op'] == 'delete':
+                print('object deleted.')
+                self.remove_Item(json_message["object"]["name"])
+                print(self.objects)
+                self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
+                return "done"
+            if json_message['op'] == 'list':
+                return self.display_objects()
+        except NameError:
+            print('Incorrect Json format')
+            return "Bad"
 
     def name_check(self, port):
         for i in self.objects:
@@ -116,17 +122,33 @@ class deviceManager:
 
     def handle_front(self):
         self.front_end_socket.listen(2)
+        connection, client_address = self.front_end_socket.accept()
         while True:
             try:
-                connection, client_address = self.front_end_socket.accept()
-                print(client_address)
-            except socket.timeout:
-                print("Front-end timeout")
+                message = connection.recv(1024)
+                print(message)
+                connection.send(self.parse_json(message).encode())
+            except KeyboardInterrupt:
+                self.front_end_socket.shutdown(socket.SHUT_RDWR)
+
+    def display_objects(self):
+        retStr = ""
+        for i in self.objects:
+            retStr += "Name: " + str(i[1]["name"]) + "\tOn: " + str(i[1]["switch"])
+        return retStr
+
+    def socket_close(self):
+        self.server_socket.close()
+        self.multicast_socket.close()
+        self.client_socket.close()
 
 
 def main():
     devices = deviceManager()
     devices.init_front()
     while True:
-        devices.listen()
+        try:
+            devices.listen()
+        except KeyboardInterrupt:
+            devices.socket_close()
 main()

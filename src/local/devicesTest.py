@@ -18,7 +18,7 @@ sock.settimeout(2)
 def main():
     host = connect_to_server()
     while host[0] == 0:
-        print("server not up")
+        print("DM not up")
         time.sleep(4)
         host = connect_to_server()
     sock2.connect(host)
@@ -29,9 +29,12 @@ def main():
                 dict = {"op":"turn-off", "name":""}
                 name = raw_input('What is the name of the light?')
                 dict["name"] = name
-                sock2.sendto(str(dict), address)
+                sock2.sendto(str(dict), host)
             if user == "list":
                 request = {"op":"list"}
+                sock2.sendto(str(request), host)
+                data = sock2.recv(1024)
+                print(data)
 
 
     except KeyboardInterrupt:
