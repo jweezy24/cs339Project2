@@ -99,7 +99,7 @@ There are three files to run if the user would like to run everything locally.
 
 
 
-### Installing
+## Installing
 
 
 Local:
