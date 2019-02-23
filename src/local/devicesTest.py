@@ -5,6 +5,7 @@ import time
 sys.path.insert(0, './hardware')
 import controlCenter
 import threading
+import errno
 #this file will simulate plugging hardware into a socket
 #sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 #sock.sendto('hello'.encode(), ('67.163.37.156', 7999))
@@ -23,8 +24,6 @@ def main():
         time.sleep(4)
         host = connect_to_server()
     sock2.connect(host)
-    t = threading.Thread(target=check_connection)
-    t.start()
     try:
         while True:
 
@@ -34,11 +33,6 @@ def main():
                 sock2.shutdown(socket.SHUT_RDWR)
                 sock2.close()
                 print("Exiting")
-                sys.exit(0)
-            if(getattr(t, "do_run", False)):
-                print("socket closed")
-                sock2.shutdown(socket.SHUT_RDWR)
-                sock2.close()
                 sys.exit(0)
             if user == 'turn-off':
                 dict = {"op":"turn-off", "port":0}
@@ -55,6 +49,7 @@ def main():
                 sock2.sendto(str(request), host)
                 data = sock2.recv(1024)
                 print(data)
+            pipe_check()
 
 
     except KeyboardInterrupt:
@@ -75,17 +70,17 @@ def connect_to_server():
     except socket.error:
         return (0,0)
 
-def check_connection():
-    t = threading.currentThread()
-    sock2.settimeout(1)
-    while True:
+def pipe_check():
+    for i in range(0,2):
         try:
-            message = sock2.recv(1024)
-        except socket.timeout as e:
-            continue
-        if(str(message) == "b'shutdown"):
-            t.do_run = False
-            sock2.close()
-            sock2.shutdown(socket.SHUT_RDWR)
+            sock2.send("".encode())
+        except socket.error as e:
+            if e[0] == errno.EPIPE:
+               print "Detected remote disconnect"
+               sock2.close()
+               sock2.shutdown(socket.SHUT_RDWR)
+               print("Exiting program")
+            else:
+                print("Socket error Disconnecting")
 
 main()

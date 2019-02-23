@@ -53,7 +53,6 @@ class deviceManager:
                     print('object added.')
                     self.objects.append((json_message["port"],json_message))
                     self.init_timeout_obj(json_message["port"])
-                    return "done"
                 else:
                     self.reset_timeout(json_message["port"])
             if json_message['op'] == 'delete':
@@ -61,18 +60,14 @@ class deviceManager:
                 self.remove_Item(json_message["object"]["name"])
                 print(self.objects)
                 self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
-                return "done"
             if json_message['op'] == 'list':
                 return self.display_objects()
             if json_message['op'] == 'turn-off':
                 self.turn_off(json_message['port'])
-                return "Done"
             if json_message["op"] == 'turn-on':
                 self.turn_on(json_message['port'])
-                return "Done"
         except NameError:
             print('Incorrect Json format')
-            return "Bad"
 
     def name_check(self, port):
         for i in self.objects:
@@ -169,6 +164,7 @@ class deviceManager:
             t = threading.currentThread()
             try:
                 try:
+                    message = ''
                     message = connection.recv(1024)
                 except socket.timeout as e:
                     print("TCP timeout")
@@ -177,11 +173,11 @@ class deviceManager:
                 print(self.objects)
                 print(type(None))
                 message = self.parse_json(message)
-                if(message != '' or type(message) != type(None) and (message != "Done" or message != "Bad")):
+                if(message != '' and type(message) != type(None)):
                     connection.send(message.encode())
+                message = ''
             except ValueError as e:
                 print(e)
-                connection.send("shutdown".encode())
                 connection.close()
                 self.front_end_socket.shutdown(socket.SHUT_RDWR)
                 connection = self.connect_front_end()
