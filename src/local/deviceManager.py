@@ -64,6 +64,9 @@ class deviceManager:
                 return "done"
             if json_message['op'] == 'list':
                 return self.display_objects()
+            if json_message['op'] == 'turn-off':
+                self.turn_off(json_message['port'])
+                return "Done"
         except NameError:
             print('Incorrect Json format')
             return "Bad"
@@ -106,6 +109,18 @@ class deviceManager:
                 i[0].do_run = True
                 return
 
+    def turn_off(self, port):
+        for i in self.objects:
+            if(i[0] == port):
+                if(i[1]["switch"]):
+                    i[1]["switch"] = False
+                    self.send_out_update(i)
+                    return
+
+    def send_out_update(self, object):
+        t = threading.Thread(target=self.update, args=(object,))
+        t.start()
+
     def timeout(self,port):
         while True:
             t = threading.currentThread()
@@ -120,19 +135,32 @@ class deviceManager:
                     return port
         return port
 
+    def update(self, object):
+        object[1]["op"] = "update"
+        self.multicast_socket.sendto(str(object[1]).encode(), (self.MCAST_GRP, self.MCAST_PORT))
+
+
+
+    def get_object(self,port):
+        for i in self.objects:
+            if(ip[0] == port):
+                return i
+        return None
+
     def handle_front(self):
         self.front_end_socket.listen(2)
         connection, client_address = self.front_end_socket.accept()
         while True:
             try:
                 message = connection.recv(1024)
-                if(message != ''):
+                print(type(message))
+                print(type(None))
+                if(message != '' or type(message) != type(None)):
                     connection.send(self.parse_json(message).encode())
-            except KeyboardInterrupt:
+            except ValueError as e:
+                print(e)
                 connection.close()
                 self.front_end_socket.shutdown(socket.SHUT_RDWR)
-            except:
-                connection.close()
                 connection = self.connect_front_end()
 
     def connect_front_end(self):
@@ -144,7 +172,7 @@ class deviceManager:
     def display_objects(self):
         retStr = ""
         for i in self.objects:
-            retStr += "Name: " + str(i[1]["port"]) + "\tOn: " + str(i[1]["switch"]) + "\n"
+            retStr += "Port: " + str(i[1]["port"]) + "\tOn: " + str(i[1]["switch"]) + "\n"
         return retStr
 
     def socket_close(self):

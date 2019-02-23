@@ -32,9 +32,9 @@ def main():
                 print("Exiting")
                 sys.exit(0)
             if user == 'turn-off':
-                dict = {"op":"turn-off", "name":""}
-                name = raw_input('What is the name of the light?')
-                dict["name"] = name
+                dict = {"op":"turn-off", "port":0}
+                name = raw_input('What is the port of the light?')
+                dict["port"] = int(name)
                 sock2.sendto(str(dict), host)
             if user == "list":
                 request = {"op":"list"}

@@ -49,13 +49,14 @@ def main():
         except socket.error, e:
             print 'Expection'
             hexdata = binascii.hexlify(message2)
-            print 'Data = %s' % hexdata
+            print e
         if not message2:
             print "No packets received"
         else:
-            print message2
+            heartbeat = eval(message2)
         heartbeat["ip"] = dict.get("ip")
         heartbeat["port"] = dict.get("port")
+        heartbeat["op"] = "heartbeat"
         print heartbeat
         sock2.sendto(str(heartbeat), local_server)
 
