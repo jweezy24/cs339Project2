@@ -46,7 +46,7 @@ def main():
     while True:
         try:
             message2, address = sock.recvfrom(1024)
-        except socket.error, e:
+        except socket.timeout, e:
             print 'Expection'
             hexdata = binascii.hexlify(message2)
             print e

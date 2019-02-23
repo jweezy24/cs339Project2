@@ -36,6 +36,11 @@ def main():
                 name = raw_input('What is the port of the light?')
                 dict["port"] = int(name)
                 sock2.sendto(str(dict), host)
+            if user == 'turn-on':
+                dict = {"op":"turn-on", "port":0}
+                name = raw_input('What is the port of the light?')
+                dict["port"] = int(name)
+                sock2.sendto(str(dict), host)
             if user == "list":
                 request = {"op":"list"}
                 sock2.sendto(str(request), host)

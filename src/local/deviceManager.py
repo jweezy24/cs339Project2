@@ -20,6 +20,7 @@ class deviceManager:
         self.front_end_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.front_end_socket.bind(('0.0.0.0', 7999))
         #self.server_address = 'localhost'
+        self.connection = None
         self.objects = []
         self.threads = []
         self.threads_front = []
@@ -55,7 +56,6 @@ class deviceManager:
                     return "done"
                 else:
                     self.reset_timeout(json_message["port"])
-                    return "Done"
             if json_message['op'] == 'delete':
                 print('object deleted.')
                 self.remove_Item(json_message["object"]["name"])
@@ -66,6 +66,9 @@ class deviceManager:
                 return self.display_objects()
             if json_message['op'] == 'turn-off':
                 self.turn_off(json_message['port'])
+                return "Done"
+            if json_message["op"] == 'turn-on':
+                self.turn_on(json_message['port'])
                 return "Done"
         except NameError:
             print('Incorrect Json format')
@@ -117,6 +120,14 @@ class deviceManager:
                     self.send_out_update(i)
                     return
 
+    def turn_on(self, port):
+        for i in self.objects:
+            if(i[0] == port):
+                if(not i[1]["switch"]):
+                    i[1]["switch"] = True
+                    self.send_out_update(i)
+                    return
+
     def send_out_update(self, object):
         t = threading.Thread(target=self.update, args=(object,))
         t.start()
@@ -150,29 +161,46 @@ class deviceManager:
     def handle_front(self):
         self.front_end_socket.listen(2)
         connection, client_address = self.front_end_socket.accept()
-        while True:
+        self.connection = connection
+        connection.settimeout(2)
+        t = threading.currentThread()
+        message=''
+        while getattr(t, "do_run", True):
+            t = threading.currentThread()
             try:
-                message = connection.recv(1024)
-                print(type(message))
+                try:
+                    message = connection.recv(1024)
+                except socket.timeout as e:
+                    print("TCP timeout")
+                    message=''
+                    continue
+                print(self.objects)
                 print(type(None))
-                if(message != '' or type(message) != type(None)):
-                    connection.send(self.parse_json(message).encode())
+                message = self.parse_json(message)
+                if(message != '' or type(message) != type(None) and (message != "Done" or message != "Bad")):
+                    connection.send(message.encode())
             except ValueError as e:
                 print(e)
                 connection.close()
                 self.front_end_socket.shutdown(socket.SHUT_RDWR)
                 connection = self.connect_front_end()
+        if(type(connection) != type(None)):
+            connection.close()
+        return
 
     def connect_front_end(self):
-        self.front_end_socket.listen(2)
-        connection, client_address = self.front_end_socket.accept()
-        return connection
+        t = threading.currentThread()
+        if(getattr(t, "do_run", True)):
+            self.front_end_socket.listen(2)
+            connection, client_address = self.front_end_socket.accept()
+            return connection
 
 
     def display_objects(self):
         retStr = ""
         for i in self.objects:
             retStr += "Port: " + str(i[1]["port"]) + "\tOn: " + str(i[1]["switch"]) + "\n"
+        print(retStr)
         return retStr
 
     def socket_close(self):
@@ -188,5 +216,10 @@ def main():
         try:
             devices.listen()
         except KeyboardInterrupt:
+            t =threading.currentThread()
+            t.do_run = False
+            for i in devices.threads_front:
+                i.do_run = False
+
             devices.socket_close()
 main()
