@@ -7,6 +7,12 @@ import threading
 
 class deviceManager:
     def __init__(self):
+        #self.server_address = 'localhost'
+        self.connection = None
+        self.objects = []
+        self.threads = []
+        self.threads_front = []
+    def init_network(self):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.multicast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -19,11 +25,6 @@ class deviceManager:
         self.server_address = '67.163.37.156'
         self.front_end_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.front_end_socket.bind(('0.0.0.0', 7999))
-        #self.server_address = 'localhost'
-        self.connection = None
-        self.objects = []
-        self.threads = []
-        self.threads_front = []
     def listen(self):
         message = ''
         address = ''
@@ -109,27 +110,29 @@ class deviceManager:
                 i[0].do_run = True
                 return
 
-    def turn_off(self, port):
+    def turn_off(self, port, debug):
         for i in self.objects:
             if(i[0] == port):
                 if(i[1]["switch"]):
                     i[1]["switch"] = False
-                    self.send_out_update(i)
+                    if not debug:
+                        self.send_out_update(i)
                     return
 
-    def turn_on(self, port):
+    def turn_on(self, port, debug):
         for i in self.objects:
             if(i[0] == port):
                 if(not i[1]["switch"]):
                     i[1]["switch"] = True
-                    self.send_out_update(i)
+                    if not debug:
+                        self.send_out_update(i)
                     return
     def triggerTimer(self, json_message):
         time.sleep(json_message["time"])
         if(json_message["event"] == "on"):
-            self.turn_on(json_message["port"])
+            self.turn_on(json_message["port"], False)
         else:
-            self.turn_off(json_message["port"])
+            self.turn_off(json_message["port"], False)
 
     def sched_event(self, json_message):
         t = threading.Thread(target=self.triggerTimer, args=(json_message,))
@@ -220,6 +223,7 @@ class deviceManager:
 
 def main():
     devices = deviceManager()
+    devices.init_network()
     devices.init_front()
     while True:
         try:
@@ -231,4 +235,6 @@ def main():
                 i.do_run = False
 
             devices.socket_close()
-main()
+
+if __name__ == "__main__":
+    main()
