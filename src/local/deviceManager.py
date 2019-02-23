@@ -66,6 +66,8 @@ class deviceManager:
                 self.turn_off(json_message['port'])
             if json_message["op"] == 'turn-on':
                 self.turn_on(json_message['port'])
+            if json_message["op"] == 'sched':
+                self.sched_event(json_message)
         except NameError:
             print('Incorrect Json format')
 
@@ -122,6 +124,16 @@ class deviceManager:
                     i[1]["switch"] = True
                     self.send_out_update(i)
                     return
+    def triggerTimer(self, json_message):
+        time.sleep(json_message["time"])
+        if(json_message["event"] == "on"):
+            self.turn_on(json_message["port"])
+        else:
+            self.turn_off(json_message["port"])
+
+    def sched_event(self, json_message):
+        t = threading.Thread(target=self.triggerTimer, args=(json_message,))
+        t.start()
 
     def send_out_update(self, object):
         t = threading.Thread(target=self.update, args=(object,))
