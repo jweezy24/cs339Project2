@@ -4,6 +4,7 @@ import os
 import time
 sys.path.insert(0, './hardware')
 import controlCenter
+import threading
 #this file will simulate plugging hardware into a socket
 #sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 #sock.sendto('hello'.encode(), ('67.163.37.156', 7999))
@@ -22,14 +23,22 @@ def main():
         time.sleep(4)
         host = connect_to_server()
     sock2.connect(host)
+    t = threading.Thread(target=check_connection)
+    t.start()
     try:
         while True:
+
             try:
                 user = raw_input('Enter a command (turn-off, turn-on, list)')
             except KeyboardInterrupt:
                 sock2.shutdown(socket.SHUT_RDWR)
                 sock2.close()
                 print("Exiting")
+                sys.exit(0)
+            if(getattr(t, "do_run", False)):
+                print("socket closed")
+                sock2.shutdown(socket.SHUT_RDWR)
+                sock2.close()
                 sys.exit(0)
             if user == 'turn-off':
                 dict = {"op":"turn-off", "port":0}
@@ -66,6 +75,17 @@ def connect_to_server():
     except socket.error:
         return (0,0)
 
-
+def check_connection():
+    t = threading.currentThread()
+    sock2.settimeout(1)
+    while True:
+        try:
+            message = sock2.recv(1024)
+        except socket.timeout as e:
+            continue
+        if(str(message) == "b'shutdown"):
+            t.do_run = False
+            sock2.close()
+            sock2.shutdown(socket.SHUT_RDWR)
 
 main()

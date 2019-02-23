@@ -181,6 +181,7 @@ class deviceManager:
                     connection.send(message.encode())
             except ValueError as e:
                 print(e)
+                connection.send("shutdown".encode())
                 connection.close()
                 self.front_end_socket.shutdown(socket.SHUT_RDWR)
                 connection = self.connect_front_end()
