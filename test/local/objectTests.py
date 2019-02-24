@@ -253,7 +253,7 @@ class TestAPIMethods(unittest.TestCase):
     def test_misc_trigger_event(self):
         self.assertEqual(self.doorbell.triggerEvent(), "ring")
 
-    
+
 
 
 unittest.main()
