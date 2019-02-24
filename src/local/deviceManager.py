@@ -23,14 +23,8 @@ class deviceManager:
         self.MCAST_PORT = 5007
         self.server_socket.settimeout(3)
         self.server_address = '67.163.37.156'
-<<<<<<< HEAD
-        #self.server_address = 'localhost'
-        self.objects = []
-
-=======
         self.front_end_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.front_end_socket.bind(('0.0.0.0', 7999))
->>>>>>> 29fdf72ea8e59bb64e509d0cc831cb6d1769c304
     def listen(self):
         message = ''
         address = ''
@@ -54,21 +48,6 @@ class deviceManager:
 
     def parse_json(self, packet):
         try:
-<<<<<<< HEAD
-            json_message = eval(message)
-            print(json_message)
-            #subnet_mask
-            #for i in subnet_mask.keys():
-            #    if subnet_mask.get(i)[1] == json_message['ip']:
-            #        json_message['sub'] = subnet_mask.get(i)[0]
-            if json_message['op'] == 'add':
-                print('object added.')
-                self.objects.append((json_message["object"]["name"],json_message))
-                self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
-                time.sleep(1) # if there's never a time we don't pass the json along we can do it outside the if elifs
-
-            elif json_message['op'] == 'delete':
-=======
             json_message = eval(packet)
             if json_message['op'] == 'heartbeat':
                 if(not self.name_check(json_message["port"])):
@@ -78,42 +57,11 @@ class deviceManager:
                 else:
                     self.reset_timeout(json_message["port"])
             if json_message['op'] == 'delete':
->>>>>>> 29fdf72ea8e59bb64e509d0cc831cb6d1769c304
                 print('object deleted.')
                 self.remove_Item(json_message["object"]["name"])
                 print(self.objects)
                 self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
-<<<<<<< HEAD
 
-            elif json_message['op'] == 'boot'
-                print('new object boot detected.')
-                new_name = self.new_default_name(json_message["object"]["type"])
-                next_port = self.next_port()
-                json_message["object"]["name"] = new_name
-                json_message["object"]["port"] = next_port
-                self.server_socket.sendto("{op: creds,"\
-                                          "name: {n}," \
-                                          "port: {p}," \
-                                          "}".format(n=new_name, p=next_port), address)
-                self.objects.append((json_message["object"]["name"],json_message))
-                self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
-
-        except NameError:
-            print('Incorrect Json format')
-
-    def getMask(self):
-        interfaces = netifaces.interfaces()
-        addresses = {}
-        for i in interfaces:
-            tempDict = netifaces.ifaddresses(i)
-            if len(tempDict.keys()) > 0:
-                addresses.update({i: (tempDict.get(2)[0]['netmask'], tempDict.get(2)[0]['addr'])})
-        return addresses
-
-    def clapBack(self,address):
-        self.server_socket.sendto("aye".encode(), address)
-
-=======
             if json_message['op'] == 'list':
                 return self.display_objects()
             if json_message['op'] == 'turn-off':
@@ -134,7 +82,6 @@ class deviceManager:
     def clapBack(self,port,ip):
         #self.client_socket.sendto("robot".encode(), (ip, int(port)))
         self.multicast_socket.sendto("robot".encode(), (self.MCAST_GRP, self.MCAST_PORT))
->>>>>>> 29fdf72ea8e59bb64e509d0cc831cb6d1769c304
     def remove_Item(self,item):
         for i in self.objects:
             if item == i[0]:
@@ -148,17 +95,6 @@ class deviceManager:
             self.client_socket.sendto(json.dumps(i[1]).encode(), (self.server_address, 7999))
             time.sleep(0.3)
 
-<<<<<<< HEAD
-    def next_port(self):
-        return len(self.objects) + 10000
-
-    def new_name(self, obj_type):
-        new_number = 0
-        for name, obj in self.objects.items():
-            if obj['type'] == obj_type:
-                new_number += 1
-        return '{}-{}'.format(obj_type, new_number)
-=======
     def init_timeout_obj(self, object_port):
         t = threading.Thread(target=self.timeout, args=(object_port,))
         self.threads.append((t, object_port))
@@ -284,7 +220,6 @@ class deviceManager:
         self.server_socket.close()
         self.multicast_socket.close()
         self.client_socket.close()
->>>>>>> 29fdf72ea8e59bb64e509d0cc831cb6d1769c304
 
 
 def main():

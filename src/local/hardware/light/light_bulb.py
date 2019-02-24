@@ -1,5 +1,11 @@
 import socket
+import sys
+import os
+import time
 sys.path.insert(0, './hardware')
+import controlCenter
+import struct
+import binascii
 
 class Bulb:
     def __init__(self, name, color="default", dim=0, power=True):
