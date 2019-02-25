@@ -26,6 +26,14 @@ class TestDMMethods(unittest.TestCase):
         self.Dm.turn_on(44860, True)
         self.assertTrue(self.Dm.objects[0][1]["switch"])
 
+    def test_display_objects(self):
+        self.Dm.parse_json(self.json_str_1)
+        self.assertTrue(self.Dm.display_objects() == "Port: " + "44860" + "\tOn: " + "False" + "\n")
+
+    def test_name_check(self):
+        self.Dm.parse_json(self.json_str_1)
+        self.assertTrue(self.Dm.name_check(44860))
+
 
 
 unittest.main()
