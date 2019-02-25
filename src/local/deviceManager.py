@@ -1,5 +1,4 @@
 import socket
-import netifaces
 import sys
 import json
 import time
@@ -37,16 +36,6 @@ class deviceManager:
             print("timeout")
             return
         self.parse_json(message)
-    #Jack
-    #TODO Test
-    def getMask(self):
-        interfaces = netifaces.interfaces()
-        addresses = {}
-        for i in interfaces:
-            tempDict = netifaces.ifaddresses(i)
-            if len(tempDict.keys()) > 0:
-                addresses.update({i: (tempDict.get(2)[0]['netmask'], tempDict.get(2)[0]['addr'])})
-        return addresses
 
     def parse_json(self, packet):
         try:
