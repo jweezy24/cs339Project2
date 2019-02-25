@@ -1,6 +1,6 @@
 import threading
 import utilsForDevs
-import lightObject
+import light_bulb
 import outletObject
 
 
