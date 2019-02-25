@@ -39,6 +39,8 @@ class deviceManager:
 
     def parse_json(self, packet):
         try:
+            if(str(packet) == "d'shutdown"):
+                return "shutdown"
             json_message = eval(packet)
             if json_message['op'] == 'heartbeat':
                 if(not self.name_check(json_message["port"])):
@@ -176,23 +178,30 @@ class deviceManager:
             t = threading.currentThread()
             try:
                 try:
-                    message = ''
                     message = connection.recv(1024)
                 except socket.timeout as e:
                     print("TCP timeout")
-                    message=''
                     continue
                 print(self.objects)
-                print(type(None))
-                message = self.parse_json(message)
+
+                try:
+                    message = self.parse_json(message)
+                except SyntaxError as e:
+                    connection.close()
+                    self.front_end_socket.shutdown(socket.SHUT_RDWR)
+                    connection = self.connect_front_end()
+                    continue
+                if(message == 'shutdown'):
+                    connection.close()
+                    self.front_end_socket.shutdown(socket.SHUT_RDWR)
+                    connection = self.connect_front_end()
+                    continue
                 if(message != '' and type(message) != type(None)):
-                    connection.send(message.encode())
-                message = ''
+                    connection.send(str(message).encode())
             except ValueError as e:
                 print(e)
                 connection.close()
                 self.front_end_socket.shutdown(socket.SHUT_RDWR)
-                connection = self.connect_front_end()
         if(type(connection) != type(None)):
             connection.close()
         return

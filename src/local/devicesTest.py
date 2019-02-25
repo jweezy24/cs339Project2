@@ -32,6 +32,7 @@ def main():
             try:
                 user = raw_input('Enter a command (turn-off, turn-on, list, sched)')
             except KeyboardInterrupt:
+                sock2.send("shutdown".encode())
                 sock2.shutdown(socket.SHUT_RDWR)
                 sock2.close()
                 print("Exiting")

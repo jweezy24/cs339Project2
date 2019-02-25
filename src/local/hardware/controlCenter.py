@@ -1,5 +1,7 @@
 import threading
 import utilsForDevs
+import sys
+sys.path.append('./hardware/light')
 import light_bulb
 import outletObject
 import lightGroup
