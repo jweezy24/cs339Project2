@@ -58,9 +58,9 @@ class deviceManager:
             if json_message['op'] == 'list':
                 return self.display_objects()
             if json_message['op'] == 'turn-off':
-                self.turn_off(json_message['port'])
+                self.turn_off(json_message['port'], False)
             if json_message["op"] == 'turn-on':
-                self.turn_on(json_message['port'])
+                self.turn_on(json_message['port'], False)
             if json_message["op"] == 'sched':
                 self.sched_event(json_message)
         except NameError:
