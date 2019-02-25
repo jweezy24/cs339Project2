@@ -1,3 +1,5 @@
+# unused - jack w wrote code for having objects send heartbeats that we are using
+
 import time
 from threading import Thread
 

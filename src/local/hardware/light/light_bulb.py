@@ -6,50 +6,45 @@ sys.path.insert(0, './hardware')
 import controlCenter
 import struct
 import binascii
+import network_util
+import controlCenter
 
 class Bulb:
     def __init__(self, name, color="default", dim=0, power=True):
-        self.server = ('<broadcast>', 8000)
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-        self.port = None
+        self.cc = controlCenter.controller()
+        self.net = network_util.Networker()
         self.name = name
         self.type = "bulb"
         self.power = power
         self.color = color.lower()
         self.dim = dim
         self.grouped = False
-        self.heart = Heart(body=self, socket=self.socket)
-
-    def send_boot(self):
-        self.socket.sendto('{'\
-        'op: boot,'           \
-        'type: bulb,'         \
-        '{s}'                 \
-        '}'.format(s=self.j_summary), self.server)
 
     def listen(self):
+        message = ""
+        heartbeat = {"ip":"", "op":"heartbeat", "port":0, "name": self.name, "switch": True, "dim":0, "color":"default"}
+        self.cc.add_light(self.name, 'white', True)
+        dict = self.cc.jsonifyOject(localManager.get_object_by_name(self.name), 'add')
+        dict.update({"port": self.cc.listener_socket.getsockname()[1]})
+
         while True:
-            message = ''
-            address = ''
             try:
-                message, address = self.server_socket.recvfrom(1024)
-            except socket.timeout:
-                print("timeout")
-                return
-            try:
-                msg = eval(message)
-                print(msg)
+                message, address = self.cc.sock.recvfrom(1024)
+            except self.cc.socket.timeout, e:
+                print 'Expection'
+                hexdata = binascii.hexlify(message)
+                print e
+            if not message:
+                print "No packets received"
+            else:
+                heartbeat = eval(message)
+            heartbeat["ip"] = dict.get("ip")
+            heartbeat["port"] = dict.get("port")
+            heartbeat["op"] = "heartbeat"
+            print heartbeat
+            self.net.sock2.sendto(str(heartbeat), self.net.local_server)
 
-                if json_message['op'] == 'creds':
-                    print('applying creds from DM.\nname: {}\nport: {}'.format(msg['object']['name'],
-                                                                               msg['object']['port']))
-                    self.set_name(msg['object']['name'])
-                    self.set_port(msg['object']['port'])
-                    self.heart.start()
-
-
-    def j_summary(self):
+    def j_summary(self): # unused
         return "'object': {" \
             "'port': {po},"  \
             "'type': {tp},"  \
