@@ -26,6 +26,11 @@ class TestDMMethods(unittest.TestCase):
         self.Dm.turn_on(44860, True)
         self.assertTrue(self.Dm.objects[0][1]["switch"])
 
-
+    def test_get_object(self):
+        self.Dm.parse_json(self.json_str_1)
+        self.assertTrue(self.Dm.get_object(44860))
+    def test_remove_Item(self):
+        self.Dm.parse_json(self.json_str_1)
+        self.assertFalse(self.Dm.remove_Item(44860))        
 
 unittest.main()
