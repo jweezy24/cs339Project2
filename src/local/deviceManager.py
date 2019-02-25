@@ -52,6 +52,7 @@ class deviceManager:
                 self.remove_Item(json_message["object"]["name"])
                 print(self.objects)
                 self.client_socket.sendto(str(json_message).encode(), (self.server_address, 7999))
+
             if json_message['op'] == 'list':
                 return self.display_objects()
             if json_message['op'] == 'turn-off':
