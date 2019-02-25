@@ -160,7 +160,7 @@ class deviceManager:
     #TODO Test
     def get_object(self,port):
         for i in self.objects:
-            if(ip[0] == port):
+            if(i[0] == port):
                 return i
         return None
 
