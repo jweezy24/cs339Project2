@@ -213,6 +213,8 @@ class controller:
                     if i.getItemByName(name) != 'none':
                         i.removeItem(name)
 
+    #Fasal
+    #TODO Test
     def jsonifyOject(self, thing, op):
         try:
             s.connect(("8.8.8.8", 80))

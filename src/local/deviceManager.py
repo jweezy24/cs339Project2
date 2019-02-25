@@ -37,6 +37,7 @@ class deviceManager:
             print("timeout")
             return
         self.parse_json(message)
+    #TODO Test
     def getMask(self):
         interfaces = netifaces.interfaces()
         addresses = {}
@@ -71,7 +72,8 @@ class deviceManager:
                 self.sched_event(json_message)
         except NameError:
             print('Incorrect Json format')
-
+    #Jack
+    #TODO Test
     def name_check(self, port):
         for i in self.objects:
             if i[0] == port:
@@ -81,6 +83,8 @@ class deviceManager:
     def clapBack(self,port,ip):
         #self.client_socket.sendto("robot".encode(), (ip, int(port)))
         self.multicast_socket.sendto("robot".encode(), (self.MCAST_GRP, self.MCAST_PORT))
+    #Asbel
+    #TODO Test
     def remove_Item(self,item):
         for i in self.objects:
             if item == i[0]:
@@ -127,6 +131,8 @@ class deviceManager:
                     if not debug:
                         self.send_out_update(i)
                     return
+    #Faisal
+    #TODO Test
     def triggerTimer(self, json_message):
         time.sleep(json_message["time"])
         if(json_message["event"] == "on"):
@@ -160,8 +166,8 @@ class deviceManager:
         object[1]["op"] = "update"
         self.multicast_socket.sendto(str(object[1]).encode(), (self.MCAST_GRP, self.MCAST_PORT))
 
-
-
+    #Asbel
+    #TODO Test
     def get_object(self,port):
         for i in self.objects:
             if(ip[0] == port):
@@ -207,7 +213,8 @@ class deviceManager:
             connection, client_address = self.front_end_socket.accept()
             return connection
 
-
+    #Jack
+    #TODO Test
     def display_objects(self):
         retStr = ""
         for i in self.objects:
