@@ -37,6 +37,7 @@ class deviceManager:
             print("timeout")
             return
         self.parse_json(message)
+    #Jack
     #TODO Test
     def getMask(self):
         interfaces = netifaces.interfaces()
