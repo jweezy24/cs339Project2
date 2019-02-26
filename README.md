@@ -110,12 +110,13 @@ The server currently only runs on a debian based linux distro. While in the serv
 
 ## Running the tests
 
-* `python unittest.py` - Running this command will run 31 tests.
+* In cs339Project2/test/local `python objectTests.py` - Runs Object related tests (31).
 
-* In the cs339Project2/test/server run the commands `sudo make install` then `make` then `./testing.exe`
+* In the cs339Project2/test/server run the commands `sudo make install` then `make` then `./testing.exe` (27).
 
-(Create deviceManager tests)
+* In cs339Project2/test/local `python DMTests.py` - Runs DM related tests (5).
 
+  Total Tests = 63
 
 ## Built With/Requirements
 

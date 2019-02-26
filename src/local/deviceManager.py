@@ -203,6 +203,7 @@ class deviceManager:
                 connection.close()
                 self.front_end_socket.shutdown(socket.SHUT_RDWR)
         if(type(connection) != type(None)):
+            connection.send("shutdown".encode())
             connection.close()
         return
 
