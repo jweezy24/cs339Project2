@@ -219,7 +219,8 @@ class deviceManager:
     def display_objects(self):
         retStr = ""
         for i in self.objects:
-            retStr += "Port: " + str(i[1]["port"]) + "\tOn: " + str(i[1]["switch"]) + "\n"
+            retStr += "Port: {p:.>9}\tOn: {s:.>9}\n".format(p=str(i[1]["port"]),s=str(i[1]["switch"]))
+        retStr = retStr.rstrip()
         print(retStr)
         return retStr
 

@@ -19,6 +19,13 @@ local_server = ("<broadcast>", 8000)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 sock.settimeout(2)
 
+supported_commands = [
+    'turn-off',
+    'turn-on',
+    'list',
+    'sched'
+]
+
 def main():
     host = connect_to_server()
     while host[0] == 0:
@@ -30,7 +37,11 @@ def main():
         while True:
 
             try:
-                user = raw_input('Enter a command (turn-off, turn-on, list, sched)')
+                print('Welcome to our front end!\n' \
+                      'currently supported commands are as follows:')
+                for c in supported_commands:
+                    print(c)
+                user = raw_input('To get started, issue a command.\n> ')
             except KeyboardInterrupt:
                 sock2.send("shutdown".encode())
                 sock2.shutdown(socket.SHUT_RDWR)
@@ -39,12 +50,12 @@ def main():
                 sys.exit(0)
             if user == 'turn-off':
                 dict = {"op":"turn-off", "port":0}
-                name = raw_input('What is the port of the light?')
+                name = raw_input('What is the port of the light?\n> ')
                 dict["port"] = int(name)
                 sock2.sendto(str(dict), host)
             if user == 'turn-on':
                 dict = {"op":"turn-on", "port":0}
-                name = raw_input('What is the port of the light?')
+                name = raw_input('What is the port of the light?\n> ')
                 dict["port"] = int(name)
                 sock2.sendto(str(dict), host)
             if user == "list":
@@ -55,9 +66,9 @@ def main():
             if user == "sched":
                 request = {"op":"sched", "port": 0, "time":0, "event":""}
                 dict = {}
-                name = raw_input('What is the port of the light?')
-                event = raw_input('What would like like to scheduele? (on, off)')
-                user_time = raw_input('What time would you like the event to trigger? (15:00:00 day/month/year)')
+                name = raw_input('What is the port of the light?\n> ')
+                event = raw_input('What would like like to scheduele? (on, off)\n> ')
+                user_time = raw_input('What time would you like the event to trigger? (hh:mm:ss dd/mm/yyyy)\n> ')
 
                 parseVals = user_time.split(' ')
                 withOutDate = parseVals[0].split(':')
@@ -75,7 +86,7 @@ def main():
                 futureTime = utilsForDevs.parseTime(val[0], val[1], dict)
                 int_time = futureTime - now
                 if(int_time.total_seconds() < 0):
-                    print("impossible to time travel my guy, reseting to selection.")
+                    print("impossible to time travel my guy :^) reseting to selection.")
                     pipe_check()
                     continue
                 else:
